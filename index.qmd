@@ -1,6 +1,6 @@
 ---
-title: "Sample Report - Data Science Capstone"
-author: "Student name"
+title: "Random Forest - Data Science Capstone"
+author: "Sierra Landacre, Tim Leschke, Pamela Mishaw, Pallak Singh "
 date: '`r Sys.Date()`'
 format:
   html:
