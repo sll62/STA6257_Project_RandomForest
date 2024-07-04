@@ -1,6 +1,6 @@
 ---
 title: "Random Forest - Data Science Capstone"
-author: "Sierra Landacre, TIM LESCHKE, Pamela Mishaw, Pallak Singh "
+authors: "Sierra Landacre, Pamela Mishaw, Pallak Singh, and Tim Leschke"
 date: '`r Sys.Date()`'
 format:
   html:
@@ -19,7 +19,7 @@ editor:
 
 ## Introduction
 
-### What is "mehtod"?
+### What is "method"?
 
 This is an introduction to LASSO regression, which is a non-parametric
 estimator that estimates the conditional expectation of two variables
@@ -36,6 +36,32 @@ This is my work and I want to add more work...
 ### Related work
 
 This section is going to cover the literature review...
+
+The organization of this section is inspired by Clinton Sheppard [@sheppard].
+
+#### Decision Tree Algorithms
+
+* Decision tree algorithms that perform classification with ONE TEST to determine the partition for NON-CONTINUOUS/NON-NUMERICAL data.
+
+* Decision tree algorithms that perform classification with MULTIPLE TESTS to determine the partition for NON-CONTINUOUS/NON-NUMERICAL data.
+
+* Decision tree algorithms that handle NUMERICAL (but non-continuous) data.
+
+* Decision tree algorithms that use pruning to improve the accuracy of predictions.
+
+#### Random Forest
+
+* Better at handling noisy data than a decision tree.
+
+* Better compute time by only working with a subset (sample) of the data
+
+#### Random Forest & Regression Analysis
+
+* Decision tree/Random Forests algorithms that use REGRESSION ANALYSIS to predict continuous outcomes (ranges of numeric values, like age 60-75 years).
+
+#### Random Forest & Boosting
+
+* Decision tree/Random Forest algorithms that use BOOSTING to increase prediction accuracy.
 
 ## Methods
 
@@ -71,7 +97,7 @@ A study was conducted to determine how...
 # loading packages 
 library(tidyverse)
 library(knitr)
-library(ggthemes)
+#library(ggthemes)
 library(ggrepel)
 library(dslabs)
 ```
@@ -103,5 +129,117 @@ ggplot1 = murders %>% ggplot(mapping = aes(x=population/10^6, y=total))
 ```
 
 ### Conclusion
+
+### Random Forest Created by Tim
+
+```{r}
+wine <- read.csv(url("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"), header = TRUE, sep = ";") # This command is used to load the dataset
+
+head(wine) # Display the head and dimensions of wine dataset
+
+dim(wine)
+
+barplot(table(wine$quality)) # Barplot to see the quality of wines. The output looks like below
+```
+
+```{r}
+# Now, we have to convert the quality values into factors
+
+wine$taste <- ifelse(wine$quality < 5, "bad", "good")
+
+wine$taste[wine$quality == 5] <- "normal"
+
+wine$taste[wine$quality == 6] <- "normal"
+
+wine$taste <- as.factor(wine$taste)
+
+str(wine$taste)
+
+barplot(table(wine$taste)) # Barplot to view the taste of wines. The output is shown below.
+
+table(wine$taste) 
+```
+
+```{r}
+# Next, we need to split the data into training and testing. 80% for training, 20% for testing.
+
+
+set.seed(123)
+
+samp <- sample(nrow(wine), 0.8 * nrow(wine))
+
+train <- wine[samp, ]
+
+test <- wine[-samp, ]
+```
+
+```{r}
+# Moving onto the Data visualization
+
+library(ggplot2)
+
+
+ggplot(wine,aes(fixed.acidity,volatile.acidity))+ geom_point(aes(color=taste))# This command is used to display a scatter plot. The output looks like below
+
+```
+
+```{r}
+ggplot(wine,aes(alcohol)) + geom_histogram(aes(fill=taste),color='black',bins=50) # This command is used to display a stacked bar chart. The output looks like below
+
+```
+
+```{r}
+dim(train)
+
+dim(test)  # Checks the dimensions of training and testing dataset
+
+
+install.packages('randomForest', repo="https://cran.r-project.org/package=randomForest")
+
+library(randomForest)           # Install the random forest library
+
+
+# Now that we have installed the randomforest library, let’s build the random forest model
+
+
+model <- randomForest(taste ~ . - quality, data = train, ntree = 1000, mtry = 5)
+
+model
+
+model$confusion
+
+
+# The next step is to validate our model using the test data
+
+prediction <- predict(model, newdata = test)
+
+table(prediction, test$taste)
+
+prediction
+```
+
+```{r}
+# Now, let’s display the predicted vs. the actual values
+
+
+results<-cbind(prediction,test$taste)
+
+results
+
+colnames(results)<-c('pred','real')
+
+results<-as.data.frame(results)
+
+#View(results)
+library(DT)
+datatable(results)
+
+
+# Finally, let’s calculate the accuracy of the model
+
+sum(prediction==test$taste) / nrow(test) # The output is as shown below
+```
+
+
 
 ## References
