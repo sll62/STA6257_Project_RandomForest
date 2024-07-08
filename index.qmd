@@ -81,6 +81,7 @@ HF <- data.frame("Feature Name" = c("age","anemia","creatine_phosphokinase","dia
                  "Type" = c("integer","binary", "integer","binary","integer", "binary", "continuous","continuous","integer", "binary","binary","integer","binary"),
                  "Description" = c("age of patient", "decrease of red blood cells or hemoglobin", "level of the CPK enzyme in the blood", "if the patient has diabetes", "percentage of blood leaving the heart at each contraction", "if the patient has hypertension", "platelets in the blood","level of serum creatinine in the blood", "level of serum sodium in the blood", "woman or man", "if the patient smokes or not", "follow-up period in days", "if the patient died during the follow-up period" ))
 HF
+
 ```
 
 Table source: Heart Failure Clinical Records - UCI Machine Learning Repository
