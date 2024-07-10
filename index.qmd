@@ -79,6 +79,118 @@ In practical applications, RF's scalability and parallelization capabilities are
 
 ## Analysis and Results
 
+### Random Forest Created by Tim
+
+```{r}
+wine <- read.csv(url("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"), header = TRUE, sep = ";") # This command is used to load the dataset
+
+head(wine) # Display the head and dimensions of wine dataset
+
+dim(wine)
+
+barplot(table(wine$quality)) # Barplot to see the quality of wines. The output looks like below
+```
+
+```{r}
+# Now, we have to convert the quality values into factors
+
+wine$taste <- ifelse(wine$quality < 5, "bad", "good")
+
+wine$taste[wine$quality == 5] <- "normal"
+
+wine$taste[wine$quality == 6] <- "normal"
+
+wine$taste <- as.factor(wine$taste)
+
+str(wine$taste)
+
+barplot(table(wine$taste)) # Barplot to view the taste of wines. The output is shown below.
+
+table(wine$taste) 
+```
+
+```{r}
+# Next, we need to split the data into training and testing. 80% for training, 20% for testing.
+
+
+set.seed(123)
+
+samp <- sample(nrow(wine), 0.8 * nrow(wine))
+
+train <- wine[samp, ]
+
+test <- wine[-samp, ]
+```
+
+```{r}
+# Moving onto the Data visualization
+
+library(ggplot2)
+
+
+ggplot(wine,aes(fixed.acidity,volatile.acidity))+ geom_point(aes(color=taste))# This command is used to display a scatter plot. The output looks like below
+
+```
+
+```{r}
+ggplot(wine,aes(alcohol)) + geom_histogram(aes(fill=taste),color='black',bins=50) # This command is used to display a stacked bar chart. The output looks like below
+
+```
+
+```{r}
+dim(train)
+
+dim(test)  # Checks the dimensions of training and testing dataset
+
+
+install.packages('randomForest', repo="https://cran.r-project.org/package=randomForest")
+
+library(randomForest)           # Install the random forest library
+
+
+# Now that we have installed the randomforest library, let’s build the random forest model
+
+
+model <- randomForest(taste ~ . - quality, data = train, ntree = 1000, mtry = 5)
+
+model
+
+model$confusion
+
+
+# The next step is to validate our model using the test data
+
+prediction <- predict(model, newdata = test)
+
+table(prediction, test$taste)
+
+prediction
+```
+
+```{r}
+# Now, let’s display the predicted vs. the actual values
+
+
+results<-cbind(prediction,test$taste)
+
+results
+
+colnames(results)<-c('pred','real')
+
+results<-as.data.frame(results)
+
+#View(results)
+library(DT)
+datatable(results)
+
+
+# Finally, let’s calculate the accuracy of the model
+
+sum(prediction==test$taste) / nrow(test) # The output is as shown below
+```
+
+
+
 ### Data and Visualization
 The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository (Heart Failure Clinical Records. (2020). UCI Machine Learning Repository). The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad and consists of the medical records of 299 patients who experienced heart failure (Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone | BMC Medical Informatics and Decision Making | Full Text (biomedcentral.com)). The features are as follows:
 
