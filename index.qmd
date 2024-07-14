@@ -1,5 +1,5 @@
 ---
-title: "Random Forest - Data Science Capstone"
+title: "Random Forest Analysis of Heart Failure Dataset"
 author: "Sierra Landacre, Tim Leschke, Pamela Mishaw, Pallak Singh "
 date: '`r Sys.Date()`'
 format:
@@ -120,120 +120,8 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 
 ## Analysis and Results
 
-### Random Forest Created by Tim
-
-```{r}
-wine <- read.csv(url("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"), header = TRUE, sep = ";") # This command is used to load the dataset
-
-head(wine) # Display the head and dimensions of wine dataset
-
-dim(wine)
-
-barplot(table(wine$quality)) # Barplot to see the quality of wines. The output looks like below
-```
-
-```{r}
-# Now, we have to convert the quality values into factors
-
-wine$taste <- ifelse(wine$quality < 5, "bad", "good")
-
-wine$taste[wine$quality == 5] <- "normal"
-
-wine$taste[wine$quality == 6] <- "normal"
-
-wine$taste <- as.factor(wine$taste)
-
-str(wine$taste)
-
-barplot(table(wine$taste)) # Barplot to view the taste of wines. The output is shown below.
-
-table(wine$taste) 
-```
-
-```{r}
-# Next, we need to split the data into training and testing. 80% for training, 20% for testing.
-
-
-set.seed(123)
-
-samp <- sample(nrow(wine), 0.8 * nrow(wine))
-
-train <- wine[samp, ]
-
-test <- wine[-samp, ]
-```
-
-```{r}
-# Moving onto the Data visualization
-
-library(ggplot2)
-
-
-ggplot(wine,aes(fixed.acidity,volatile.acidity))+ geom_point(aes(color=taste))# This command is used to display a scatter plot. The output looks like below
-
-```
-
-```{r}
-ggplot(wine,aes(alcohol)) + geom_histogram(aes(fill=taste),color='black',bins=50) # This command is used to display a stacked bar chart. The output looks like below
-
-```
-
-```{r}
-dim(train)
-
-dim(test)  # Checks the dimensions of training and testing dataset
-
-
-install.packages('randomForest', repo="https://cran.r-project.org/package=randomForest")
-
-library(randomForest)           # Install the random forest library
-
-
-# Now that we have installed the randomforest library, let’s build the random forest model
-
-
-model <- randomForest(taste ~ . - quality, data = train, ntree = 1000, mtry = 5)
-
-model
-
-model$confusion
-
-
-# The next step is to validate our model using the test data
-
-prediction <- predict(model, newdata = test)
-
-table(prediction, test$taste)
-
-prediction
-```
-
-```{r}
-# Now, let’s display the predicted vs. the actual values
-
-
-results<-cbind(prediction,test$taste)
-
-results
-
-colnames(results)<-c('pred','real')
-
-results<-as.data.frame(results)
-
-#View(results)
-library(DT)
-datatable(results)
-
-
-# Finally, let’s calculate the accuracy of the model
-
-sum(prediction==test$taste) / nrow(test) # The output is as shown below
-```
-
-
-
 ### Data and Visualization
-The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository (Heart Failure Clinical Records. (2020). UCI Machine Learning Repository). The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad and consists of the medical records of 299 patients who experienced heart failure (Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone | BMC Medical Informatics and Decision Making | Full Text (biomedcentral.com)). The features are as follows:
+The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository [@misc_heart_failure_clinical_records_519]. The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine]. The features are as follows:
 
 ```{r}
 HF <- data.frame("Feature Name" = c("age","anemia","creatine_phosphokinase","diabetes","ejection_fraction","high_blood_pressure", "platelets","serum_creatinine", "serum_sodium", "sex","smoking","time", "death_event"),
@@ -242,13 +130,305 @@ HF <- data.frame("Feature Name" = c("age","anemia","creatine_phosphokinase","dia
 HF
 ```
 
-Table source: Heart Failure Clinical Records - UCI Machine Learning Repository
+Table source: Heart Failure Clinical Records - UCI Machine Learning Repository [@misc_heart_failure_clinical_records_519]
  
 The goal is to create and evaluate a model to be used for predicting if a heart failure event may occur given features of a subject.
 
+### Install and Load Packages
+
+```{r}
+install.packages("caTools")
+install.packages("randomForest")
+install.packages("tidyverse")
+install.packages("dplyr")
+install.packages("party")
+
+library(caTools)
+library(randomForest)
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(party)
+library(caret)
+```
+
+### Loading the Dataset
+
+```{r}
+heart_df <- read_csv("~/AdvancedStatisticalModeling/STA6257_Project_RandomForest/heart_failure_clinical_records_dataset.csv")
+head(heart_df, 5)
+
+```
+
+Note: A "positive" (1) in the Sex feature equates to male sex while "negative" (0) designates female. "DEATH_EVENT" is the target variable, signifying whether or not the subject has died.
+
+### Examining the Data and Preprocessing
+
+The dataset was examined for any null values.
+
+```{r}
+heart_df %>% summarise(across(everything(), ~ sum(is.na(.))))
+```
+
+No null values were found. The number of positive events (instances of heart failure deaths) versus negative events is produced to see if there is a significant imbalance.
+
+```{r}
+heart_df %>% count(DEATH_EVENT)
+```
+
+The number of negative events are about double that of the positive events. The Random Forest algorithm's robustness allows it to tolerate similar imbalances in the data.
+
+The DEATH_EVENT feature is made a factor since it is a binary dependent variable.
+
+```{r}
+heart_df$DEATH_EVENT = as.factor(heart_df$DEATH_EVENT)
+```
+
+### Running the Random Forest Model
+
+The dataset is split into training (80% of the dataset) and testing (20% of the data) sets. An id column was created to assist in the split.
+
+```{r}
+# Split the data, 80% goest to training and 20% to testing
+
+set.seed(1)
+
+samp <- sample(nrow(heart_df), 0.8 * nrow(heart_df))
+
+heart_train <- heart_df[samp, ]
+
+heart_test <- heart_df[-samp, ]
+
+head(heart_train)
+head(heart_test)
+```
+
+The training and testing sets are inspected.
+
+```{r}
+dim(heart_train)
+
+dim(heart_test)
+```
+
+239 subjects were randomly placed into the training set and the remaining 50 were designated for testing.
+
+The random forest model is then run on the dataset using the default settings.
+
+```{r}
+model <- randomForest(
+  formula = DEATH_EVENT~.,
+  data = heart_train,
+  importance = TRUE
+)
+
+print(model)
+```
+
+The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%.
+
+The confusion matrix shows the values of True Negatives, False Negatives, False Positives, and True Positives. There is a higher class error rate in the "positive" (death event occurrence) class than the "negative" (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.
+
+```{r}
+prediction <- predict(model, newdata = heart_test)
+
+table(prediction, heart_test$DEATH_EVENT)
+```
+
+```{r}
+# List the predicted classes produced by the model
+prediction
+```
+
+```{r}
+# Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set
+results <- cbind(prediction, heart_test$DEATH_EVENT)
+colnames(results)<-c('pred','real')
+
+results<-as.data.frame(results)
+
+library(DT)
+datatable(results)
+```
+
+```{r}
+# Calculate the classification accuracy of the model
+sum(prediction==heart_test$DEATH_EVENT) / nrow(heart_test)
+```
+
+```{r}
+prediction <- predict(model, heart_test, type = "prob")
+prediction
+library(pROC)
+ROC_rf <- roc(heart_test$DEATH_EVENT, prediction[,2])
+
+# Area Under Curve (AUC) for each ROC curve (higher -> better)
+ROC_rf_auc <- auc(ROC_rf)
+```
+
+```{r}
+# plot ROC curves
+plot(ROC_rf, col = "green", main = "ROC For Random Forest, Default Settings")
+
+# print the performance of each model
+paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
+paste("Area under curve of default random forest: ", ROC_rf_auc)
+```
+
+The classification accuracy with the default hyperparameters for the randomForest package comes to 88.3%.
+
+```{r}
+# Alternative way to create RF model with default parameters
+control <- trainControl(method="repeatedcv", number=10, repeats=3)
+seed <- 1
+metric <- "Accuracy"
+set.seed(seed)
+mtry <- sqrt(ncol(heart_train))
+tunegrid <- expand.grid(.mtry=mtry)
+rf_default <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control)
+print(rf_default)
+```
+
+This alternative implementation of the random forest algorithm produced a classification accuracy of 83.5%.
+
+### Tuning the Model
+
+```{r}
+# Implement a random search for tuned mtry
+control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
+set.seed(seed)
+mtry <- sqrt(ncol(heart_train))
+rf_random <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric, tuneLength=13, trControl=control)
+print(rf_random)
+plot(rf_random)
+```
+
+The random search found the model's accuracy to be highest at mtry = 3. This was the default value for our randomForest model.
+
+```{r}
+# Use gridsearch to determine best mtry value
+control <- trainControl(method="repeatedcv", number=10, repeats=3, search="grid")
+set.seed(seed)
+tunegrid <- expand.grid(.mtry=c(1:13))
+rf_gridsearch <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control)
+print(rf_gridsearch)
+plot(rf_gridsearch)
+```
+
+The grid search suggests that the optimal mtry value is 4. The randomForest model that was created earlier can now be tested with this new mtry.
+
+```{r}
+model2 <- randomForest(
+  formula = DEATH_EVENT~.,
+  data = heart_train,
+  mtry = 4,
+  importance = TRUE
+)
+
+print(model2)
+```
+
+After changing the mtry hyperparameter to 4, the OOB estimate of error rate decreased slightly to 17.15%. The "positive" classification error did not improve– it worsened slightly, coming to about 30.7%. The "negative" classification error also increased slightly at a new value of about 11.0%.
+
+Next, the number of trees (ntree) is tested over the range 500 (default) to 1500 to see if accuracy can be improved by changes in this hyperparameter.
+
+```{r}
+x <- heart_df[,1:12]
+y <- heart_df[,13]
+
+control <- trainControl(method = 'repeatedcv',
+                        number = 10,
+                        repeats = 3,
+                        search = 'grid')
+#create tunegrid
+tunegrid <- expand.grid(.mtry = c(sqrt(ncol(heart_train))))
+modellist <- list()
+
+#train with different ntree parameters
+for (ntree in seq(500,1500,100)){
+  set.seed(1)
+  fit <- train(DEATH_EVENT~.,
+               data = heart_train,
+               method = 'rf',
+               metric = 'Accuracy',
+               tuneGrid = tunegrid,
+               trControl = control,
+               ntree = ntree)
+  key <- toString(ntree)
+  modellist[[key]] <- fit
+}
+
+#Compare results
+results <- resamples(modellist)
+summary(results)
+```
+
+```{r}
+dotplot(results)
+```
+
+The results suggest that the optimal ntree value is 600. This new ntree values is tested, along with the tuned mtry value of 4, using the randomForest model from before.
+
+```{r}
+model3 <- randomForest(
+  formula = DEATH_EVENT~.,
+  data = heart_train,
+  mtry = 4,
+  ntree = 600,
+  importance = TRUE
+)
+
+print(model3)
+```
+
+The OOB value slightly decreased to 16.32% while the classification error rates returned to those generated by the default settings for randomForest.
+
+```{r}
+prediction2 <- predict(model3, newdata = heart_test)
+
+table(prediction2, heart_test$DEATH_EVENT)
+```
+
+```{r}
+# Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set 
+results2 <- cbind(prediction2, heart_test$DEATH_EVENT) 
+colnames(results2)<-c('pred','real')  
+results2<-as.data.frame(results2)  
+datatable(results2)
+```
+
+```{r}
+# Calculate the classification accuracy of the model 
+sum(prediction2==heart_test$DEATH_EVENT) / nrow(heart_test)
+```
+
+```{r}
+prediction2 <- predict(model3, heart_test, type = "prob") 
+prediction2 
+ROC_rf2 <- roc(heart_test$DEATH_EVENT, prediction2[,2])  
+# Area Under Curve (AUC) for each ROC curve (higher -> better) 
+ROC_rf2_auc <- auc(ROC_rf2)
+```
+
+```{r}
+# plot ROC curves 
+plot(ROC_rf2, col = "red", main = "ROC For Random Forest, Default Settings")
+lines(ROC_rf, col = "green")
+# print the performance of each model 
+paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
+paste("Area under curve of default random forest: ", ROC_rf_auc)
+
+paste("Accuracy % of tuned random forest: ", mean(heart_test$DEATH_EVENT == round(prediction2[,2], digits = 0))) 
+paste("Area under curve of tuned random forest: ", ROC_rf2_auc)
+```
+
+The accuracy and area under the receiver operating characteristic curve (AUC-ROC) are higher for the model produced using the default hyperparameters (88.3% and 0.932, respectively) compared to the "tuned" model (86.7% and 0.926, respectively).
+
+The output of a Random Forest model is influenced by subsample size, the number of variables assessed at each node, the maximum nodesize of each leaf, and the number of predictors generated [@scornet2017tuning]. In R, the defaults are a subsample size of sqrt(𝑑) for classification (where d is the total number of dimensions), the generation of 500 predictors, and a nodesize of 5 [@scornet2017tuning]. In one comparison study, the balanced accuracy was found to be optimal at 1300 trees and 3 nodes in R and led to an increase of 0.09 (9%) in balanced accuracy as well as a 0.14 (14%) in the AUC-ROC compared to the values generated by the default hyperparameters [@lotsch2022biomedical].The results suggest the importance of tuning the hyperparameters of random forest algorithms, particularly in the case of exploratory analysis that has initial unfavorable accuracy. In the case of this dataset, the model with the default hyperparameters actually provided better results than the tuned model which implies that tuning is not always necessary or helpful for improving performance for the random forest algorithm.
+
 ### Statistical Modeling
 
-### Conclusion
+## Conclusion
 
 
 ## References
