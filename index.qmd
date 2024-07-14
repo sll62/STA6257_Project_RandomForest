@@ -75,6 +75,47 @@ In practical applications, RF's scalability and parallelization capabilities are
 
 ## Methods
 
+We assume the reader knows single classification trees.  A Random Forest performs classification via aggregated votes from a group of classification trees built from random data samples.
+
+The algorithm for classification with Random Forest is provided below.   
+(Copied, with additions, from (@hastie)).
+
+<pre><span style="text-decoration:overline underline">Random Forest Algorithm                                                                               </span></pre>
+
+<ol type ="1">
+<li>For b = 1 to B where B is the number of trees in the forest:
+    <ol type ="a">
+      <li>Draw a bootstrap sample <b>Z*</b> of size <em>N</em> from the training data.</li>
+      <li>Grow a random-forest tree <em>T<sub>b</sub></em> to the bootstrapped data, by recursively repeating the following steps for each terminal node of the tree, until the minimum node size <em>n<sub>min</sub></em> is reached.</li>
+        <ol type = "i">
+          <li>Select <em>m</em> variables at random from the <em>p</em> variables.</li>
+          <li>Pick the best variable/split-point among the <em>m</em>.</li>
+          <li>Split the node into two daughter nodes.</li>
+        </ol>
+      </li>
+    </ol>
+<li>Output the ensemble of trees.</li>
+
+</ol>
+
+To make a classification prediction at a new point <em>x</em>:
+
+Let <em>C<span>&#770;</span><sub>b</sub>(<em>x</em>)</em> be the class prediction of the <em>b</em>th random-forest tree.  Then <em>C<span>&#770;</span><sub>rf</sub><sup>B</sup>(<em>x</em>) = <em> majority vote</em> {C<span>&#770;</span><sub>b</sub>(<em>x</em>)}<sub>1</sub><sup>B</sup></em>.
+
+<pre><span style="text-decoration:overline">                                                                                                     </span></pre>
+
+Figure 1 shows the generation of a Random Forest.  The uniqueness of each tree, as a result of random data samples, allows the ensemble to avoid misclassification, and improve classification accuracy.
+
+![](Forest.png)
+<center>Figure 1. (Modified from TikZ.net,  https://tikz.net/random-forest/, accessed 7/13/2024)</center>\    
+
+The <em>Gini Index</em> is referred to as a measure of node purity (@james).  It can also be used to measure the importance of each predictor.  The Gini Index is defined by the following formula where K is the number of classes and ${\hat{p}_{mk}}$ is the proportion of observations in the <em>m</em>th region that are from the <em>k</em>th class.  A Gini Index of 0 represents perfect purity. 
+
+$$D=-\sum_{n=1}^{K} {\hat{p}_{mk}}(1-\hat{p}_{mk})$$
+
+<em>Bagging</em> is the aggregation of the results from each decision tree.  It is defined by the following formula where B is the number of training sets and $\hat{f}^{*b}$ is the prediction model.  Although bagging improves prediction accuracy, it makes interpreting the results harder as they cannot be visualized as easily as a single decision tree (@james).
+
+$${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 
 
 ## Analysis and Results
