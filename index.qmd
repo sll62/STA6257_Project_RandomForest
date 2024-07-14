@@ -137,11 +137,11 @@ The goal is to create and evaluate a model to be used for predicting if a heart 
 ### Install and Load Packages
 
 ```{r}
-install.packages("caTools")
-install.packages("randomForest")
-install.packages("tidyverse")
-install.packages("dplyr")
-install.packages("party")
+install.packages("caTools", repos="http://cran.us.r-project.org")
+install.packages("randomForest", repos="http://cran.us.r-project.org")
+install.packages("tidyverse", repos="http://cran.us.r-project.org")
+install.packages("dplyr", repos="http://cran.us.r-project.org")
+install.packages("party", repos="http://cran.us.r-project.org")
 
 library(caTools)
 library(randomForest)
@@ -155,7 +155,7 @@ library(caret)
 ### Loading the Dataset
 
 ```{r}
-heart_df <- read_csv("~/AdvancedStatisticalModeling/STA6257_Project_RandomForest/heart_failure_clinical_records_dataset.csv")
+heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
 head(heart_df, 5)
 
 ```
