@@ -65,7 +65,7 @@ understanding which variables contribute most significantly to predictions. This
 We assume the reader knows single classification trees.  A Random Forest performs classification via aggregated votes from a group of classification trees built from random data samples.
 
 The algorithm for classification with Random Forest is provided below.   
-(Copied, with additions, from (@hastie)).
+(Copied, with additions, from [@hastie]).
 
 <pre><span style="text-decoration:overline underline">Random Forest Algorithm                                                                               </span></pre>
 
@@ -96,11 +96,11 @@ Figure 1 shows the generation of a Random Forest.  The uniqueness of each tree, 
 ![](Forest.png)
 <center>Figure 1. (Modified from TikZ.net,  https://tikz.net/random-forest/, accessed 7/13/2024)</center>\    
 
-The <em>Gini Index</em> is referred to as a measure of node purity (@james).  It can also be used to measure the importance of each predictor.  The Gini Index is defined by the following formula where K is the number of classes and ${\hat{p}_{mk}}$ is the proportion of observations in the <em>m</em>th region that are from the <em>k</em>th class.  A Gini Index of 0 represents perfect purity. 
+The <em>Gini Index</em> is referred to as a measure of node purity [@james].  It can also be used to measure the importance of each predictor.  The Gini Index is defined by the following formula where K is the number of classes and ${\hat{p}_{mk}}$ is the proportion of observations in the <em>m</em>th region that are from the <em>k</em>th class.  A Gini Index of 0 represents perfect purity. 
 
 $$D=-\sum_{n=1}^{K} {\hat{p}_{mk}}(1-\hat{p}_{mk})$$
 
-<em>Bagging</em> is the aggregation of the results from each decision tree.  It is defined by the following formula where B is the number of training sets and $\hat{f}^{*b}$ is the prediction model.  Although bagging improves prediction accuracy, it makes interpreting the results harder as they cannot be visualized as easily as a single decision tree (@james).
+<em>Bagging</em> is the aggregation of the results from each decision tree.  It is defined by the following formula where B is the number of training sets and $\hat{f}^{*b}$ is the prediction model.  Although bagging improves prediction accuracy, it makes interpreting the results harder as they cannot be visualized as easily as a single decision tree [@james].
 
 $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 
