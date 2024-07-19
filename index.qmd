@@ -108,41 +108,85 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 ### Data
 The Random Forest classification method is implemented with the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository [@misc_heart_failure_clinical_records_519]. The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine].  
 
-The features of the Heart Failure Clinical Records dataset are described in the following table:
+The features of the dataset are described in the following table:
 
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo=FALSE}
 HF <- data.frame("Feature Name" = c("age","anemia","creatine_phosphokinase","diabetes","ejection_fraction","high_blood_pressure", "platelets","serum_creatinine", "serum_sodium", "sex","smoking","time", "death_event"),
                  "Type" = c("integer","binary", "integer","binary","integer", "binary", "continuous","continuous","integer", "binary","binary","integer","binary"),
                  "Description" = c("age of patient", "decrease of red blood cells or hemoglobin", "level of the CPK enzyme in the blood", "if the patient has diabetes", "percentage of blood leaving the heart at each contraction", "if the patient has hypertension", "platelets in the blood","level of serum creatinine in the blood", "level of serum sodium in the blood", "woman or man", "if the patient smokes or not", "follow-up period in days", "if the patient died during the follow-up period" ))
 HF
 ```
+<center>Heart Failure Clinical Records - UCI Machine Learning Repository</center>
+ <style>
+  table.tb { border-collapse: collapse; width:900px; }
+  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
+  .tb th { background-color: lightblue;}
+</style>
 
-| Feature Name           | Description                                               |
-| ----------------------:| :-------------------------------------------------------- |
-| Age                    | Age of patient                                            |
-| Anemia                 | Decrease of red blood cell or hemoglobin                  |
-| Creatine Phosphokinase | Level of CPK enzyme in the blood                          |
-| Diabetes               | If the patient has diabetes                               |
-| Ejection Fraction      | Percentage of blood leaving the heart at each contraction |
-| High Blood Pressure    | If the patient has hypertension                           |
-| Platelets              | Platelets in the blood                                    |
-| Serum Creatinine       | Level of  serum creatine in the blood                     |
-| Serum Sodium           | Level of serum sodium in the blood                        |
-| Sex                    | Woman or Man                                              |
-| Smoking                | If the patient smokes or not                              |
-| Time                   | Follow-up period in days                                  |
-| Death Event            | If the patient died during the follow-up period           |
-
-
-Table source: Heart Failure Clinical Records - UCI Machine Learning Repository [@misc_heart_failure_clinical_records_519]
+<table class="tb" title="Heart Failure Clinical Records - UCI Machine Learning Repository">
+  <tr>
+    <th>Feature Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Age</td>
+    <td>Age of patient</td>
+  </tr>
+  <tr>
+    <td>Anemia</td>
+    <td>Decrease of red blood cell or hemoglobin</td>
+  </tr>
+  <tr>
+    <td>Creatine Phosphokinase</td>
+    <td>Level of CPK enzyme in the blood</td>
+  </tr>
+  <tr>
+    <td>Diabetes</td>
+    <td>If the patient has diabetes</td>
+  </tr>
+  <tr>
+    <td>Ejection Fraction</td>
+    <td>Percentage of blood leaving the heart at each contraction</td>
+  </tr>
+  <tr>
+    <td>High Blood Pressure</td>
+    <td>If the patient has hypertension</td>
+  </tr>
+  <tr>
+    <td>Platelets</td>
+    <td>Platelets in the blood</td>
+  </tr>
+  <tr>
+    <td>Serum Creatinine</td>
+    <td>Level of serum creatine in the blood</td>
+  </tr>
+  <tr>
+    <td>Serum Sodium</td>
+    <td>Level of serum sodium in the blood</td>
+  <tr>
+    <td>Sex</td>
+    <td>Woman or Man</td>
+  </tr>
+  <tr>
+    <td>Smoking</td>
+    <td>If the patient smokes or not</td>
+  <tr>
+    <td>Time</td>
+    <td>Follow-up period in days</td>
+  </tr>
+  <tr>
+    <td>Death Event</td>
+    <td>If the patient died during the follow-up period</td>
+  </tr>
+</table>
+Source: [@misc_heart_failure_clinical_records_519]
  
 The goal is to create and evaluate a model to be used for predicting if a heart failure event may occur given features of a subject.
 
 ### Install and Load Packages
 
-```{r}
-#{r, eval = FALSE}
+```{r, eval = FALSE}
 install.packages("caTools", repos="http://cran.us.r-project.org")
 install.packages("randomForest", repos="http://cran.us.r-project.org")
 install.packages("tidyverse", repos="http://cran.us.r-project.org")
@@ -160,7 +204,7 @@ library(caret)
 
 ### Loading the Dataset
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
 head(heart_df, 5)
@@ -173,14 +217,14 @@ Note: A "positive" (1) in the Sex feature equates to male sex while "negative" (
 
 The dataset was examined for any null values.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 heart_df %>% summarise(across(everything(), ~ sum(is.na(.))))
 ```
 
 No null values were found. The number of positive events (instances of heart failure deaths) versus negative events is produced to see if there is a significant imbalance.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 heart_df %>% count(DEATH_EVENT)
 ```
@@ -189,7 +233,7 @@ The number of negative events are about double that of the positive events. The 
 
 The DEATH_EVENT feature is made a factor since it is a binary dependent variable.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 heart_df$DEATH_EVENT = as.factor(heart_df$DEATH_EVENT)
 ```
@@ -198,7 +242,7 @@ heart_df$DEATH_EVENT = as.factor(heart_df$DEATH_EVENT)
 
 The dataset is split into training (80% of the dataset) and testing (20% of the data) sets. An id column was created to assist in the split.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # Split the data, 80% goest to training and 20% to testing
 
@@ -216,7 +260,7 @@ head(heart_test)
 
 The training and testing sets are inspected.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 dim(heart_train)
 
@@ -227,7 +271,7 @@ dim(heart_test)
 
 The random forest model is then run on the dataset using the default settings.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 model <- randomForest(
   formula = DEATH_EVENT~.,
@@ -242,20 +286,20 @@ The default random forest model produced an Out-of-the-Bag (OOB) estimate of err
 
 The confusion matrix shows the values of True Negatives, False Negatives, False Positives, and True Positives. There is a higher class error rate in the "positive" (death event occurrence) class than the "negative" (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 prediction <- predict(model, newdata = heart_test)
 
 table(prediction, heart_test$DEATH_EVENT)
 ```
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # List the predicted classes produced by the model
 prediction
 ```
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set
 results <- cbind(prediction, heart_test$DEATH_EVENT)
@@ -267,13 +311,13 @@ library(DT)
 datatable(results)
 ```
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # Calculate the classification accuracy of the model
 sum(prediction==heart_test$DEATH_EVENT) / nrow(heart_test)
 ```
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 prediction <- predict(model, heart_test, type = "prob")
 prediction
@@ -284,7 +328,7 @@ ROC_rf <- roc(heart_test$DEATH_EVENT, prediction[,2])
 ROC_rf_auc <- auc(ROC_rf)
 ```
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # plot ROC curves
 plot(ROC_rf, col = "green", main = "ROC For Random Forest, Default Settings")
@@ -296,7 +340,7 @@ paste("Area under curve of default random forest: ", ROC_rf_auc)
 
 The classification accuracy with the default hyperparameters for the randomForest package comes to 88.3%.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # Alternative way to create RF model with default parameters
 control <- trainControl(method="repeatedcv", number=10, repeats=3)
@@ -313,7 +357,7 @@ This alternative implementation of the random forest algorithm produced a classi
 
 ### Tuning the Model
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # Implement a random search for tuned mtry
 control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
@@ -326,7 +370,7 @@ plot(rf_random)
 
 The random search found the model's accuracy to be highest at mtry = 3. This was the default value for our randomForest model.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # Use gridsearch to determine best mtry value
 control <- trainControl(method="repeatedcv", number=10, repeats=3, search="grid")
@@ -339,7 +383,7 @@ plot(rf_gridsearch)
 
 The grid search suggests that the optimal mtry value is 4. The randomForest model that was created earlier can now be tested with this new mtry.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 model2 <- randomForest(
   formula = DEATH_EVENT~.,
@@ -355,7 +399,7 @@ After changing the mtry hyperparameter to 4, the OOB estimate of error rate decr
 
 Next, the number of trees (ntree) is tested over the range 500 (default) to 1500 to see if accuracy can be improved by changes in this hyperparameter.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 x <- heart_df[,1:12]
 y <- heart_df[,13]
@@ -394,7 +438,7 @@ dotplot(results)
 
 The results suggest that the optimal ntree value is 600. This new ntree values is tested, along with the tuned mtry value of 4, using the randomForest model from before.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 model3 <- randomForest(
   formula = DEATH_EVENT~.,
@@ -409,14 +453,14 @@ print(model3)
 
 The OOB value slightly decreased to 16.32% while the classification error rates returned to those generated by the default settings for randomForest.
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 prediction2 <- predict(model3, newdata = heart_test)
 
 table(prediction2, heart_test$DEATH_EVENT)
 ```
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set 
 results2 <- cbind(prediction2, heart_test$DEATH_EVENT) 
@@ -425,13 +469,13 @@ results2<-as.data.frame(results2)
 datatable(results2)
 ```
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # Calculate the classification accuracy of the model 
 sum(prediction2==heart_test$DEATH_EVENT) / nrow(heart_test)
 ```
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 prediction2 <- predict(model3, heart_test, type = "prob") 
 prediction2 
@@ -440,7 +484,7 @@ ROC_rf2 <- roc(heart_test$DEATH_EVENT, prediction2[,2])
 ROC_rf2_auc <- auc(ROC_rf2)
 ```
 
-```{r}
+{r, eval = FALSE}
 #{r, eval = FALSE}
 # plot ROC curves 
 plot(ROC_rf2, col = "red", main = "ROC For Random Forest, Default Settings")
