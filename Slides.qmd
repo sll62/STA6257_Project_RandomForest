@@ -1,0 +1,42 @@
+---
+title: "Random Forest Analysis of Heart Failure Dataset"
+author: "Tim Lescheke, Pamela Mishaw, Sierra Landacre, Pallak Singh"
+format: revealjs
+editor: visual
+---
+
+## What is Random Forest?
+
+- A promising machine learning tool 
+- At the heart of the Random Forest model is the decision tree 
+
+
+## Why use Random Forest? 
+
+- It can correctly classify data from large data sets
+- Be resistant to outliers
+- Easy to use 
+
+## Methods 
+
+
+## Equations 
+
+
+## Analysis & Process
+
+
+## Data Used 
+
+
+## Assumptions 
+
+
+## Results 
+
+
+## Conclusion 
+
+
+## References 
+
