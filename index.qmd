@@ -348,7 +348,7 @@ rf_default <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric,
 print(rf_default)
 ```
 
-This alternative implementation of the random forest algorithm produced a classification accuracy of 83.5%.
+This alternative implementation of the random forest algorithm produced a classification accuracy of 83.5% and kappa is 0.607 which is calculated by the observed and expected accuracy.
 
 ### Tuning the Model
 
