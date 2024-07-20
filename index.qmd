@@ -271,7 +271,9 @@ model <- randomForest(
   data = heart_train,
   importance = TRUE
 )
+```
 
+```{r}
 importance(model)
 ```
 
@@ -288,12 +290,12 @@ The confusion matrix shows the values of True Negatives, False Negatives, False 
 ```{r}
 prediction <- predict(model, newdata = heart_test)
 
-table(prediction, heart_test$DEATH_EVENT)
+confusionMatrix(prediction, heart_test$DEATH_EVENT)
 ```
 
 ```{r}
 # List the predicted classes produced by the model
-prediction
+table(prediction)
 ```
 
 ```{r}
@@ -452,7 +454,12 @@ The OOB value slightly decreased to 16.32% while the classification error rates 
 ```{r}
 prediction2 <- predict(model3, newdata = heart_test)
 
-table(prediction2, heart_test$DEATH_EVENT)
+confusionMatrix(prediction2, heart_test$DEATH_EVENT)
+```
+
+```{r}
+table(prediction2)
+
 ```
 
 ```{r}
