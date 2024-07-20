@@ -130,53 +130,53 @@ HF
     <th>Description</th>
   </tr>
   <tr>
-    <td>Age</td>
+    <td>Age (integer)</td>
     <td>Age of patient</td>
   </tr>
   <tr>
-    <td>Anemia</td>
+    <td>Anemia (binary)</td>
     <td>Decrease of red blood cell or hemoglobin</td>
   </tr>
   <tr>
-    <td>Creatine Phosphokinase</td>
+    <td>Creatine Phosphokinase (integer)</td>
     <td>Level of CPK enzyme in the blood</td>
   </tr>
   <tr>
-    <td>Diabetes</td>
+    <td>Diabetes (binary)</td>
     <td>If the patient has diabetes</td>
   </tr>
   <tr>
-    <td>Ejection Fraction</td>
+    <td>Ejection Fraction (integer)</td>
     <td>Percentage of blood leaving the heart at each contraction</td>
   </tr>
   <tr>
-    <td>High Blood Pressure</td>
+    <td>High Blood Pressure (binary)</td>
     <td>If the patient has hypertension</td>
   </tr>
   <tr>
-    <td>Platelets</td>
+    <td>Platelets (continuous)</td>
     <td>Platelets in the blood</td>
   </tr>
   <tr>
-    <td>Serum Creatinine</td>
+    <td>Serum Creatinine (continuous)</td>
     <td>Level of serum creatine in the blood</td>
   </tr>
   <tr>
-    <td>Serum Sodium</td>
+    <td>Serum Sodium (integer)</td>
     <td>Level of serum sodium in the blood</td>
   <tr>
-    <td>Sex</td>
+    <td>Sex (binary)</td>
     <td>Woman or Man</td>
   </tr>
   <tr>
-    <td>Smoking</td>
+    <td>Smoking (binary)</td>
     <td>If the patient smokes or not</td>
   <tr>
-    <td>Time</td>
+    <td>Time (integer)</td>
     <td>Follow-up period in days</td>
   </tr>
   <tr>
-    <td>Death Event</td>
+    <td>Death Event (binary)</td>
     <td>If the patient died during the follow-up period</td>
   </tr>
 </table>
