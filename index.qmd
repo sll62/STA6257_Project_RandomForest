@@ -313,20 +313,21 @@ sum(prediction==heart_test$DEATH_EVENT) / nrow(heart_test)
 ```
 
 ```{r}
+# Create prediction matrix and utilize it to generate ROC values that can be graphed
 prediction <- predict(model, heart_test, type = "prob")
 prediction
 library(pROC)
 ROC_rf <- roc(heart_test$DEATH_EVENT, prediction[,2])
 
-# Area Under Curve (AUC) for each ROC curve (higher -> better)
+# Generate Area Under Curve (AUC) for ROC curve (higher -> better)
 ROC_rf_auc <- auc(ROC_rf)
 ```
 
 ```{r}
-# plot ROC curves
+# Plot ROC curves
 plot(ROC_rf, col = "green", main = "ROC For Random Forest, Default Settings")
 
-# print the performance of each model
+# Print the performance of each model
 paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
 paste("Area under curve of default random forest: ", ROC_rf_auc)
 ```
