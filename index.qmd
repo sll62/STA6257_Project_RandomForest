@@ -313,6 +313,35 @@ table(prediction)
 ```
 
 ```{r}
+# NOTE:  This heatmap is incorrect.  I cannot figure out how to make the x-axis "True" then "False.
+#  Currently it is "False" on the left and "True" on the right.  I am just trying to cha ge the names,
+# not the values.
+
+# The code below create a heatmap from the values provided in the confusion matrix.
+# Notice the values are hard-coded and do not come from an existing data structure.
+# https://stackoverflow.com/questions/7421503/how-to-plot-a-confusion-matrix-using-heatmaps-in-r
+
+library("dplyr")
+library("tidyr")
+
+# Loading the confusion matrix
+hm <- readr::read_delim("y True False
+True 4 36
+False 17 3", delim = " ")
+
+hm <- hm %>% gather(x, value, True:False)
+
+
+library("ggplot2")
+ggplot(hm, aes(x=x, y=y, fill=value)) + geom_tile() +
+  labs(title="Confusion Matrix Heatmap", x="Predicted Values", y="Actual Values") +
+  geom_text(aes(label=value), color="black") +
+  scale_fill_distiller(palette="Blues", direction = 1)
+```
+
+
+
+```{r}
 # Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set
 results <- cbind(prediction, heart_test$DEATH_EVENT)
 colnames(results)<-c('pred','real')
