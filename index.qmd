@@ -200,6 +200,7 @@ library(readr)
 library(dplyr)
 library(party)
 library(caret)
+library(corrplot)
 ```
 
 ### Loading the Dataset
@@ -213,7 +214,10 @@ head(heart_df, 5)
 Note: A "positive" (1) in the Sex feature equates to male sex while "negative" (0) designates female. "DEATH_EVENT" is the target variable, signifying whether or not the subject has died.
 
 ### Examining the Data and Preprocessing
-
+```{r}
+cor_matrix <- cor(heart_df)
+corrplot(cor_matrix, method = "color")
+```
 The dataset was examined for any null values.
 
 ```{r}
