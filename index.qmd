@@ -297,7 +297,7 @@ The confusion matrix shows the values of True Negatives, False Negatives, False 
 prediction <- predict(model, newdata = heart_test)
 
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, mode = "everything")
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
 Several performance metrics for classification algorithms like the random forest method are presented by the confusionMatrix function. Here, we will focus on precision, recall, the F1 score, and balanced accuracy. Precision is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive. [@raschka2022machine] Recall is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive. [@raschka2022machine] The F1 score is the harmonic mean of the precision and recall and so used to assess predictive performance. [@raschka2022machine] Balanced accuracy is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class. [@brodersen2010balanced]
@@ -443,7 +443,7 @@ randomForest::varImpPlot(model2,
 prediction2 <- predict(model2, newdata = heart_test)
 
 
-cf2 <- confusionMatrix(prediction2, heart_test$DEATH_EVENT, mode = "everything")
+cf2 <- confusionMatrix(prediction2, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
 cf2
 ```
 
@@ -517,7 +517,7 @@ The OOB value slightly decreased to 16.32% while the classification error rates 
 prediction3 <- predict(model3, newdata = heart_test)
 
 
-cf3 <- confusionMatrix(prediction3, heart_test$DEATH_EVENT, mode = "everything")
+cf3 <- confusionMatrix(prediction3, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
 cf3
 ```
 
