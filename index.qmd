@@ -18,6 +18,9 @@ editor:
 ---
 
 ## Introduction
+
+### What is Random Forest?
+
 Correctly classifying a person for being at risk for heart failure is essential for strong preventive health care.  Contributing factors are known to include coronary artery disease, hypertension, obesity, infection, certain medications, and lifestyle choices such as alcohol consumption, smoking, and drug abuse.  Understanding the influences of these competing factors is made easier through unsupervised machine learning which can find patterns and insights in data without explicit human guidance or instruction.  Random Forest is a promising machine learning model because it correctly classifies data from large data sets, is resistant to outliers, and is easy to use.  In this report we validate the application of Random Forest machine learning to support the accurate classification of heart failure among 299 patient profiles.
 
 At the heart of the Random Forest model is the decision tree. A decision tree “is a unidirectional, compact, tree-like data structure where each branch point is an attribute-data test that partitions the data rows into two or more branches.” [@sheppard]. An optimized tree is shallow and has few branches. A decision tree may be used to perform classification or regression analysis to predict a future value given particular features of a subject.
@@ -41,6 +44,8 @@ Accuracy is optimized through a process called <em>boosting</em>. Boosting is a 
 more weight is given to the votes that come from decision trees that predict correctly versus those that do not predict correctly. Sheppard states “boosting earned a 1-2 percent overall improvement in the ability to predict the correct outcome while also achieving the percentage more consistently” [@sheppard]. Accuracy is also improved through a heuristic known as Ant Colony Optimization (ACO) [@boryczka]. This approach is inspired by ant colony behavior in which individual ants leave traces of pheromone to communicate to other ants regarding the best path to take. Similarly, the ACO algorithm improves dataset splitting by providing feedback to subsequent splitting choices. By improving the choice of criteria to split on, one achieves “maximum homogeneity in the decision classes” which improves overall decision tree accuracy [@boryczka].
 
 An important feature of random Forest is its ability to provide measures of how strong a given variable is associated with a classification result.  These measures include <em>raw importance score for class 0</em>, <em>raw importance score for class 1</em>, <em>decrease in accuracy</em>, and the <em>Gini Index</em> [@esmaily2018comparison].  Gini Index is explained later.  These scores help users fine-tune the Random Forest method so optimal classification results are achieved.
+
+### Related Work
 
 In one study, researchers created a Random Forest model to predict in-hospital mortality for acute kidney injury patients in the intensive care unit [@lin2019predicting]. The Random Forest model displays the lowest Brier score (associated with accuracy) and the largest AUROC (associated with discrimination), meaning Random Forest produces the best values for these assessments of the compaired models, with the second best F1 score and accuracy. 
 
@@ -108,6 +113,8 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 ### Data and Visualization
 The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository [@misc_heart_failure_clinical_records_519]. The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine]. 
 
+The goal is to create and evaluate a model to be used for predicting if a heart failure event may occur given features of a subject.  
+
 The features of the Heart Failure Clinical Records dataset are provided in the table below:
 
 ```{r, eval=FALSE, echo=FALSE}
@@ -134,7 +141,7 @@ HF
     <td>Age of patient</td>
   </tr>
   <tr>
-    <td>Anemia (binary)</td>
+    <td>Anemia (binary*)</td>
     <td>Decrease of red blood cell or hemoglobin</td>
   </tr>
   <tr>
@@ -142,7 +149,7 @@ HF
     <td>Level of CPK enzyme in the blood</td>
   </tr>
   <tr>
-    <td>Diabetes (binary)</td>
+    <td>Diabetes (binary*)</td>
     <td>If the patient has diabetes</td>
   </tr>
   <tr>
@@ -150,7 +157,7 @@ HF
     <td>Percentage of blood leaving the heart at each contraction</td>
   </tr>
   <tr>
-    <td>High Blood Pressure (binary)</td>
+    <td>High Blood Pressure (binary*)</td>
     <td>If the patient has hypertension</td>
   </tr>
   <tr>
@@ -165,28 +172,34 @@ HF
     <td>Serum Sodium (integer)</td>
     <td>Level of serum sodium in the blood</td>
   <tr>
-    <td>Sex (binary)</td>
+    <td>Sex (binary, 0 = female, 1 = male)</td>
     <td>Woman or Man</td>
   </tr>
   <tr>
-    <td>Smoking (binary)</td>
+    <td>Smoking (binary*)</td>
     <td>If the patient smokes or not</td>
   <tr>
     <td>Time (integer)</td>
     <td>Follow-up period in days</td>
   </tr>
   <tr>
-    <td>Death Event (binary)</td>
+    <td>Death Event (binary*)</td>
     <td>If the patient died during the follow-up period</td>
   </tr>
 </table>
+\* Binary features; 0 = "no" and 1 = "yes".  
+
 Source: [@misc_heart_failure_clinical_records_519]
- 
-The goal is to create and evaluate a model to be used for predicting if a heart failure event may occur given features of a subject.
+
+
 
 ### Install and Load Packages
 
-```{r}
+The R programming language is used to support data processing and analysis as it is the standard for statistical programming and graphics.
+
+RStudio Pro, 2023.12.0, Build 369.pro3 was used.  Various R libraries and packages are employed including CaTools, RandomForest, Tidyverse, Readr, Dplyr, Party, Caret, Corrplot, Tidyr, Ggplot2, DT, and pRoc. 
+
+```{r, echo=FALSE}
 install.packages("caTools", repos="http://cran.us.r-project.org")
 install.packages("randomForest", repos="http://cran.us.r-project.org")
 install.packages("tidyverse", repos="http://cran.us.r-project.org")
@@ -205,38 +218,45 @@ library(corrplot)
 
 ### Loading the Dataset
 
-```{r}
+The heart failure dataset is loaded from a .csv file.
+
+```{r, echo=FALSE}
 heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
-head(heart_df, 5)
-
+#head(heart_df, 5)
 ```
-
-Note: A "positive" (1) in the Sex feature equates to male sex while "negative" (0) designates female. "DEATH_EVENT" is the target variable, signifying whether or not the subject has died.
 
 ### Examining the Data and Preprocessing
-```{r}
+```{r, echo=FALSE}
 cor_matrix <- cor(heart_df)
-corrplot(cor_matrix, method = "color")
+#corrplot(cor_matrix, method = "color")
+# The drawing of the correlation heatmap was moved to may below.  However, some of this
+# code is needed earlier, so it was not moved.
 ```
-The dataset was examined for any null values.
 
-```{r}
+```{r, echo=FALSE}
+# What does this code do?
 heart_df %>% summarise(across(everything(), ~ sum(is.na(.))))
 ```
 
-No null values were found. The number of positive events (instances of heart failure deaths) versus negative events is produced to see if there is a significant imbalance.
 
-```{r}
+```{r, echo=FALSE}
+# What does this code do?
+# does it need to be with the code above?  If so, should it be one code chunk?
 heart_df %>% count(DEATH_EVENT)
 ```
 
-The number of negative events are about double that of the positive events. The Random Forest algorithm's robustness allows it to tolerate similar imbalances in the data.
 
-The DEATH_EVENT feature is made a factor since it is a binary dependent variable.
-
-```{r}
+```{r, echo=FALSE}
+# What does this code do?
+# does it need to be with the code above?  If so, should it be one code chunk?
 heart_df$DEATH_EVENT = as.factor(heart_df$DEATH_EVENT)
 ```
+
+The dataset is examined for null values, and no null values are found. 
+
+The number of negative events (non-heart-failure events) are found to be about double the number of positive events (heart-failure events).  This imbalance is not considered significant as the Random Forest algorithm is robust enough to tolerate this asymmetry. 
+
+The DEATH_EVENT feature is treated as a factor since it is a binary dependent variable.
 
 ### Running the Random Forest Model
 
@@ -326,19 +346,29 @@ library("dplyr")
 library("tidyr")
 
 # Loading the confusion matrix
-hm <- readr::read_delim("y True False
-True 4 36
-False 17 3", delim = " ")
+hm <- readr::read_delim("y FALSE TRUE
+FALSE 3 17
+TRUE 36 4", delim = " ")
 
-hm <- hm %>% gather(x, value, True:False)
+hm <- hm %>% gather(x, value, "FALSE":"TRUE")
 
 
 library("ggplot2")
 ggplot(hm, aes(x=x, y=y, fill=value)) + geom_tile() +
+  scale_x_discrete(label = c("TRUE", "FALSE")) +
   labs(title="Confusion Matrix Heatmap", x="Predicted Values", y="Actual Values") +
   geom_text(aes(label=value), color="black") +
   scale_fill_distiller(palette="Blues", direction = 1)
 ```
+
+The Confusion Matrix Heatmap above shows the performance of the algorithm regarding its ability to correctly predict an outcome.  In this case, the top left square shows the algorithm correctly classified 'heart failure' 36 times, and the bottom right shows the algorithm correctly classified 'not heart failure' 17 times.  The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classified 'heart failure' as FALSE (not heart failure) when it should have been classified as TRUE, and the bottom left shows the algorithm incorrectly classified 'not heart failure' as TRUE (heart failure) when it should have been classified as FALSE.  The darker color gradient helps one perceive the relative amount recorded in each of the four areas.  The message being portrayed is that 53 classifications are correct, and only 7 are incorrect.  This yields and accuracy of 88.33%, as mentioned previously.
+
+
+```{r}
+# Draws the corelation heatmap
+corrplot(cor_matrix, method = "color")
+```
+
 
 
 
