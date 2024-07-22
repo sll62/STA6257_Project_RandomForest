@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sierra Landacre, Tim Leschke, Pamela Mishaw, Pallak Singh">
-<meta name="dcterms.date" content="2024-07-21">
+<meta name="dcterms.date" content="2024-07-22">
 
 <title>Random Forest Analysis of Heart Failure Dataset</title>
 <style>
@@ -5632,7 +5632,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 21, 2024</p>
+      <p class="date">July 22, 2024</p>
     </div>
   </div>
   
@@ -6087,7 +6087,7 @@ time                            32.467720</code></pre>
 </div>
 </div>
 </div>
-<p>The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%.</p>
+<p>The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%. The OOB data is the data left unused by an individual predictor (decision tree) after a bootstrap sample is taken from the original data set. The OOB data is used for internal validation– the prediction error rate is taken after running the “unseen” data through each tree and averaged to provide the overall OOB error rate. <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span></p>
 <p>The confusion matrix shows the values of True Negatives, False Negatives, False Positives, and True Positives. There is a higher class error rate in the “positive” (death event occurrence) class than the “negative” (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.</p>
 <div class="cell">
 <details class="code-fold">
@@ -6095,7 +6095,7 @@ time                            32.467720</code></pre>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, <span class="at">newdata =</span> heart_test)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>cf <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>cf <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">positive =</span> <span class="st">&quot;1&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>cf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -6115,22 +6115,23 @@ Prediction  0  1
                                           
  Mcnemar&#39;s Test P-Value : 1               
                                           
-            Sensitivity : 0.9231          
-            Specificity : 0.8095          
-         Pos Pred Value : 0.9000          
-         Neg Pred Value : 0.8500          
-              Precision : 0.9000          
-                 Recall : 0.9231          
-                     F1 : 0.9114          
-             Prevalence : 0.6500          
-         Detection Rate : 0.6000          
-   Detection Prevalence : 0.6667          
+            Sensitivity : 0.8095          
+            Specificity : 0.9231          
+         Pos Pred Value : 0.8500          
+         Neg Pred Value : 0.9000          
+              Precision : 0.8500          
+                 Recall : 0.8095          
+                     F1 : 0.8293          
+             Prevalence : 0.3500          
+         Detection Rate : 0.2833          
+   Detection Prevalence : 0.3333          
       Balanced Accuracy : 0.8663          
                                           
-       &#39;Positive&#39; Class : 0               
+       &#39;Positive&#39; Class : 1               
                                           </code></pre>
 </div>
 </div>
+<p>Several performance metrics for classification algorithms like the random forest method are presented by the confusionMatrix function. Here, we will focus on precision, recall, the F1 score, and balanced accuracy. Precision is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive. <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span> Recall is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive. <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span> The F1 score is the harmonic mean of the precision and recall and so used to assess predictive performance. <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span> Balanced accuracy is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class. <span class="citation" data-cites="brodersen2010balanced">(<a href="#ref-brodersen2010balanced" role="doc-biblioref">Brodersen et al. 2010</a>)</span></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -6331,6 +6332,7 @@ attr(,&quot;class&quot;)
 <pre><code>[1] &quot;Area under curve of default random forest:  0.932844932844933&quot;</code></pre>
 </div>
 </div>
+<p>The area under the receiver operating characteristic curve (AUC-ROC) is the model’s true positive rate (on the Y-axis) is plotted against the false positive rate (on the X-axis) using varying classification thresholds. <span class="citation" data-cites="1388242">(<a href="#ref-1388242" role="doc-biblioref">Huang and Ling 2005</a>)</span> An ideal ROC curve would have a high true positive rate and low false positive rate, falling into the upper left area of the graph. This equates to a value close to 1. A diagonal line on the graph represents an AUC of 0.5, equivalent to random guessing of the classifications. <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span></p>
 <p>The classification accuracy with the default hyperparameters for the randomForest package comes to 88.3%.</p>
 <div class="cell">
 <details class="code-fold">
@@ -6548,7 +6550,7 @@ time                            36.432715</code></pre>
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>prediction2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model2, <span class="at">newdata =</span> heart_test)</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>cf2 <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction2, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>cf2 <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction2, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">positive =</span> <span class="st">&quot;1&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
 <span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>cf2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -6568,19 +6570,19 @@ Prediction  0  1
                                           
  Mcnemar&#39;s Test P-Value : 1.0000000       
                                           
-            Sensitivity : 0.8974          
-            Specificity : 0.8095          
-         Pos Pred Value : 0.8974          
-         Neg Pred Value : 0.8095          
-              Precision : 0.8974          
-                 Recall : 0.8974          
-                     F1 : 0.8974          
-             Prevalence : 0.6500          
-         Detection Rate : 0.5833          
-   Detection Prevalence : 0.6500          
+            Sensitivity : 0.8095          
+            Specificity : 0.8974          
+         Pos Pred Value : 0.8095          
+         Neg Pred Value : 0.8974          
+              Precision : 0.8095          
+                 Recall : 0.8095          
+                     F1 : 0.8095          
+             Prevalence : 0.3500          
+         Detection Rate : 0.2833          
+   Detection Prevalence : 0.3500          
       Balanced Accuracy : 0.8535          
                                           
-       &#39;Positive&#39; Class : 0               
+       &#39;Positive&#39; Class : 1               
                                           </code></pre>
 </div>
 </div>
@@ -6764,7 +6766,7 @@ time                            36.009017</code></pre>
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>prediction3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model3, <span class="at">newdata =</span> heart_test)</span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>cf3 <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction3, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>cf3 <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction3, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">positive =</span> <span class="st">&quot;1&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
 <span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>cf3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -6784,19 +6786,19 @@ Prediction  0  1
                                           
  Mcnemar&#39;s Test P-Value : 1               
                                           
-            Sensitivity : 0.8974          
-            Specificity : 0.8571          
-         Pos Pred Value : 0.9211          
-         Neg Pred Value : 0.8182          
-              Precision : 0.9211          
-                 Recall : 0.8974          
-                     F1 : 0.9091          
-             Prevalence : 0.6500          
-         Detection Rate : 0.5833          
-   Detection Prevalence : 0.6333          
+            Sensitivity : 0.8571          
+            Specificity : 0.8974          
+         Pos Pred Value : 0.8182          
+         Neg Pred Value : 0.9211          
+              Precision : 0.8182          
+                 Recall : 0.8571          
+                     F1 : 0.8372          
+             Prevalence : 0.3500          
+         Detection Rate : 0.3000          
+   Detection Prevalence : 0.3667          
       Balanced Accuracy : 0.8773          
                                           
-       &#39;Positive&#39; Class : 0               
+       &#39;Positive&#39; Class : 1               
                                           </code></pre>
 </div>
 </div>
@@ -6976,6 +6978,9 @@ attr(,&quot;class&quot;)
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In conclusion, the application of Random Forest classification on the Heart Failure Clinical Records dataset yielded promising results in predicting heart failure events. By leveraging a diverse range of patient data including age, medical conditions, physiological indicators, and lifestyle factors, the model achieved an accuracy of approximately 86.7% on the testing set. This indicates a strong ability to discern between patients who are likely to experience heart failure and those who are not.</p>
+<p>The initial recognition of class imbalance and subsequent hyperparameter tuning were critical steps in enhancing the model’s performance. Adjusting the mtry parameter to 4 through cross-validation improved sensitivity, thereby reducing errors in predicting positive instances of heart failure. Moreover, experiments with varying tree numbers reaffirmed that the default setting of 500 trees was optimal, demonstrating stable accuracy levels without significant gains beyond this point.</p>
+<p>Overall, the tuned Random Forest model not only addressed the dataset’s inherent challenges but also showcased robustness in handling class imbalance and leveraging multiple features effectively. Its high sensitivity (89.7%) and specificity (80.9%) underscore its reliability in clinical applications, offering potential for early detection and personalized management of heart failure. Moving forward, further validation on larger datasets could solidify its role as a valuable tool in cardiovascular risk assessment and patient care.</p>
 </section>
 <section id="references" class="level2 unnumbered">
 
@@ -6992,6 +6997,9 @@ Breiman, Leo. 2001. <span>“Random Forests.”</span> <em>Machine Learning</em>
 <div id="ref-brieuc2018practical" class="csl-entry" role="listitem">
 Brieuc, Marine SO, Charles D Waters, Daniel P Drinan, and Kerry A Naish. 2018. <span>“A Practical Introduction to Random Forest for Genetic Association Studies in Ecology and Evolution.”</span> <em>Molecular Ecology Resources</em> 18 (4): 755–66.
 </div>
+<div id="ref-brodersen2010balanced" class="csl-entry" role="listitem">
+Brodersen, Kay Henning, Cheng Soon Ong, Klaas Enno Stephan, and Joachim M Buhmann. 2010. <span>“The Balanced Accuracy and Its Posterior Distribution.”</span> In <em>2010 20th International Conference on Pattern Recognition</em>, 3121–24. IEEE.
+</div>
 <div id="ref-casanova2014application" class="csl-entry" role="listitem">
 Casanova, Ramon, Santiago Saldana, Emily Y Chew, Ronald P Danis, Craig M Greven, and Walter T Ambrosius. 2014. <span>“Application of Random Forests Methods to Diabetic Retinopathy Classification Analyses.”</span> <em>PLOS One</em> 9 (6): e98587.
 </div>
@@ -7006,6 +7014,9 @@ Hastie, Trevor, Robert Tibshirani, and Jerome Friednman. 2001. <em>Elements of S
 </div>
 <div id="ref-misc_heart_failure_clinical_records_519" class="csl-entry" role="listitem">
 <span>“<span>Heart Failure Clinical Records</span>.”</span> 2020. UCI Machine Learning Repository.
+</div>
+<div id="ref-1388242" class="csl-entry" role="listitem">
+Huang, Jin, and C. X. Ling. 2005. <span>“Using AUC and Accuracy in Evaluating Learning Algorithms.”</span> <em>IEEE Transactions on Knowledge and Data Engineering</em> 17 (3): 299–310. <a href="https://doi.org/10.1109/TKDE.2005.50">https://doi.org/10.1109/TKDE.2005.50</a>.
 </div>
 <div id="ref-james" class="csl-entry" role="listitem">
 James, Gareth, Daniela Witten, Hastie Trevor, and Robert Tibshirani. 2021. <em>An Introduction to Statistical Learning, 2nd Edition</em>. Springer of New York.
@@ -7030,6 +7041,9 @@ Quinlan, J. R. 1986. <span>“Induction of Decision Trees.”</span> <em>Machine
 </div>
 <div id="ref-rachmawanto" class="csl-entry" role="listitem">
 Rachmawanto, Eko Hari, De Rosal Ignatious Moses Setiadi, Nova Rijati, Ajib Susanto, Ibnu Utomo Wahyu Mulyono, and Hidayah Rahmalan. 2021. <span>“Attribute Selection Analysis for the Random Forest Classification in Unbalanced Diabetes Dataset.”</span> <em>2021 International Seminar on Application for Technology of Informatoon and Communication (iSemantic)</em>, 82–86.
+</div>
+<div id="ref-raschka2022machine" class="csl-entry" role="listitem">
+Raschka, Sebastian, Yuxi Hayden Liu, and Vahid Mirjalili. 2022. <em>Machine Learning with PyTorch and Scikit-Learn: Develop Machine Learning and Deep Learning Models with Python</em>. Packt Publishing Ltd.
 </div>
 <div id="ref-scornet2017tuning" class="csl-entry" role="listitem">
 Scornet, Erwan. 2017. <span>“Tuning Parameters in Random Forests.”</span> <em>ESAIM: Proceedings and Surveys</em> 60: 144–62.
