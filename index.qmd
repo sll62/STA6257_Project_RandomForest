@@ -258,6 +258,20 @@ The number of negative events (non-heart-failure events) are found to be about d
 
 The DEATH_EVENT feature is treated as a factor since it is a binary dependent variable.
 
+### Metrics Used for Model Evaluation
+
+There are a number of metrics available for assessing a classification model's performance. The one's utilized here (00B error rate/accuracy, precision, recall, F1 score, balanced accuracy, and AUC-ROC) are described in the following text:
+
+* **OOB error rate/accuracy**: The Out-of-Bag data is the data left unused by an individual predictor (decision tree) after a bootstrap sample is taken from the original data set. The OOB data is used for internal validation– the prediction error rate is taken after running the “unseen” data through each tree and averaged to provide the overall OOB error rate. [@breiman] A model's accuracy is calculated by subtracting the error rate from 100.
+
+* A **confusion matrix** shows the values of True Negative, False Negative, False Positive, and True Positive predictions produced by a model. Several performance metrics for classification algorithms like the random forest method are presented by the confusionMatrix function and derived from the values provided in confusion matrices. Here, we will focus on precision, recall, the F1 score, and balanced accuracy. 
+  + **Precision** is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive. [@raschka2022machine] 
+  + **Recall** is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive. [@raschka2022machine] 
+  + The **F1 score** is the harmonic mean of the precision and recall and so used to assess predictive performance. [@raschka2022machine] 
+  + **Balanced accuracy** is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class. [@brodersen2010balanced]
+
+*  **AUC-ROC**: Area under the receiver operating characteristic curve. This is the model’s true positive rate (on the Y-axis) is plotted against the false positive rate (on the X-axis) using varying classification thresholds. [@1388242] An ideal ROC curve would have a high true positive rate and low false positive rate, falling into the upper left area of the graph. This equates to a value close to 1. A diagonal line on the graph represents an AUC of 0.5, equivalent to random guessing of the classifications. [@raschka2022machine]
+
 ### Running the Random Forest Model
 
 The dataset is split into training (80% of the dataset) and testing (20% of the data) sets. An id column was created to assist in the split.
@@ -309,9 +323,7 @@ randomForest::varImpPlot(model,
                          main="Variable Importance Plot")
 ```
 
-The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%. The OOB data is the data left unused by an individual predictor (decision tree) after a bootstrap sample is taken from the original data set. The OOB data is used for internal validation– the prediction error rate is taken after running the “unseen” data through each tree and averaged to provide the overall OOB error rate. [@breiman]
-
-The confusion matrix shows the values of True Negatives, False Negatives, False Positives, and True Positives. There is a higher class error rate in the "positive" (death event occurrence) class than the "negative" (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.
+The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%.  There is a higher class error rate in the "positive" (death event occurrence) class than the "negative" (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.
 
 ```{r}
 prediction <- predict(model, newdata = heart_test)
@@ -320,7 +332,7 @@ prediction <- predict(model, newdata = heart_test)
 cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
-Several performance metrics for classification algorithms like the random forest method are presented by the confusionMatrix function. Here, we will focus on precision, recall, the F1 score, and balanced accuracy. Precision is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive. [@raschka2022machine] Recall is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive. [@raschka2022machine] The F1 score is the harmonic mean of the precision and recall and so used to assess predictive performance. [@raschka2022machine] Balanced accuracy is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class. [@brodersen2010balanced]
+
 
 ```{r}
 # Produce plot of the confusion matrix
@@ -406,7 +418,6 @@ plot(ROC_rf, col = "green", main = "ROC For Random Forest, Default Settings")
 paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
 paste("Area under curve of default random forest: ", ROC_rf_auc)
 ```
-The area under the receiver operating characteristic curve (AUC-ROC) is the model’s true positive rate (on the Y-axis) is plotted against the false positive rate (on the X-axis) using varying classification thresholds. [@1388242] An ideal ROC curve would have a high true positive rate and low false positive rate, falling into the upper left area of the graph. This equates to a value close to 1. A diagonal line on the graph represents an AUC of 0.5, equivalent to random guessing of the classifications. [@raschka2022machine]
 
 The classification accuracy with the default hyperparameters for the randomForest package comes to 88.3%.
 
@@ -593,6 +604,15 @@ paste("Area under curve of tuned random forest: ", ROC_rf2_auc)
 ```
 
 The accuracy and area under the receiver operating characteristic curve (AUC-ROC) are higher for the model produced using the default hyperparameters (88.3% and 0.932, respectively) compared to the "tuned" model (86.7% and 0.926, respectively).
+
+### Model Results
+
+Model                     |OOB Error/Training Acc|Testing Acc|Precision|Recall|F1 Score| Balanced Accuracy | AUC-ROC|
+--------------------------|----------------------|-----------|---------|---------------|-------------------|--------|
+Model 1 (Default)         |
+Model 2 (Tuned mtry)      |
+Model 3 (Tuned mtry,ntree)|
+
 
 The output of a Random Forest model is influenced by subsample size, the number of variables assessed at each node, the maximum nodesize of each leaf, and the number of predictors generated [@scornet2017tuning]. In R, the defaults are a subsample size of sqrt(𝑑) for classification (where d is the total number of dimensions), the generation of 500 predictors, and a nodesize of 5 [@scornet2017tuning]. In one comparison study, the balanced accuracy was found to be optimal at 1300 trees and 3 nodes in R and led to an increase of 0.09 (9%) in balanced accuracy as well as a 0.14 (14%) in the AUC-ROC compared to the values generated by the default hyperparameters [@lotsch2022biomedical].The results suggest the importance of tuning the hyperparameters of random forest algorithms, particularly in the case of exploratory analysis that has initial unfavorable accuracy. In the case of this dataset, the model with the default hyperparameters actually provided better results than the tuned model which implies that tuning is not always necessary or helpful for improving performance for the random forest algorithm.
 
