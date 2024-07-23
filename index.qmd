@@ -117,7 +117,8 @@ The goal is to create and evaluate a model to be used for predicting if a heart 
 
 The features of the Heart Failure Clinical Records dataset are provided in the table below:
 
-```{r, eval=FALSE, echo=FALSE}
+```{r}
+#{r, eval=FALSE, echo=FALSE}
 HF <- data.frame("Feature Name" = c("age","anemia","creatine_phosphokinase","diabetes","ejection_fraction","high_blood_pressure", "platelets","serum_creatinine", "serum_sodium", "sex","smoking","time", "death_event"),
                  "Type" = c("integer","binary", "integer","binary","integer", "binary", "continuous","continuous","integer", "binary","binary","integer","binary"),
                  "Description" = c("age of patient", "decrease of red blood cells or hemoglobin", "level of the CPK enzyme in the blood", "if the patient has diabetes", "percentage of blood leaving the heart at each contraction", "if the patient has hypertension", "platelets in the blood","level of serum creatinine in the blood", "level of serum sodium in the blood", "woman or man", "if the patient smokes or not", "follow-up period in days", "if the patient died during the follow-up period" ))
@@ -199,7 +200,8 @@ The R programming language is used to support data processing and analysis as it
 
 RStudio Pro, 2023.12.0, Build 369.pro3 was used.  Various R libraries and packages are employed including CaTools, RandomForest, Tidyverse, Readr, Dplyr, Party, Caret, Corrplot, Tidyr, Ggplot2, DT, and pRoc. 
 
-```{r, echo=FALSE}
+```{r}
+#{r, echo=FALSE}
 install.packages("caTools", repos="http://cran.us.r-project.org")
 install.packages("randomForest", repos="http://cran.us.r-project.org")
 install.packages("tidyverse", repos="http://cran.us.r-project.org")
@@ -226,27 +228,31 @@ heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
 ```
 
 ### Examining the Data and Preprocessing
-```{r, echo=FALSE}
+```{r}
+#{r, echo=FALSE}
 cor_matrix <- cor(heart_df)
 #corrplot(cor_matrix, method = "color")
 # The drawing of the correlation heatmap was moved to may below.  However, some of this
 # code is needed earlier, so it was not moved.
 ```
 
-```{r, echo=FALSE}
+```{r}
+#{r, echo=FALSE}
 # What does this code do?
 heart_df %>% summarise(across(everything(), ~ sum(is.na(.))))
 ```
 
 
-```{r, echo=FALSE}
+```{r}
+#{r, echo=FALSE}
 # What does this code do?
 # does it need to be with the code above?  If so, should it be one code chunk?
 heart_df %>% count(DEATH_EVENT)
 ```
 
 
-```{r, echo=FALSE}
+```{r}
+#{r, echo=FALSE}
 # What does this code do?
 # does it need to be with the code above?  If so, should it be one code chunk?
 heart_df$DEATH_EVENT = as.factor(heart_df$DEATH_EVENT)
