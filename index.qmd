@@ -360,17 +360,19 @@ cf
 fourfoldplot(as.table(cf),color=c("yellow","blue"),main = "Confusion Matrix for Random Forest -- Default Settings")
 ```
 
+The visualization above is called a <em>FourFold Plot</em> and it is used to represent a 2 x 2 contingency table to support evaluation.  In this case the contingency table is the confusion matrix resulting from our model.  The top left square shows the algorithm correctly classifies ‘heart failure’ 36 times, and the bottom right shows the algorithm correctly classifies ‘not heart failure’ 17 times. The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classifies ‘heart failure’ as FALSE (not heart failure) 4 times when it should be classified as TRUE, and the bottom left shows the algorithm incorrectly classifies ‘not heart failure’ as TRUE (heart failure) 3 times when it should be classified as FALSE. The colors are used to dual-encode correct prediction (blue) and incorrect prediction (yellow).  The area of each quarter-circle is determined by a radius of $\sqrt{f_{ij}}$ where ${f_{ij}}$ is the cell frequency.
+
+From:  https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/fourfoldplot.html
+
+(Add to reference)
+
 ```{r}
 # List the predicted classes produced by the model
 table(prediction)
 ```
 
 ```{r}
-# NOTE:  This heatmap is incorrect.  I cannot figure out how to make the x-axis "True" then "False.
-#  Currently it is "False" on the left and "True" on the right.  I am just trying to cha ge the names,
-# not the values.
-
-# The code below create a heatmap from the values provided in the confusion matrix.
+# The code below creates a heatmap from the values provided in the confusion matrix.
 # Notice the values are hard-coded and do not come from an existing data structure.
 # https://stackoverflow.com/questions/7421503/how-to-plot-a-confusion-matrix-using-heatmaps-in-r
 
@@ -392,6 +394,8 @@ ggplot(hm, aes(x=x, y=y, fill=value)) + geom_tile() +
   geom_text(aes(label=value), color="black") +
   scale_fill_distiller(palette="Blues", direction = 1)
 ```
+
+Need to edit below.
 
 The Confusion Matrix Heatmap above shows the performance of the algorithm regarding its ability to correctly predict an outcome.  In this case, the top left square shows the algorithm correctly classified 'heart failure' 36 times, and the bottom right shows the algorithm correctly classified 'not heart failure' 17 times.  The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classified 'heart failure' as FALSE (not heart failure) when it should have been classified as TRUE, and the bottom left shows the algorithm incorrectly classified 'not heart failure' as TRUE (heart failure) when it should have been classified as FALSE.  The darker color gradient helps one perceive the relative amount recorded in each of the four areas.  The message being portrayed is that 53 classifications are correct, and only 7 are incorrect.  This yields and accuracy of 88.33%, as mentioned previously.
 

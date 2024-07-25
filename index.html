@@ -6194,6 +6194,9 @@ Prediction  0  1
 </div>
 </div>
 </div>
+<p>The visualization above is called a <em>FourFold Plot</em> and it is used to represent a 2 x 2 contingency table to support evaluation. In this case the contingency table is the confusion matrix resulting from our model. The top left square shows the algorithm correctly classifies ‘heart failure’ 36 times, and the bottom right shows the algorithm correctly classifies ‘not heart failure’ 17 times. The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classifies ‘heart failure’ as FALSE (not heart failure) 4 times when it should be classified as TRUE, and the bottom left shows the algorithm incorrectly classifies ‘not heart failure’ as TRUE (heart failure) 3 times when it should be classified as FALSE. The colors are used to dual-encode correct prediction (blue) and incorrect prediction (yellow). The area of each quarter-circle is determined by a radius of <span class="math inline">\(\sqrt{f_{ij}}\)</span> where <span class="math inline">\({f_{ij}}\)</span> is the cell frequency.</p>
+<p>From: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/fourfoldplot.html</p>
+<p>(Add to reference)</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -6209,31 +6212,27 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">:  This heatmap is incorrect.  I cannot figure out how to make the x-axis &quot;True&quot; then &quot;False.</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  Currently it is &quot;False&quot; on the left and &quot;True&quot; on the right.  I am just trying to cha ge the names,</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># not the values.</span></span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The code below creates a heatmap from the values provided in the confusion matrix.</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Notice the values are hard-coded and do not come from an existing data structure.</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># https://stackoverflow.com/questions/7421503/how-to-plot-a-confusion-matrix-using-heatmaps-in-r</span></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The code below create a heatmap from the values provided in the confusion matrix.</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Notice the values are hard-coded and do not come from an existing data structure.</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># https://stackoverflow.com/questions/7421503/how-to-plot-a-confusion-matrix-using-heatmaps-in-r</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyr&quot;</span>)</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the confusion matrix</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;y FALSE TRUE</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="st">FALSE 3 17</span></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="st">TRUE 36 4&quot;</span>, <span class="at">delim =</span> <span class="st">&quot; &quot;</span>)</span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> hm <span class="sc">%&gt;%</span> <span class="fu">gather</span>(x, value, <span class="st">&quot;FALSE&quot;</span><span class="sc">:</span><span class="st">&quot;TRUE&quot;</span>)</span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">fill=</span>value)) <span class="sc">+</span> <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Confusion Matrix Heatmap&quot;</span>, <span class="at">x=</span><span class="st">&quot;Predicted Values&quot;</span>, <span class="at">y=</span><span class="st">&quot;Actual Values&quot;</span>) <span class="sc">+</span></span>
-<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>value), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette=</span><span class="st">&quot;Blues&quot;</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyr&quot;</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the confusion matrix</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;y FALSE TRUE</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="st">FALSE 3 17</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="st">TRUE 36 4&quot;</span>, <span class="at">delim =</span> <span class="st">&quot; &quot;</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> hm <span class="sc">%&gt;%</span> <span class="fu">gather</span>(x, value, <span class="st">&quot;FALSE&quot;</span><span class="sc">:</span><span class="st">&quot;TRUE&quot;</span>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">fill=</span>value)) <span class="sc">+</span> <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Confusion Matrix Heatmap&quot;</span>, <span class="at">x=</span><span class="st">&quot;Predicted Values&quot;</span>, <span class="at">y=</span><span class="st">&quot;Actual Values&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>value), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette=</span><span class="st">&quot;Blues&quot;</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6243,6 +6242,7 @@ Prediction  0  1
 </div>
 </div>
 </div>
+<p>Need to edit below.</p>
 <p>The Confusion Matrix Heatmap above shows the performance of the algorithm regarding its ability to correctly predict an outcome. In this case, the top left square shows the algorithm correctly classified ‘heart failure’ 36 times, and the bottom right shows the algorithm correctly classified ‘not heart failure’ 17 times. The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classified ‘heart failure’ as FALSE (not heart failure) when it should have been classified as TRUE, and the bottom left shows the algorithm incorrectly classified ‘not heart failure’ as TRUE (heart failure) when it should have been classified as FALSE. The darker color gradient helps one perceive the relative amount recorded in each of the four areas. The message being portrayed is that 53 classifications are correct, and only 7 are incorrect. This yields and accuracy of 88.33%, as mentioned previously.</p>
 <div class="cell">
 <details class="code-fold">
