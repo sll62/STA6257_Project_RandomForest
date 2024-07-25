@@ -5646,29 +5646,32 @@ window.Quarto = {
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<section id="what-is-random-forest" class="level3">
-<h3 class="anchored" data-anchor-id="what-is-random-forest">What is Random Forest?</h3>
 <p>Correctly classifying a person for being at risk for heart failure is essential for strong preventive health care. Contributing factors are known to include coronary artery disease, hypertension, obesity, infection, certain medications, and lifestyle choices such as alcohol consumption, smoking, and drug abuse. Understanding the influences of these competing factors is made easier through unsupervised machine learning which can find patterns and insights in data without explicit human guidance or instruction. Random Forest is a promising machine learning model because it correctly classifies data from large data sets, is resistant to outliers, and is easy to use. In this report we validate the application of Random Forest machine learning to support the accurate classification of heart failure among 299 patient profiles.</p>
+<section id="classification-with-decision-trees" class="level3">
+<h3 class="anchored" data-anchor-id="classification-with-decision-trees">Classification with Decision Trees</h3>
 <p>At the heart of the Random Forest model is the decision tree. A decision tree “is a unidirectional, compact, tree-like data structure where each branch point is an attribute-data test that partitions the data rows into two or more branches.” <span class="citation" data-cites="sheppard">(<a href="#ref-sheppard" role="doc-biblioref">Sheppard 2017</a>)</span>. An optimized tree is shallow and has few branches. A decision tree may be used to perform classification or regression analysis to predict a future value given particular features of a subject.</p>
-<p>Yuan et. al. state the most influential decision tree algorithm is Iterative Dichotomiser 3 (ID3) <span class="citation" data-cites="yuan">(<a href="#ref-yuan" role="doc-biblioref">Yuan et al. 2015</a>)</span>. ID3 is presented by Quinlan in his 1986 seminal paper <em>Induction of Decision Trees</em> <span class="citation" data-cites="quinlan">(<a href="#ref-quinlan" role="doc-biblioref">Quinlan 1986</a>)</span>. This paper lays the foundation for using machine learning to address the bottleneck caused by expert systems. Quinlan demonstrates it is possible to use decision trees to generate knowledge and solve difficult problems through automation without much computation <span class="citation" data-cites="quinlan">(<a href="#ref-quinlan" role="doc-biblioref">Quinlan 1986</a>)</span>. Low-levels of noise do not cause the tree building to “fall over a cliff” <span class="citation" data-cites="quinlan">(<a href="#ref-quinlan" role="doc-biblioref">Quinlan 1986</a>)</span>. Furthermore, training the decision tree with noise has been discovered to yield optimal results. In addition, unbalanced trees tend to perform statistically better than those balanced through stratification <span class="citation" data-cites="mascaro2014tale">(<a href="#ref-mascaro2014tale" role="doc-biblioref">Mascaro et al. 2014</a>)</span>.</p>
+<p>Yuan et. al. state the most influential decision tree algorithm is Iterative Dichotomiser 3 (ID3) <span class="citation" data-cites="yuan">(<a href="#ref-yuan" role="doc-biblioref">Yuan et al. 2015</a>)</span>. ID3 is presented by Quinlan in his 1986 seminal paper <em>Induction of Decision Trees</em> <span class="citation" data-cites="quinlan">(<a href="#ref-quinlan" role="doc-biblioref">Quinlan 1986</a>)</span>. This paper lays the foundation for using machine learning to address the bottleneck caused by expert systems. Quinlan demonstrates it is possible to use decision trees to generate knowledge and solve difficult problems through automation without much computation <span class="citation" data-cites="quinlan">(<a href="#ref-quinlan" role="doc-biblioref">Quinlan 1986</a>)</span>. Low-levels of noise do not cause the tree building to “fall over a cliff” and fail <span class="citation" data-cites="quinlan">(<a href="#ref-quinlan" role="doc-biblioref">Quinlan 1986</a>)</span>. Furthermore, training the decision tree with noise has been discovered to yield optimal results. In addition, unbalanced trees tend to perform statistically better than those balanced through stratification <span class="citation" data-cites="mascaro2014tale">(<a href="#ref-mascaro2014tale" role="doc-biblioref">Mascaro et al. 2014</a>)</span>.</p>
 <p>A decision tree does not have domain knowledge <span class="citation" data-cites="sheppard">(<a href="#ref-sheppard" role="doc-biblioref">Sheppard 2017</a>)</span>. It begins as a data structure with a single node that divides the dataset into subsets according to a partitioning algorithm that learns from exposure to training data. Training data is a smaller representation of the main data set, and it contains examples of each class of datapoint found in the main data set. As the decision tree processes the training data, it grows branches and additional nodes to support the recursive partitioning of subsets into smaller subsets until this process terminates with each datapoint being assigned to a category found at each leaf node. This automated machine learning algorithm is challenged by poor-partitioning, noise, and long compute-time <span class="citation" data-cites="sheppard">(<a href="#ref-sheppard" role="doc-biblioref">Sheppard 2017</a>)</span>.</p>
 <p>Poor-partitioning results in elongated decision trees with impure subsets. An impure subset occurs when a branch point does not perform a pure classification. Dirty subsets lead to incorrect classifications, and ultimately to poor heart failure classification in a preventive healthcare workflow.</p>
 <p>Noise is another challenge facing machine learning with decision trees. Noise is any impurity found within the dataset. It is random, unpredictable, and unexpected data that disrupts the ability to correctly partition data into categories. It is what some call entropy <span class="citation" data-cites="sheppard">(<a href="#ref-sheppard" role="doc-biblioref">Sheppard 2017</a>)</span>. The more entropy there is, the more challenging it is to correctly classify each datapoint.</p>
-<p>Long compute-time is influenced by both size and complexity of the classification dataset. Complex datasets with more categories require a decision tree with more nodes and more branches. Taller and fatter decision trees require more compute-time for processing. Pushing more data through a decision tree has a multiplying effect on the compute-time.</p>
-<p>Leo Breiman addresses these three issues with his proposal of the Random Forest model <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. Random Forest is a group of decision trees (a forest) that are created from identically distributed, independent random samples of data drawn with replacement from the original dataset <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. Breiman calls this random sample process a <em>bootstrap</em>, which others have re-worded as <em>bootstrapping</em>. At each node, a random subset of variables is taken from the array of features and the one that provides the best split is selected for that point. This randomness provides robustness in the presence of misclassifications and noise <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>, <span class="citation" data-cites="moradi2024random">(<a href="#ref-moradi2024random" role="doc-biblioref">Moradi et al. 2024</a>)</span>, <span class="citation" data-cites="casanova2014application">(<a href="#ref-casanova2014application" role="doc-biblioref">Casanova et al. 2014</a>)</span>. This classification by aggregation is known as ensemble learning and is a proven approach for dealing with bad data <span class="citation" data-cites="sheppard">(<a href="#ref-sheppard" role="doc-biblioref">Sheppard 2017</a>)</span>. Bad data, however, cannot include missing values for response or predictor variables <span class="citation" data-cites="brieuc2018practical">(<a href="#ref-brieuc2018practical" role="doc-biblioref">Brieuc et al. 2018</a>)</span>.</p>
-<p>Because each decision tree is processed with a different random set of data, each grows into a unique structure with a unique classification result. The final classification from Random Forest is a result of aggregating the results from each decision tree; a process Breiman calls <em>bagging</em> <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. This bagging technique addresses both the noise and poor-partitioning of traditional decision trees that results in inaccurate classification. By using multiple trees and aggregating the results, the effects of noise and poor-partitioning are minimized, and accuracy is increased <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. Furthermore, bagging can be used to calculate an “ongoing estimate of the generalization error” which is the error rate of the training set <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. This can be used to predict how well the model is classifying data.</p>
+<p>Long compute-time is influenced by both size and complexity of the classification dataset. Complex datasets with more categories require a decision tree with more nodes and more branches. Taller and fatter decision trees require more compute-time for processing. Pushing more data through a larger and more complex decision tree has a multiplying effect on the compute-time.</p>
+</section>
+<section id="classification-with-random-forest" class="level3">
+<h3 class="anchored" data-anchor-id="classification-with-random-forest">Classification with Random Forest</h3>
+<p>Leo Breiman addresses poor-partitioning, noise, and long compute time with his proposal of the Random Forest model <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. Random Forest is a group of decision trees (a forest) that are created from identically distributed, independent random samples of data drawn with replacement from the original dataset <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. Breiman calls this random sample process a <em>bootstrap</em>, which others have re-worded as <em>bootstrapping</em>. At each node, a random subset of variables is taken from the array of features and the one that provides the best split is selected for that point. This randomness provides robustness in the presence of misclassifications and noise <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>, <span class="citation" data-cites="moradi2024random">(<a href="#ref-moradi2024random" role="doc-biblioref">Moradi et al. 2024</a>)</span>, <span class="citation" data-cites="casanova2014application">(<a href="#ref-casanova2014application" role="doc-biblioref">Casanova et al. 2014</a>)</span>. This classification by aggregation is known as <em>ensemble learning</em> and is a proven approach for dealing with bad data <span class="citation" data-cites="sheppard">(<a href="#ref-sheppard" role="doc-biblioref">Sheppard 2017</a>)</span>. Bad data, however, cannot include missing values for response or predictor variables <span class="citation" data-cites="brieuc2018practical">(<a href="#ref-brieuc2018practical" role="doc-biblioref">Brieuc et al. 2018</a>)</span>.</p>
+<p>Because each decision tree is processed with a different random set of data, each grows into a unique structure with a unique classification result. The final classification from Random Forest is a result of aggregating the results from each decision tree; a process Breiman calls <em>bagging</em> <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. This bagging technique addresses both the noise and poor-partitioning of traditional decision trees that results in inaccurate classification. By using multiple trees and aggregating the results, the effects of noise and poor-partitioning are minimized, and accuracy is increased <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. Furthermore, bagging can be used to calculate an “ongoing estimate of the generalization error” which is the error rate of the training set <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span>. This can be used to predict how well the model is performing during classification.</p>
 <p>Accuracy is optimized through a process called <em>boosting</em>. Boosting is a technique by which more weight is given to the votes that come from decision trees that predict correctly versus those that do not predict correctly. Sheppard states “boosting earned a 1-2 percent overall improvement in the ability to predict the correct outcome while also achieving the percentage more consistently” <span class="citation" data-cites="sheppard">(<a href="#ref-sheppard" role="doc-biblioref">Sheppard 2017</a>)</span>. Accuracy is also improved through a heuristic known as Ant Colony Optimization (ACO) <span class="citation" data-cites="boryczka">(<a href="#ref-boryczka" role="doc-biblioref">Boryczka and Kozak 2011</a>)</span>. This approach is inspired by ant colony behavior in which individual ants leave traces of pheromone to communicate to other ants regarding the best path to take. Similarly, the ACO algorithm improves dataset splitting by providing feedback to subsequent splitting choices. By improving the choice of criteria to split on, one achieves “maximum homogeneity in the decision classes” which improves overall decision tree accuracy <span class="citation" data-cites="boryczka">(<a href="#ref-boryczka" role="doc-biblioref">Boryczka and Kozak 2011</a>)</span>.</p>
 <p>An important feature of random Forest is its ability to provide measures of how strong a given variable is associated with a classification result. These measures include <em>raw importance score for class 0</em>, <em>raw importance score for class 1</em>, <em>decrease in accuracy</em>, and the <em>Gini Index</em> <span class="citation" data-cites="esmaily2018comparison">(<a href="#ref-esmaily2018comparison" role="doc-biblioref">Esmaily et al. 2018</a>)</span>. Gini Index is explained later. These scores help users fine-tune the Random Forest method so optimal classification results are achieved.</p>
 </section>
 <section id="related-work" class="level3">
 <h3 class="anchored" data-anchor-id="related-work">Related Work</h3>
-<p>In one study, researchers created a Random Forest model to predict in-hospital mortality for acute kidney injury patients in the intensive care unit <span class="citation" data-cites="lin2019predicting">(<a href="#ref-lin2019predicting" role="doc-biblioref">Lin, Hu, and Kong 2019</a>)</span>. The Random Forest model displays the lowest Brier score (associated with accuracy) and the largest AUROC (associated with discrimination), meaning Random Forest produces the best values for these assessments of the compaired models, with the second best F1 score and accuracy.</p>
+<p>There are many examples of how Random Forest is used as a successful and scaleable classifier. In one study, researchers created a Random Forest model to predict in-hospital mortality for acute kidney injury patients in the intensive care unit <span class="citation" data-cites="lin2019predicting">(<a href="#ref-lin2019predicting" role="doc-biblioref">Lin, Hu, and Kong 2019</a>)</span>. The Random Forest model displays the lowest Brier score (associated with accuracy) and the largest AUROC (associated with discrimination), meaning Random Forest produces the best values for these assessments of the compaired models, with the second best F1 score and accuracy.</p>
 <p>In another experiment, researchers developed a random forest regression model capable of accurately predicting future estimated glomerular filtration rates using electronic medical record data <span class="citation" data-cites="zhao2019predicting">(<a href="#ref-zhao2019predicting" role="doc-biblioref">Zhao, Gu, and McDermaid 2019</a>)</span>. This tool allows identification of chronic kidney disease in its early stages to more likely prevent progression into end-stage renal disease. The random forest models that are created are found to have accuracies of about 90% for stages 2 and 3, and about 80% for stages 4 and 5 of chronic kidney disease.</p>
 <p>Scientists also investigate the accuracy of the Random Forest algorithm for the classification of gait as displaying or lacking the characteristics of hemiplegia, which is the paralysis of one side of the body <span class="citation" data-cites="luo2020random">(<a href="#ref-luo2020random" role="doc-biblioref">Luo et al. 2020</a>)</span>. Researchers achieve a classification accuracy of 95.45%, which they state “is superior than all existing methods.” Because of the natural tendency for Random Forest to be resistant to over-fitting, the researchers “do not have to have careful control over the percentage of patients in the training data” <span class="citation" data-cites="luo2020random">(<a href="#ref-luo2020random" role="doc-biblioref">Luo et al. 2020</a>)</span>.</p>
 <p>When the Random Forest model is applied to the classification of persons with type 1 and type 2 diabetes, the conclusion is that “the types of attributes used have an important role in the classification process” <span class="citation" data-cites="rachmawanto">(<a href="#ref-rachmawanto" role="doc-biblioref">Rachmawanto et al. 2021</a>)</span>. In their study, Random Forest executed with the Abel Vika dataset achieves 100% accuracy, 100% precision, and 100% recall. In contrast, when the Pima Indian Diabetes Dataset is used, the results show at most scores of 75-85% for accuracy, precision, and recall. The conclusion is that Random Forest excels when the data is noisy and unbalanced as is the case with the first dataset.</p>
 <p>In practical applications, Random Forest’s scalability and parallelization capabilities are noteworthy, allowing it to efficiently process large datasets using parallel computing techniques like MapReduce <span class="citation" data-cites="yuan">(<a href="#ref-yuan" role="doc-biblioref">Yuan et al. 2015</a>)</span>. This scalability makes random forest suitable for tasks ranging from clinical prediction in healthcare to large-scale genetic analyses, where handling big data is essential for achieving accurate and reliable results.</p>
 <p>Random forest provides valuable insights into feature importance, aiding researchers in understanding which variables contribute most significantly to predictions. This attribute is critical in applications where identifying key factors, such as genetic markers in genome-wide association studies, environmental variables in ecological analyses, and heart failure classification is paramount. Since the Random Forest model shows robustness in the face of noisy datasets, it is an ideal algorithm for studies that involve numerous features such as those found in the biomedical sciences. Its methodology is also more easily conveyed and understood by medical professionals than many other machine learning models, allowing for greater promise in successful real-world implementation. However, in other study types Random Forest is used due to simplicity and diversity, making it one of the commonly used algorithms used for solar energy predictions <span class="citation" data-cites="wang2020taxonomy">(<a href="#ref-wang2020taxonomy" role="doc-biblioref">Wang et al. 2020</a>)</span>.</p>
-<p>In the following sections we explain the Methods pertaining to Random Forest. This includes the algorithm, measuring node purity with the <em>Gini Index</em>, and aggregation of classification votes from individual decision trees via a processes called <em>bagging</em>. The Analysis and Results section presents the classification of the Heart Failure Clinical Records dataset processed with R-code and explains how to tune the algorithm for optimized results <span class="citation" data-cites="misc_heart_failure_clinical_records_519">(<a href="#ref-misc_heart_failure_clinical_records_519" role="doc-biblioref"><span>“<span>Heart Failure Clinical Records</span>”</span> 2020</a>)</span>. Lastly, the Conclusion ties all of this work together and crowns Random Forest as a promising machine learning model for classifying people at risk for heart failure.</p>
+<p>In the following sections we explain the Methods pertaining to Random Forest. This includes the algorithm, measuring node purity with the <em>Gini Index</em>, and aggregation of classification votes from individual decision trees via a processes called <em>bagging</em>. The Analysis and Results section presents the classification of the Heart Failure Clinical Records dataset processed with R-code and explains how the algorithm is tuned for optimized results <span class="citation" data-cites="misc_heart_failure_clinical_records_519">(<a href="#ref-misc_heart_failure_clinical_records_519" role="doc-biblioref"><span>“<span>Heart Failure Clinical Records</span>”</span> 2020</a>)</span>. Lastly, the Conclusion ties all of this work together and crowns Random Forest as a promising machine learning model for classifying people at risk for heart failure.</p>
 </section>
 </section>
 <section id="methods" class="level2">
@@ -5722,18 +5725,9 @@ Figure 1. (Modified from TikZ.net, https://tikz.net/random-forest/, accessed 7/1
 <h2 class="anchored" data-anchor-id="analysis-and-results">Analysis and Results</h2>
 <section id="data-and-visualization" class="level3">
 <h3 class="anchored" data-anchor-id="data-and-visualization">Data and Visualization</h3>
-<p>The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository <span class="citation" data-cites="misc_heart_failure_clinical_records_519">(<a href="#ref-misc_heart_failure_clinical_records_519" role="doc-biblioref"><span>“<span>Heart Failure Clinical Records</span>”</span> 2020</a>)</span>. The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad and consists of the medical records of 299 patients who experienced heart failure <span class="citation" data-cites="chicco2020machine">(<a href="#ref-chicco2020machine" role="doc-biblioref">Chicco and Jurman 2020</a>)</span>.</p>
-<p>The goal is to create and evaluate a model to be used for predicting if a heart failure event may occur given features of a subject.</p>
+<p>The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository <span class="citation" data-cites="misc_heart_failure_clinical_records_519">(<a href="#ref-misc_heart_failure_clinical_records_519" role="doc-biblioref"><span>“<span>Heart Failure Clinical Records</span>”</span> 2020</a>)</span>. The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad Pakistan and consists of the medical records of 299 patients who experienced heart failure <span class="citation" data-cites="chicco2020machine">(<a href="#ref-chicco2020machine" role="doc-biblioref">Chicco and Jurman 2020</a>)</span>. There are 299 patient records with 13 features per record. We use this dataset to create and evaluate a model used for predicting heart failure events for patients.</p>
 <p>The features of the Heart Failure Clinical Records dataset are provided in the table below:</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, eval=FALSE, echo=FALSE}</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>HF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;Feature Name&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;age&quot;</span>,<span class="st">&quot;anemia&quot;</span>,<span class="st">&quot;creatine_phosphokinase&quot;</span>,<span class="st">&quot;diabetes&quot;</span>,<span class="st">&quot;ejection_fraction&quot;</span>,<span class="st">&quot;high_blood_pressure&quot;</span>, <span class="st">&quot;platelets&quot;</span>,<span class="st">&quot;serum_creatinine&quot;</span>, <span class="st">&quot;serum_sodium&quot;</span>, <span class="st">&quot;sex&quot;</span>,<span class="st">&quot;smoking&quot;</span>,<span class="st">&quot;time&quot;</span>, <span class="st">&quot;death_event&quot;</span>),</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;Type&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;integer&quot;</span>,<span class="st">&quot;binary&quot;</span>, <span class="st">&quot;integer&quot;</span>,<span class="st">&quot;binary&quot;</span>,<span class="st">&quot;integer&quot;</span>, <span class="st">&quot;binary&quot;</span>, <span class="st">&quot;continuous&quot;</span>,<span class="st">&quot;continuous&quot;</span>,<span class="st">&quot;integer&quot;</span>, <span class="st">&quot;binary&quot;</span>,<span class="st">&quot;binary&quot;</span>,<span class="st">&quot;integer&quot;</span>,<span class="st">&quot;binary&quot;</span>),</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;Description&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;age of patient&quot;</span>, <span class="st">&quot;decrease of red blood cells or hemoglobin&quot;</span>, <span class="st">&quot;level of the CPK enzyme in the blood&quot;</span>, <span class="st">&quot;if the patient has diabetes&quot;</span>, <span class="st">&quot;percentage of blood leaving the heart at each contraction&quot;</span>, <span class="st">&quot;if the patient has hypertension&quot;</span>, <span class="st">&quot;platelets in the blood&quot;</span>,<span class="st">&quot;level of serum creatinine in the blood&quot;</span>, <span class="st">&quot;level of serum sodium in the blood&quot;</span>, <span class="st">&quot;woman or man&quot;</span>, <span class="st">&quot;if the patient smokes or not&quot;</span>, <span class="st">&quot;follow-up period in days&quot;</span>, <span class="st">&quot;if the patient died during the follow-up period&quot;</span> ))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>HF</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>             Feature.Name       Type
 1                     age    integer
@@ -5891,26 +5885,27 @@ If the patient died during the follow-up period
 <section id="install-and-load-packages" class="level3">
 <h3 class="anchored" data-anchor-id="install-and-load-packages">Install and Load Packages</h3>
 <p>The R programming language is used to support data processing and analysis as it is the standard for statistical programming and graphics.</p>
-<p>RStudio Pro, 2023.12.0, Build 369.pro3 was used. Various R libraries and packages are employed including CaTools, RandomForest, Tidyverse, Readr, Dplyr, Party, Caret, Corrplot, Tidyr, Ggplot2, DT, and pRoc.</p>
-<p>The RStudio Server is running on a RHEL9 based virtual machine within a VMware VSphere HA cluster. The VM itself has 50 vCPU’s and 196 GB of ram assigned. The physical hardware of the cluster nodes are Dell PowerEdge R750 servers with Dual Xeon Gold 6338N (32 core) CPU’s, 512 GB of ram, and sfp28 25gbit networking for all communications (6 total sfp28 per server). Cluster storage is from a NVMe based Dell SAN.</p>
+<p>RStudio Pro, 2023.12.0, Build 369.pro3 is used. Various R libraries and packages are employed including CaTools, RandomForest, Tidyverse, Readr, Dplyr, Party, Caret, Corrplot, Tidyr, Ggplot2, DT, and pRoc.</p>
+<p>The RStudio Server is running on a RHEL9 based virtual machine within a VMware VSphere HA cluster. The VM itself has 50 vCPU’s and 196 GB of ram assigned.</p>
+<p>The physical hardware of the cluster nodes are Dell PowerEdge R750 servers with Dual Xeon Gold 6338N (32 core) CPU’s, 512 GB of ram, and sfp28 25gbit networking for all communications (6 total sfp28 per server). Cluster storage is from a NVMe based Dell SAN.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;caTools&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;randomForest&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;party&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caTools)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(party)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;caTools&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;randomForest&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;party&quot;</span>, <span class="at">repos=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caTools)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(party)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -5923,19 +5918,19 @@ If the patient died during the follow-up period
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(heart_df)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#corrplot(cor_matrix, method = &quot;color&quot;)</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The drawing of the correlation heatmap was moved to may below.  However, some of this</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># code is needed earlier, so it was not moved.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(heart_df)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#corrplot(cor_matrix, method = &quot;color&quot;)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The drawing of the correlation heatmap was moved to may below.  However, some of this</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># code is needed earlier, so it was not moved.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># What does this code do?</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>heart_df <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># What does this code do?</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>heart_df <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 13
@@ -5950,10 +5945,10 @@ If the patient died during the follow-up period
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># What does this code do?</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># does it need to be with the code above?  If so, should it be one code chunk?</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>heart_df <span class="sc">%&gt;%</span> <span class="fu">count</span>(DEATH_EVENT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># What does this code do?</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># does it need to be with the code above?  If so, should it be one code chunk?</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>heart_df <span class="sc">%&gt;%</span> <span class="fu">count</span>(DEATH_EVENT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
@@ -5966,10 +5961,10 @@ If the patient died during the follow-up period
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># What does this code do?</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># does it need to be with the code above?  If so, should it be one code chunk?</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>heart_df<span class="sc">$</span>DEATH_EVENT <span class="ot">=</span> <span class="fu">as.factor</span>(heart_df<span class="sc">$</span>DEATH_EVENT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#{r, echo=FALSE}</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># What does this code do?</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># does it need to be with the code above?  If so, should it be one code chunk?</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>heart_df<span class="sc">$</span>DEATH_EVENT <span class="ot">=</span> <span class="fu">as.factor</span>(heart_df<span class="sc">$</span>DEATH_EVENT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The dataset is examined for null values, and no null values are found.</p>
@@ -5978,36 +5973,36 @@ If the patient died during the follow-up period
 </section>
 <section id="metrics-used-for-model-evaluation" class="level3">
 <h3 class="anchored" data-anchor-id="metrics-used-for-model-evaluation">Metrics Used for Model Evaluation</h3>
-<p>There are a number of metrics available for assessing a classification model’s performance. The one’s utilized here (00B error rate/accuracy, precision, recall, F1 score, balanced accuracy, and AUC-ROC) are described in the following text:</p>
+<p>There are a number of metrics available for assessing a classification model’s performance. The metrics used are described in the following text:</p>
 <ul>
 <li><p><strong>OOB error rate/accuracy</strong>: The Out-of-Bag data is the data left unused by an individual predictor (decision tree) after a bootstrap sample is taken from the original data set. The OOB data is used for internal validation– the prediction error rate is taken after running the “unseen” data through each tree and averaged to provide the overall OOB error rate. <span class="citation" data-cites="breiman">(<a href="#ref-breiman" role="doc-biblioref">Breiman 2001</a>)</span> A model’s accuracy is calculated by subtracting the error rate from 100.</p></li>
-<li><p>A <strong>confusion matrix</strong> shows the values of True Negative, False Negative, False Positive, and True Positive predictions produced by a model. Several performance metrics for classification algorithms like the random forest method are presented by the confusionMatrix function and derived from the values provided in confusion matrices. Here, we will focus on precision, recall, the F1 score, and balanced accuracy.</p>
+<li><p>A <strong>confusion matrix</strong> shows the values of True Negative, False Negative, False Positive, and True Positive predictions produced by a model. Several performance metrics for classification algorithms like the random forest method are presented by the <em>confusionMatrix</em> function and derived from the values provided in confusion matrices. Here we focus on precision, recall, the F1 score, and balanced accuracy.</p>
 <ul>
-<li><strong>Precision</strong> is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive. <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span></li>
-<li><strong>Recall</strong> is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive. <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span></li>
+<li><strong>Precision</strong> is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span>.</li>
+<li><strong>Recall</strong> is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span>.</li>
 <li>The <strong>F1 score</strong> is the harmonic mean of the precision and recall and so used to assess predictive performance. <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span></li>
-<li><strong>Balanced accuracy</strong> is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class. <span class="citation" data-cites="brodersen2010balanced">(<a href="#ref-brodersen2010balanced" role="doc-biblioref">Brodersen et al. 2010</a>)</span></li>
+<li><strong>Balanced accuracy</strong> is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class <span class="citation" data-cites="brodersen2010balanced">(<a href="#ref-brodersen2010balanced" role="doc-biblioref">Brodersen et al. 2010</a>)</span>.</li>
 </ul></li>
-<li><p><strong>AUC-ROC</strong>: Area under the receiver operating characteristic curve. This is the model’s true positive rate (on the Y-axis) is plotted against the false positive rate (on the X-axis) using varying classification thresholds. <span class="citation" data-cites="1388242">(<a href="#ref-1388242" role="doc-biblioref">Huang and Ling 2005</a>)</span> An ideal ROC curve would have a high true positive rate and low false positive rate, falling into the upper left area of the graph. This equates to a value close to 1. A diagonal line on the graph represents an AUC of 0.5, equivalent to random guessing of the classifications. <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span></p></li>
+<li><p><strong>AUC-ROC</strong>: Area under the receiver operating characteristic curve. This is the model’s true positive rate (on the Y-axis) is plotted against the false positive rate (on the X-axis) using varying classification thresholds <span class="citation" data-cites="1388242">(<a href="#ref-1388242" role="doc-biblioref">Huang and Ling 2005</a>)</span>. An ideal ROC curve would have a high true positive rate and low false positive rate, falling into the upper left area of the graph. This equates to a value close to 1. A diagonal line on the graph represents an AUC of 0.5, equivalent to random guessing of the classifications <span class="citation" data-cites="raschka2022machine">(<a href="#ref-raschka2022machine" role="doc-biblioref">Raschka, Liu, and Mirjalili 2022</a>)</span>.</p></li>
 </ul>
 </section>
 <section id="running-the-random-forest-model" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-random-forest-model">Running the Random Forest Model</h3>
-<p>The dataset is split into training (80% of the dataset) and testing (20% of the data) sets. An id column was created to assist in the split.</p>
+<p>The patient health records dataset is split into a training set (80%) and a testing set (20%). An id column is created to assist in the split.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data, 80% goes to training and 20% to testing</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(heart_df), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(heart_df))</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>heart_train <span class="ot">&lt;-</span> heart_df[samp, ]</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>heart_test <span class="ot">&lt;-</span> heart_df[<span class="sc">-</span>samp, ]</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(heart_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data, 80% goes to training and 20% to testing</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(heart_df), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(heart_df))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>heart_train <span class="ot">&lt;-</span> heart_df[samp, ]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>heart_test <span class="ot">&lt;-</span> heart_df[<span class="sc">-</span>samp, ]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(heart_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 13
@@ -6025,7 +6020,7 @@ If the patient died during the follow-up period
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(heart_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(heart_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 13
@@ -6046,14 +6041,14 @@ If the patient died during the follow-up period
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(heart_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(heart_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 239  13</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(heart_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(heart_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 60 13</code></pre>
@@ -6064,13 +6059,13 @@ If the patient died during the follow-up period
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>.,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>.,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -6090,7 +6085,7 @@ Confusion matrix:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">importance</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">importance</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                   0          1 MeanDecreaseAccuracy
@@ -6124,9 +6119,9 @@ time                            32.467720</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>randomForest<span class="sc">::</span><span class="fu">varImpPlot</span>(model, </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sort=</span><span class="cn">FALSE</span>, </span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">main=</span><span class="st">&quot;Variable Importance Plot&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>randomForest<span class="sc">::</span><span class="fu">varImpPlot</span>(model, </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sort=</span><span class="cn">FALSE</span>, </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">main=</span><span class="st">&quot;Variable Importance Plot&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6136,15 +6131,20 @@ time                            32.467720</code></pre>
 </div>
 </div>
 </div>
+<p>The Variable Importance Plot above is a visual representation of the importance of each variable in our model. Circles are plotted on a scale at a location that is influenced by their accuracy and Gini Coefficient. The resulting value provides an indication of how useful a variable is for predicting an outcome. The higher the value, the greater the influence.</p>
+<p>In the mean Decrease Accuracy plot, <en>time has the highest value of approximately 40. Because time is the number of days between patient visits to their health care provider, it seems the longer a patient waits for a follow-up visit, the more at risk they are for heart failure.</en></p>
+<p><em>Serum_creatinine</em> and <em>ejection_fraction</em> are tied for second at about 15 within the Mean Decrease Accuracy plot. Serum creatinine is a waste product of muscles and is usually filtered out of one’s blood by a healthy kidney. High serum_creatinine is often an indicator of unhealthy kidneys.</p>
+<p><em>Ejection fraction</em> is the amount of blood a heart pumps each time it beats. It is calculated by dividing the <em>stroke volume</em> by the <em>end-diastolic volume</em>, all multiplied by 100. An ejection fraction of 50-70% is considered healthy. A low ejection fraction rate is an indicator of heart failure and/or heart disease.</p>
+<p>Although the numbers are slightly lower, <em>time</em>, <em>Serum_creatinine</em>, and <em>ejection_fraction</em> are also the top three variables for predicting heart failure according to the Mean Decrease Gini Index plot.</p>
 <p>The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%. There is a higher class error rate in the “positive” (death event occurrence) class than the “negative” (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, <span class="at">newdata =</span> heart_test)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>cf <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">positive =</span> <span class="st">&quot;1&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>cf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, <span class="at">newdata =</span> heart_test)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>cf <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">positive =</span> <span class="st">&quot;1&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>cf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Confusion Matrix and Statistics
@@ -6182,9 +6182,9 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Produce plot of the confusion matrix</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fourfoldplot</span>(<span class="fu">as.table</span>(cf),<span class="at">color=</span><span class="fu">c</span>(<span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="at">main =</span> <span class="st">&quot;Confusion Matrix for Random Forest -- Default Settings&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Produce plot of the confusion matrix</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fourfoldplot</span>(<span class="fu">as.table</span>(cf),<span class="at">color=</span><span class="fu">c</span>(<span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="at">main =</span> <span class="st">&quot;Confusion Matrix for Random Forest -- Default Settings&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6197,8 +6197,8 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List the predicted classes produced by the model</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(prediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List the predicted classes produced by the model</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(prediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>prediction
@@ -6209,31 +6209,31 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">:  This heatmap is incorrect.  I cannot figure out how to make the x-axis &quot;True&quot; then &quot;False.</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  Currently it is &quot;False&quot; on the left and &quot;True&quot; on the right.  I am just trying to cha ge the names,</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># not the values.</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The code below create a heatmap from the values provided in the confusion matrix.</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Notice the values are hard-coded and do not come from an existing data structure.</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co"># https://stackoverflow.com/questions/7421503/how-to-plot-a-confusion-matrix-using-heatmaps-in-r</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyr&quot;</span>)</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the confusion matrix</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;y FALSE TRUE</span></span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="st">FALSE 3 17</span></span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="st">TRUE 36 4&quot;</span>, <span class="at">delim =</span> <span class="st">&quot; &quot;</span>)</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> hm <span class="sc">%&gt;%</span> <span class="fu">gather</span>(x, value, <span class="st">&quot;FALSE&quot;</span><span class="sc">:</span><span class="st">&quot;TRUE&quot;</span>)</span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">fill=</span>value)) <span class="sc">+</span> <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Confusion Matrix Heatmap&quot;</span>, <span class="at">x=</span><span class="st">&quot;Predicted Values&quot;</span>, <span class="at">y=</span><span class="st">&quot;Actual Values&quot;</span>) <span class="sc">+</span></span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>value), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette=</span><span class="st">&quot;Blues&quot;</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">:  This heatmap is incorrect.  I cannot figure out how to make the x-axis &quot;True&quot; then &quot;False.</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  Currently it is &quot;False&quot; on the left and &quot;True&quot; on the right.  I am just trying to cha ge the names,</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># not the values.</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The code below create a heatmap from the values provided in the confusion matrix.</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Notice the values are hard-coded and do not come from an existing data structure.</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># https://stackoverflow.com/questions/7421503/how-to-plot-a-confusion-matrix-using-heatmaps-in-r</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyr&quot;</span>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the confusion matrix</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;y FALSE TRUE</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="st">FALSE 3 17</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="st">TRUE 36 4&quot;</span>, <span class="at">delim =</span> <span class="st">&quot; &quot;</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> hm <span class="sc">%&gt;%</span> <span class="fu">gather</span>(x, value, <span class="st">&quot;FALSE&quot;</span><span class="sc">:</span><span class="st">&quot;TRUE&quot;</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">fill=</span>value)) <span class="sc">+</span> <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Confusion Matrix Heatmap&quot;</span>, <span class="at">x=</span><span class="st">&quot;Predicted Values&quot;</span>, <span class="at">y=</span><span class="st">&quot;Actual Values&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>value), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette=</span><span class="st">&quot;Blues&quot;</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6247,8 +6247,8 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Draws the corelation heatmap</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">&quot;color&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Draws the corelation heatmap</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">&quot;color&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6262,14 +6262,14 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">cbind</span>(prediction, heart_test<span class="sc">$</span>DEATH_EVENT)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(results)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&#39;pred&#39;</span>,<span class="st">&#39;real&#39;</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>results<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(results)</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">cbind</span>(prediction, heart_test<span class="sc">$</span>DEATH_EVENT)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(results)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&#39;pred&#39;</span>,<span class="st">&#39;real&#39;</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>results<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(results)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="datatables html-widget html-fill-item" id="htmlwidget-ff634491cbb934b3b2c5" style="width:100%;height:auto;"></div>
@@ -6279,8 +6279,8 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the classification accuracy of the model</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(prediction<span class="sc">==</span>heart_test<span class="sc">$</span>DEATH_EVENT) <span class="sc">/</span> <span class="fu">nrow</span>(heart_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the classification accuracy of the model</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(prediction<span class="sc">==</span>heart_test<span class="sc">$</span>DEATH_EVENT) <span class="sc">/</span> <span class="fu">nrow</span>(heart_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.8833333</code></pre>
@@ -6289,9 +6289,9 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create prediction matrix and utilize it to generate ROC values that can be graphed</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, heart_test, <span class="at">type =</span> <span class="st">&quot;prob&quot;</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>prediction</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create prediction matrix and utilize it to generate ROC values that can be graphed</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, heart_test, <span class="at">type =</span> <span class="st">&quot;prob&quot;</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>prediction</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>       0     1
@@ -6360,18 +6360,18 @@ attr(,&quot;class&quot;)
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>ROC_rf <span class="ot">&lt;-</span> <span class="fu">roc</span>(heart_test<span class="sc">$</span>DEATH_EVENT, prediction[,<span class="dv">2</span>])</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate Area Under Curve (AUC) for ROC curve (higher -&gt; better)</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>ROC_rf_auc <span class="ot">&lt;-</span> <span class="fu">auc</span>(ROC_rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>ROC_rf <span class="ot">&lt;-</span> <span class="fu">roc</span>(heart_test<span class="sc">$</span>DEATH_EVENT, prediction[,<span class="dv">2</span>])</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate Area Under Curve (AUC) for ROC curve (higher -&gt; better)</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>ROC_rf_auc <span class="ot">&lt;-</span> <span class="fu">auc</span>(ROC_rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot ROC curves</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ROC_rf, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>, <span class="at">main =</span> <span class="st">&quot;ROC For Random Forest, Default Settings&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot ROC curves</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ROC_rf, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>, <span class="at">main =</span> <span class="st">&quot;ROC For Random Forest, Default Settings&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6382,15 +6382,15 @@ attr(,&quot;class&quot;)
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the performance of each model</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Accuracy % of default random forest: &quot;</span>, <span class="fu">mean</span>(heart_test<span class="sc">$</span>DEATH_EVENT <span class="sc">==</span> <span class="fu">round</span>(prediction[,<span class="dv">2</span>], <span class="at">digits =</span> <span class="dv">0</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the performance of each model</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Accuracy % of default random forest: &quot;</span>, <span class="fu">mean</span>(heart_test<span class="sc">$</span>DEATH_EVENT <span class="sc">==</span> <span class="fu">round</span>(prediction[,<span class="dv">2</span>], <span class="at">digits =</span> <span class="dv">0</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;Accuracy % of default random forest:  0.883333333333333&quot;</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Area under curve of default random forest: &quot;</span>, ROC_rf_auc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Area under curve of default random forest: &quot;</span>, ROC_rf_auc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;Area under curve of default random forest:  0.932844932844933&quot;</code></pre>
@@ -6400,15 +6400,15 @@ attr(,&quot;class&quot;)
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternative way to create RF model with default parameters</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method=</span><span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number=</span><span class="dv">10</span>, <span class="at">repeats=</span><span class="dv">3</span>)</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>seed <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>metric <span class="ot">&lt;-</span> <span class="st">&quot;Accuracy&quot;</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(seed)</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>mtry <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ncol</span>(heart_train))</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>tunegrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">.mtry=</span>mtry)</span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>rf_default <span class="ot">&lt;-</span> <span class="fu">train</span>(DEATH_EVENT<span class="sc">~</span>., <span class="at">data=</span>heart_train, <span class="at">method=</span><span class="st">&quot;rf&quot;</span>, <span class="at">metric=</span>metric, <span class="at">tuneGrid=</span>tunegrid, <span class="at">trControl=</span>control)</span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternative way to create RF model with default parameters</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method=</span><span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number=</span><span class="dv">10</span>, <span class="at">repeats=</span><span class="dv">3</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>seed <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>metric <span class="ot">&lt;-</span> <span class="st">&quot;Accuracy&quot;</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(seed)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>mtry <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ncol</span>(heart_train))</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>tunegrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">.mtry=</span>mtry)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>rf_default <span class="ot">&lt;-</span> <span class="fu">train</span>(DEATH_EVENT<span class="sc">~</span>., <span class="at">data=</span>heart_train, <span class="at">method=</span><span class="st">&quot;rf&quot;</span>, <span class="at">metric=</span>metric, <span class="at">tuneGrid=</span>tunegrid, <span class="at">trControl=</span>control)</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Random Forest 
@@ -6435,12 +6435,12 @@ Tuning parameter &#39;mtry&#39; was held constant at a value of 3.605551</code><
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Implement a random search for tuned mtry</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method=</span><span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number=</span><span class="dv">10</span>, <span class="at">repeats=</span><span class="dv">3</span>, <span class="at">search=</span><span class="st">&quot;random&quot;</span>)</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(seed)</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>mtry <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ncol</span>(heart_train))</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>rf_random <span class="ot">&lt;-</span> <span class="fu">train</span>(DEATH_EVENT<span class="sc">~</span>., <span class="at">data=</span>heart_train, <span class="at">method=</span><span class="st">&quot;rf&quot;</span>, <span class="at">metric=</span>metric, <span class="at">tuneLength=</span><span class="dv">13</span>, <span class="at">trControl=</span>control)</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_random)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Implement a random search for tuned mtry</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method=</span><span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number=</span><span class="dv">10</span>, <span class="at">repeats=</span><span class="dv">3</span>, <span class="at">search=</span><span class="st">&quot;random&quot;</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(seed)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>mtry <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ncol</span>(heart_train))</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>rf_random <span class="ot">&lt;-</span> <span class="fu">train</span>(DEATH_EVENT<span class="sc">~</span>., <span class="at">data=</span>heart_train, <span class="at">method=</span><span class="st">&quot;rf&quot;</span>, <span class="at">metric=</span>metric, <span class="at">tuneLength=</span><span class="dv">13</span>, <span class="at">trControl=</span>control)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_random)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Random Forest 
@@ -6469,7 +6469,7 @@ The final value used for the model was mtry = 3.</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rf_random)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rf_random)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6483,12 +6483,12 @@ The final value used for the model was mtry = 3.</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use gridsearch to determine best mtry value</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method=</span><span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number=</span><span class="dv">10</span>, <span class="at">repeats=</span><span class="dv">3</span>, <span class="at">search=</span><span class="st">&quot;grid&quot;</span>)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(seed)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>tunegrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">.mtry=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>))</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>rf_gridsearch <span class="ot">&lt;-</span> <span class="fu">train</span>(DEATH_EVENT<span class="sc">~</span>., <span class="at">data=</span>heart_train, <span class="at">method=</span><span class="st">&quot;rf&quot;</span>, <span class="at">metric=</span>metric, <span class="at">tuneGrid=</span>tunegrid, <span class="at">trControl=</span>control)</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_gridsearch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use gridsearch to determine best mtry value</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method=</span><span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number=</span><span class="dv">10</span>, <span class="at">repeats=</span><span class="dv">3</span>, <span class="at">search=</span><span class="st">&quot;grid&quot;</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(seed)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>tunegrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">.mtry=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>))</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>rf_gridsearch <span class="ot">&lt;-</span> <span class="fu">train</span>(DEATH_EVENT<span class="sc">~</span>., <span class="at">data=</span>heart_train, <span class="at">method=</span><span class="st">&quot;rf&quot;</span>, <span class="at">metric=</span>metric, <span class="at">tuneGrid=</span>tunegrid, <span class="at">trControl=</span>control)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_gridsearch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Random Forest 
@@ -6522,7 +6522,7 @@ The final value used for the model was mtry = 5.</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rf_gridsearch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rf_gridsearch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6536,14 +6536,14 @@ The final value used for the model was mtry = 5.</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>.,</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="dv">4</span>,</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>model2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>.,</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="dv">4</span>,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>model2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -6563,7 +6563,7 @@ Confusion matrix:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">importance</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">importance</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                  0           1 MeanDecreaseAccuracy
@@ -6595,9 +6595,9 @@ time                            36.432715</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>randomForest<span class="sc">::</span><span class="fu">varImpPlot</span>(model2, </span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sort=</span><span class="cn">FALSE</span>, </span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">main=</span><span class="st">&quot;Variable Importance Plot&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>randomForest<span class="sc">::</span><span class="fu">varImpPlot</span>(model2, </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sort=</span><span class="cn">FALSE</span>, </span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">main=</span><span class="st">&quot;Variable Importance Plot&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6610,11 +6610,11 @@ time                            36.432715</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>prediction2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model2, <span class="at">newdata =</span> heart_test)</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>cf2 <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction2, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">positive =</span> <span class="st">&quot;1&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>cf2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>prediction2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model2, <span class="at">newdata =</span> heart_test)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>cf2 <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction2, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">positive =</span> <span class="st">&quot;1&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>cf2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Confusion Matrix and Statistics
@@ -6652,7 +6652,7 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fourfoldplot</span>(<span class="fu">as.table</span>(cf2),<span class="at">color=</span><span class="fu">c</span>(<span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="at">main =</span> <span class="st">&quot;Confusion Matrix for Random Forest -- Tuned mtry&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fourfoldplot</span>(<span class="fu">as.table</span>(cf2),<span class="at">color=</span><span class="fu">c</span>(<span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="at">main =</span> <span class="st">&quot;Confusion Matrix for Random Forest -- Tuned mtry&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6667,34 +6667,34 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> heart_df[,<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>]</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> heart_df[,<span class="dv">13</span>]</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&#39;repeatedcv&#39;</span>,</span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">number =</span> <span class="dv">10</span>,</span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">repeats =</span> <span class="dv">3</span>,</span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">search =</span> <span class="st">&#39;grid&#39;</span>)</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="co">#create tunegrid</span></span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>tunegrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">.mtry =</span> <span class="fu">c</span>(<span class="fu">sqrt</span>(<span class="fu">ncol</span>(heart_train))))</span>
-<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>modellist <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="co">#train with different ntree parameters</span></span>
-<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ntree <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">500</span>,<span class="dv">1500</span>,<span class="dv">100</span>)){</span>
-<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">train</span>(DEATH_EVENT<span class="sc">~</span>.,</span>
-<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> heart_train,</span>
-<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">&#39;rf&#39;</span>,</span>
-<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">metric =</span> <span class="st">&#39;Accuracy&#39;</span>,</span>
-<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">tuneGrid =</span> tunegrid,</span>
-<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">trControl =</span> control,</span>
-<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">ntree =</span> ntree)</span>
-<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a>  key <span class="ot">&lt;-</span> <span class="fu">toString</span>(ntree)</span>
-<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a>  modellist[[key]] <span class="ot">&lt;-</span> fit</span>
-<span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-26"><a href="#cb57-26" aria-hidden="true" tabindex="-1"></a><span class="co">#Compare results</span></span>
-<span id="cb57-27"><a href="#cb57-27" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">resamples</span>(modellist)</span>
-<span id="cb57-28"><a href="#cb57-28" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> heart_df[,<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>]</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> heart_df[,<span class="dv">13</span>]</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&#39;repeatedcv&#39;</span>,</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">number =</span> <span class="dv">10</span>,</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">repeats =</span> <span class="dv">3</span>,</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">search =</span> <span class="st">&#39;grid&#39;</span>)</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="co">#create tunegrid</span></span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>tunegrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">.mtry =</span> <span class="fu">c</span>(<span class="fu">sqrt</span>(<span class="fu">ncol</span>(heart_train))))</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>modellist <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a><span class="co">#train with different ntree parameters</span></span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ntree <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">500</span>,<span class="dv">1500</span>,<span class="dv">100</span>)){</span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">train</span>(DEATH_EVENT<span class="sc">~</span>.,</span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> heart_train,</span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">&#39;rf&#39;</span>,</span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">metric =</span> <span class="st">&#39;Accuracy&#39;</span>,</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">tuneGrid =</span> tunegrid,</span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">trControl =</span> control,</span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">ntree =</span> ntree)</span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a>  key <span class="ot">&lt;-</span> <span class="fu">toString</span>(ntree)</span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a>  modellist[[key]] <span class="ot">&lt;-</span> fit</span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a><span class="co">#Compare results</span></span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">resamples</span>(modellist)</span>
+<span id="cb56-28"><a href="#cb56-28" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -6736,7 +6736,7 @@ Kappa
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dotplot</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dotplot</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6750,15 +6750,15 @@ Kappa
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>.,</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="dv">4</span>,</span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ntree =</span> <span class="dv">600</span>,</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>model3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>.,</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="dv">4</span>,</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ntree =</span> <span class="dv">600</span>,</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>model3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -6778,7 +6778,7 @@ Confusion matrix:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">importance</span>(model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">importance</span>(model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                   0          1 MeanDecreaseAccuracy
@@ -6810,9 +6810,9 @@ time                            36.009017</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>randomForest<span class="sc">::</span><span class="fu">varImpPlot</span>(model3, </span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sort=</span><span class="cn">FALSE</span>, </span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">main=</span><span class="st">&quot;Variable Importance Plot&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>randomForest<span class="sc">::</span><span class="fu">varImpPlot</span>(model3, </span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sort=</span><span class="cn">FALSE</span>, </span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">main=</span><span class="st">&quot;Variable Importance Plot&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6826,11 +6826,11 @@ time                            36.009017</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>prediction3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model3, <span class="at">newdata =</span> heart_test)</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>cf3 <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction3, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">positive =</span> <span class="st">&quot;1&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>cf3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>prediction3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model3, <span class="at">newdata =</span> heart_test)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>cf3 <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(prediction3, heart_test<span class="sc">$</span>DEATH_EVENT, <span class="at">positive =</span> <span class="st">&quot;1&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;everything&quot;</span>)</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>cf3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Confusion Matrix and Statistics
@@ -6868,7 +6868,7 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fourfoldplot</span>(<span class="fu">as.table</span>(cf3),<span class="at">color=</span><span class="fu">c</span>(<span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="at">main =</span> <span class="st">&quot;Confusion Matrix for Random Forest -- Tuned (mtry and ntree)&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fourfoldplot</span>(<span class="fu">as.table</span>(cf3),<span class="at">color=</span><span class="fu">c</span>(<span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="at">main =</span> <span class="st">&quot;Confusion Matrix for Random Forest -- Tuned (mtry and ntree)&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6881,7 +6881,7 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(prediction2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(prediction2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>prediction2
@@ -6892,11 +6892,11 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set </span></span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>results2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(prediction2, heart_test<span class="sc">$</span>DEATH_EVENT) </span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(results2)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&#39;pred&#39;</span>,<span class="st">&#39;real&#39;</span>)  </span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>results2<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(results2)  </span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(results2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set </span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>results2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(prediction2, heart_test<span class="sc">$</span>DEATH_EVENT) </span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(results2)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&#39;pred&#39;</span>,<span class="st">&#39;real&#39;</span>)  </span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>results2<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(results2)  </span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(results2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="datatables html-widget html-fill-item" id="htmlwidget-dda54bc5958a8399f759" style="width:100%;height:auto;"></div>
@@ -6906,8 +6906,8 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the classification accuracy of the model </span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(prediction2<span class="sc">==</span>heart_test<span class="sc">$</span>DEATH_EVENT) <span class="sc">/</span> <span class="fu">nrow</span>(heart_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the classification accuracy of the model </span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(prediction2<span class="sc">==</span>heart_test<span class="sc">$</span>DEATH_EVENT) <span class="sc">/</span> <span class="fu">nrow</span>(heart_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.8666667</code></pre>
@@ -6916,8 +6916,8 @@ Prediction  0  1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>prediction2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model3, heart_test, <span class="at">type =</span> <span class="st">&quot;prob&quot;</span>) </span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>prediction2 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>prediction2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model3, heart_test, <span class="at">type =</span> <span class="st">&quot;prob&quot;</span>) </span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>prediction2 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>           0           1
@@ -6986,17 +6986,17 @@ attr(,&quot;class&quot;)
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>ROC_rf2 <span class="ot">&lt;-</span> <span class="fu">roc</span>(heart_test<span class="sc">$</span>DEATH_EVENT, prediction2[,<span class="dv">2</span>])  </span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Area Under Curve (AUC) for each ROC curve (higher -&gt; better) </span></span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>ROC_rf2_auc <span class="ot">&lt;-</span> <span class="fu">auc</span>(ROC_rf2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>ROC_rf2 <span class="ot">&lt;-</span> <span class="fu">roc</span>(heart_test<span class="sc">$</span>DEATH_EVENT, prediction2[,<span class="dv">2</span>])  </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Area Under Curve (AUC) for each ROC curve (higher -&gt; better) </span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>ROC_rf2_auc <span class="ot">&lt;-</span> <span class="fu">auc</span>(ROC_rf2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot ROC curves </span></span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ROC_rf2, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">main =</span> <span class="st">&quot;ROC For Random Forest, Default Settings&quot;</span>)</span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(ROC_rf, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot ROC curves </span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ROC_rf2, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">main =</span> <span class="st">&quot;ROC For Random Forest, Default Settings&quot;</span>)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(ROC_rf, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -7007,29 +7007,29 @@ attr(,&quot;class&quot;)
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print the performance of each model </span></span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Accuracy % of default random forest: &quot;</span>, <span class="fu">mean</span>(heart_test<span class="sc">$</span>DEATH_EVENT <span class="sc">==</span> <span class="fu">round</span>(prediction[,<span class="dv">2</span>], <span class="at">digits =</span> <span class="dv">0</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print the performance of each model </span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Accuracy % of default random forest: &quot;</span>, <span class="fu">mean</span>(heart_test<span class="sc">$</span>DEATH_EVENT <span class="sc">==</span> <span class="fu">round</span>(prediction[,<span class="dv">2</span>], <span class="at">digits =</span> <span class="dv">0</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;Accuracy % of default random forest:  0.883333333333333&quot;</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Area under curve of default random forest: &quot;</span>, ROC_rf_auc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Area under curve of default random forest: &quot;</span>, ROC_rf_auc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;Area under curve of default random forest:  0.932844932844933&quot;</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Accuracy % of tuned random forest: &quot;</span>, <span class="fu">mean</span>(heart_test<span class="sc">$</span>DEATH_EVENT <span class="sc">==</span> <span class="fu">round</span>(prediction2[,<span class="dv">2</span>], <span class="at">digits =</span> <span class="dv">0</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Accuracy % of tuned random forest: &quot;</span>, <span class="fu">mean</span>(heart_test<span class="sc">$</span>DEATH_EVENT <span class="sc">==</span> <span class="fu">round</span>(prediction2[,<span class="dv">2</span>], <span class="at">digits =</span> <span class="dv">0</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;Accuracy % of tuned random forest:  0.883333333333333&quot;</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Area under curve of tuned random forest: &quot;</span>, ROC_rf2_auc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Area under curve of tuned random forest: &quot;</span>, ROC_rf2_auc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;Area under curve of tuned random forest:  0.925518925518926&quot;</code></pre>

@@ -19,13 +19,13 @@ editor:
 
 ## Introduction
 
-### What is Random Forest?
-
 Correctly classifying a person for being at risk for heart failure is essential for strong preventive health care.  Contributing factors are known to include coronary artery disease, hypertension, obesity, infection, certain medications, and lifestyle choices such as alcohol consumption, smoking, and drug abuse.  Understanding the influences of these competing factors is made easier through unsupervised machine learning which can find patterns and insights in data without explicit human guidance or instruction.  Random Forest is a promising machine learning model because it correctly classifies data from large data sets, is resistant to outliers, and is easy to use.  In this report we validate the application of Random Forest machine learning to support the accurate classification of heart failure among 299 patient profiles.
+
+### Classification with Decision Trees
 
 At the heart of the Random Forest model is the decision tree. A decision tree “is a unidirectional, compact, tree-like data structure where each branch point is an attribute-data test that partitions the data rows into two or more branches.” [@sheppard]. An optimized tree is shallow and has few branches. A decision tree may be used to perform classification or regression analysis to predict a future value given particular features of a subject.
 
-Yuan et. al. state the most influential decision tree algorithm is Iterative Dichotomiser 3 (ID3) [@yuan]. ID3 is presented by Quinlan in his 1986 seminal paper <em>Induction of Decision Trees</em> [@quinlan]. This paper lays the foundation for using machine learning to address the bottleneck caused by expert systems. Quinlan demonstrates it is possible to use decision trees to generate knowledge and solve difficult problems through automation without much computation [@quinlan]. Low-levels of noise do not cause the tree building to “fall over a cliff” [@quinlan]. Furthermore, training the decision tree with noise has been discovered to yield optimal results.  In addition, unbalanced trees tend to perform statistically better than those balanced through stratification [@mascaro2014tale].
+Yuan et. al. state the most influential decision tree algorithm is Iterative Dichotomiser 3 (ID3) [@yuan]. ID3 is presented by Quinlan in his 1986 seminal paper <em>Induction of Decision Trees</em> [@quinlan]. This paper lays the foundation for using machine learning to address the bottleneck caused by expert systems. Quinlan demonstrates it is possible to use decision trees to generate knowledge and solve difficult problems through automation without much computation [@quinlan]. Low-levels of noise do not cause the tree building to “fall over a cliff” and fail [@quinlan]. Furthermore, training the decision tree with noise has been discovered to yield optimal results.  In addition, unbalanced trees tend to perform statistically better than those balanced through stratification [@mascaro2014tale].
 
 A decision tree does not have domain knowledge [@sheppard]. It begins as a data structure with a single node that divides the dataset into subsets according to a partitioning algorithm that learns from exposure to training data. Training data is a smaller representation of the main data set, and it contains examples of each class of datapoint found in the main data set. As the decision tree processes the training data, it grows branches and additional nodes to support the recursive partitioning of subsets into smaller subsets until this process terminates with each datapoint being assigned to a category found at each leaf node. This automated machine learning algorithm is challenged by poor-partitioning, noise, and long compute-time [@sheppard].
 
@@ -33,21 +33,22 @@ Poor-partitioning results in elongated decision trees with impure subsets.  An i
 
 Noise is another challenge facing machine learning with decision trees. Noise is any impurity found within the dataset. It is random, unpredictable, and unexpected data that disrupts the ability to correctly partition data into categories. It is what some call entropy [@sheppard]. The more entropy there is, the more challenging it is to correctly classify each datapoint. 
 
-Long compute-time is influenced by both size and complexity of the classification dataset. Complex datasets with more categories require a decision tree with more nodes and more branches. Taller and fatter decision trees require more compute-time for processing. Pushing more data through a decision tree has a multiplying effect on the compute-time.
+Long compute-time is influenced by both size and complexity of the classification dataset. Complex datasets with more categories require a decision tree with more nodes and more branches. Taller and fatter decision trees require more compute-time for processing. Pushing more data through a larger and more complex decision tree has a multiplying effect on the compute-time.
 
-Leo Breiman addresses these three issues with his proposal of the Random Forest model
-[@breiman]. Random Forest is a group of decision trees (a forest) that are created from identically distributed, independent random samples of data drawn with replacement from the original dataset [@breiman]. Breiman calls this random sample process a <em>bootstrap</em>, which others have re-worded as <em>bootstrapping</em>. At each node, a random subset of variables is taken from the array of features and the one that provides the best split is selected for that point. This randomness provides robustness in the presence of misclassifications and noise [@breiman], [@moradi2024random], [@casanova2014application]. This classification by aggregation is known as ensemble learning and is a proven approach for dealing with bad data [@sheppard].  Bad data, however, cannot include missing values for response or predictor variables [@brieuc2018practical]. 
+### Classification with Random Forest  
 
-Because each decision tree is processed with a different random set of data, each grows into a unique structure with a unique classification result. The final classification from Random Forest is a result of aggregating the results from each decision tree; a process Breiman calls <em>bagging</em> [@breiman]. This bagging technique addresses both the noise and poor-partitioning of traditional decision trees that results in inaccurate classification. By using multiple trees and aggregating the results, the effects of noise and poor-partitioning are minimized, and accuracy is increased [@breiman]. Furthermore, bagging can be used to calculate an “ongoing estimate of the generalization error” which is the error rate of the training set [@breiman]. This can be used to predict how well the model is classifying data.
+Leo Breiman addresses poor-partitioning, noise, and long compute time with his proposal of the Random Forest model
+[@breiman]. Random Forest is a group of decision trees (a forest) that are created from identically distributed, independent random samples of data drawn with replacement from the original dataset [@breiman]. Breiman calls this random sample process a <em>bootstrap</em>, which others have re-worded as <em>bootstrapping</em>. At each node, a random subset of variables is taken from the array of features and the one that provides the best split is selected for that point. This randomness provides robustness in the presence of misclassifications and noise [@breiman], [@moradi2024random], [@casanova2014application]. This classification by aggregation is known as <em>ensemble learning</em> and is a proven approach for dealing with bad data [@sheppard].  Bad data, however, cannot include missing values for response or predictor variables [@brieuc2018practical]. 
 
-Accuracy is optimized through a process called <em>boosting</em>. Boosting is a technique by which
-more weight is given to the votes that come from decision trees that predict correctly versus those that do not predict correctly. Sheppard states “boosting earned a 1-2 percent overall improvement in the ability to predict the correct outcome while also achieving the percentage more consistently” [@sheppard]. Accuracy is also improved through a heuristic known as Ant Colony Optimization (ACO) [@boryczka]. This approach is inspired by ant colony behavior in which individual ants leave traces of pheromone to communicate to other ants regarding the best path to take. Similarly, the ACO algorithm improves dataset splitting by providing feedback to subsequent splitting choices. By improving the choice of criteria to split on, one achieves “maximum homogeneity in the decision classes” which improves overall decision tree accuracy [@boryczka].
+Because each decision tree is processed with a different random set of data, each grows into a unique structure with a unique classification result. The final classification from Random Forest is a result of aggregating the results from each decision tree; a process Breiman calls <em>bagging</em> [@breiman]. This bagging technique addresses both the noise and poor-partitioning of traditional decision trees that results in inaccurate classification. By using multiple trees and aggregating the results, the effects of noise and poor-partitioning are minimized, and accuracy is increased [@breiman]. Furthermore, bagging can be used to calculate an “ongoing estimate of the generalization error” which is the error rate of the training set [@breiman]. This can be used to predict how well the model is performing during classification.
+
+Accuracy is optimized through a process called <em>boosting</em>. Boosting is a technique by which more weight is given to the votes that come from decision trees that predict correctly versus those that do not predict correctly. Sheppard states “boosting earned a 1-2 percent overall improvement in the ability to predict the correct outcome while also achieving the percentage more consistently” [@sheppard]. Accuracy is also improved through a heuristic known as Ant Colony Optimization (ACO) [@boryczka]. This approach is inspired by ant colony behavior in which individual ants leave traces of pheromone to communicate to other ants regarding the best path to take. Similarly, the ACO algorithm improves dataset splitting by providing feedback to subsequent splitting choices. By improving the choice of criteria to split on, one achieves “maximum homogeneity in the decision classes” which improves overall decision tree accuracy [@boryczka].
 
 An important feature of random Forest is its ability to provide measures of how strong a given variable is associated with a classification result.  These measures include <em>raw importance score for class 0</em>, <em>raw importance score for class 1</em>, <em>decrease in accuracy</em>, and the <em>Gini Index</em> [@esmaily2018comparison].  Gini Index is explained later.  These scores help users fine-tune the Random Forest method so optimal classification results are achieved.
 
 ### Related Work
 
-In one study, researchers created a Random Forest model to predict in-hospital mortality for acute kidney injury patients in the intensive care unit [@lin2019predicting]. The Random Forest model displays the lowest Brier score (associated with accuracy) and the largest AUROC (associated with discrimination), meaning Random Forest produces the best values for these assessments of the compaired models, with the second best F1 score and accuracy. 
+There are many examples of how Random Forest is used as a successful and scaleable classifier.  In one study, researchers created a Random Forest model to predict in-hospital mortality for acute kidney injury patients in the intensive care unit [@lin2019predicting]. The Random Forest model displays the lowest Brier score (associated with accuracy) and the largest AUROC (associated with discrimination), meaning Random Forest produces the best values for these assessments of the compaired models, with the second best F1 score and accuracy. 
 
 In another experiment, researchers developed a random forest regression model capable of accurately predicting future estimated glomerular filtration rates using electronic medical record data [@zhao2019predicting]. This tool allows identification of chronic kidney disease in its early stages to more likely prevent progression into end-stage renal disease. The random forest models that are created are found to have accuracies of about 90% for stages 2 and 3, and about 80% for stages 4 and 5 of chronic kidney disease. 
 
@@ -61,7 +62,7 @@ noteworthy, allowing it to efficiently process large datasets using parallel com
 Random forest provides valuable insights into feature importance, aiding researchers in
 understanding which variables contribute most significantly to predictions. This attribute is critical in applications where identifying key factors, such as genetic markers in genome-wide association studies, environmental variables in ecological analyses, and heart failure classification is paramount. Since the Random Forest model shows robustness in the face of noisy datasets, it is an ideal algorithm for studies that involve numerous features such as those found in the biomedical sciences. Its methodology is also more easily conveyed and understood by medical professionals than many other machine learning models, allowing for greater promise in successful real-world implementation. However, in other study types Random Forest is used due to simplicity and diversity, making it one of the commonly used algorithms used for solar energy predictions [@wang2020taxonomy].
 
-In the following sections we explain the Methods pertaining to Random Forest.  This includes the algorithm, measuring node purity with the <em>Gini Index</em>, and aggregation of classification votes from individual decision trees via a processes called <em>bagging</em>.  The Analysis and Results section presents the classification of the Heart Failure Clinical Records dataset processed with R-code and explains how to tune the algorithm for optimized results [@misc_heart_failure_clinical_records_519].  Lastly, the Conclusion ties all of this work together and crowns Random Forest as a promising machine learning model for classifying people at risk for heart failure.  
+In the following sections we explain the Methods pertaining to Random Forest.  This includes the algorithm, measuring node purity with the <em>Gini Index</em>, and aggregation of classification votes from individual decision trees via a processes called <em>bagging</em>.  The Analysis and Results section presents the classification of the Heart Failure Clinical Records dataset processed with R-code and explains how the algorithm is tuned for optimized results [@misc_heart_failure_clinical_records_519].  Lastly, the Conclusion ties all of this work together and crowns Random Forest as a promising machine learning model for classifying people at risk for heart failure.  
 
 ## Methods
 
@@ -110,14 +111,13 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 
 ## Analysis and Results
 
-### Data and Visualization
-The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository [@misc_heart_failure_clinical_records_519]. The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine]. 
+### Data and Visualization  
 
-The goal is to create and evaluate a model to be used for predicting if a heart failure event may occur given features of a subject.  
+The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository [@misc_heart_failure_clinical_records_519]. The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad Pakistan and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine].  There are 299 patient records with 13 features per record.  We use this dataset to create and evaluate a model used for predicting heart failure events for patients.  
 
 The features of the Heart Failure Clinical Records dataset are provided in the table below:
 
-```{r}
+```{r, echo=FALSE}
 #{r, eval=FALSE, echo=FALSE}
 HF <- data.frame("Feature Name" = c("age","anemia","creatine_phosphokinase","diabetes","ejection_fraction","high_blood_pressure", "platelets","serum_creatinine", "serum_sodium", "sex","smoking","time", "death_event"),
                  "Type" = c("integer","binary", "integer","binary","integer", "binary", "continuous","continuous","integer", "binary","binary","integer","binary"),
@@ -198,9 +198,11 @@ Source: [@misc_heart_failure_clinical_records_519]
 
 The R programming language is used to support data processing and analysis as it is the standard for statistical programming and graphics.
 
-RStudio Pro, 2023.12.0, Build 369.pro3 was used.  Various R libraries and packages are employed including CaTools, RandomForest, Tidyverse, Readr, Dplyr, Party, Caret, Corrplot, Tidyr, Ggplot2, DT, and pRoc. 
+RStudio Pro, 2023.12.0, Build 369.pro3 is used.  Various R libraries and packages are employed including CaTools, RandomForest, Tidyverse, Readr, Dplyr, Party, Caret, Corrplot, Tidyr, Ggplot2, DT, and pRoc. 
 
-The RStudio Server is running on a RHEL9 based virtual machine within a VMware VSphere HA cluster. The VM itself has 50 vCPU's and 196 GB of ram assigned.  The physical hardware of the cluster nodes are Dell PowerEdge R750 servers with Dual Xeon Gold 6338N (32 core) CPU's, 512 GB of ram, and sfp28 25gbit networking for all communications (6 total sfp28 per server). Cluster storage is from a NVMe based Dell SAN.
+The RStudio Server is running on a RHEL9 based virtual machine within a VMware VSphere HA cluster. The VM itself has 50 vCPU's and 196 GB of ram assigned.  
+
+The physical hardware of the cluster nodes are Dell PowerEdge R750 servers with Dual Xeon Gold 6338N (32 core) CPU's, 512 GB of ram, and sfp28 25gbit networking for all communications (6 total sfp28 per server). Cluster storage is from a NVMe based Dell SAN.
 
 ```{r}
 #{r, echo=FALSE}
@@ -268,21 +270,21 @@ The DEATH_EVENT feature is treated as a factor since it is a binary dependent va
 
 ### Metrics Used for Model Evaluation
 
-There are a number of metrics available for assessing a classification model's performance. The one's utilized here (00B error rate/accuracy, precision, recall, F1 score, balanced accuracy, and AUC-ROC) are described in the following text:
+There are a number of metrics available for assessing a classification model's performance. The metrics used are described in the following text:
 
 * **OOB error rate/accuracy**: The Out-of-Bag data is the data left unused by an individual predictor (decision tree) after a bootstrap sample is taken from the original data set. The OOB data is used for internal validation– the prediction error rate is taken after running the “unseen” data through each tree and averaged to provide the overall OOB error rate. [@breiman] A model's accuracy is calculated by subtracting the error rate from 100.
 
-* A **confusion matrix** shows the values of True Negative, False Negative, False Positive, and True Positive predictions produced by a model. Several performance metrics for classification algorithms like the random forest method are presented by the confusionMatrix function and derived from the values provided in confusion matrices. Here, we will focus on precision, recall, the F1 score, and balanced accuracy. 
-  + **Precision** is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive. [@raschka2022machine] 
-  + **Recall** is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive. [@raschka2022machine] 
+* A **confusion matrix** shows the values of True Negative, False Negative, False Positive, and True Positive predictions produced by a model. Several performance metrics for classification algorithms like the random forest method are presented by the <em>confusionMatrix</em> function and derived from the values provided in confusion matrices. Here we focus on precision, recall, the F1 score, and balanced accuracy. 
+  + **Precision** is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive [@raschka2022machine]. 
+  + **Recall** is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive [@raschka2022machine]. 
   + The **F1 score** is the harmonic mean of the precision and recall and so used to assess predictive performance. [@raschka2022machine] 
-  + **Balanced accuracy** is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class. [@brodersen2010balanced]
+  + **Balanced accuracy** is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class [@brodersen2010balanced].
 
-*  **AUC-ROC**: Area under the receiver operating characteristic curve. This is the model’s true positive rate (on the Y-axis) is plotted against the false positive rate (on the X-axis) using varying classification thresholds. [@1388242] An ideal ROC curve would have a high true positive rate and low false positive rate, falling into the upper left area of the graph. This equates to a value close to 1. A diagonal line on the graph represents an AUC of 0.5, equivalent to random guessing of the classifications. [@raschka2022machine]
+*  **AUC-ROC**: Area under the receiver operating characteristic curve. This is the model’s true positive rate (on the Y-axis) is plotted against the false positive rate (on the X-axis) using varying classification thresholds [@1388242]. An ideal ROC curve would have a high true positive rate and low false positive rate, falling into the upper left area of the graph. This equates to a value close to 1. A diagonal line on the graph represents an AUC of 0.5, equivalent to random guessing of the classifications [@raschka2022machine].
 
 ### Running the Random Forest Model
 
-The dataset is split into training (80% of the dataset) and testing (20% of the data) sets. An id column was created to assist in the split.
+The patient health records dataset is split into a training set (80%) and a testing set (20%). An id column is created to assist in the split.
 
 ```{r}
 # Split the data, 80% goes to training and 20% to testing
@@ -330,6 +332,16 @@ randomForest::varImpPlot(model,
                          sort=FALSE, 
                          main="Variable Importance Plot")
 ```
+
+The Variable Importance Plot above is a visual representation of the importance of each variable in our model.  Circles are plotted on a scale at a location that is influenced by their accuracy and Gini Coefficient.  The resulting value provides an indication of how useful a variable is for predicting an outcome.  The higher the value, the greater the influence.
+
+In the mean Decrease Accuracy plot, <en>time</em> has the highest value of approximately 40.  Because time is the number of days between patient visits to their health care provider, it seems the longer a patient waits for a follow-up visit, the more at risk they are for heart failure.
+
+<em>Serum_creatinine</em> and <em>ejection_fraction</em> are tied for second at about 15 within the Mean Decrease Accuracy plot.  Serum creatinine is a waste product of muscles and is usually filtered out of one’s blood by a healthy kidney.  High serum_creatinine is often an indicator of unhealthy kidneys.  
+
+<Em>Ejection fraction</em> is the amount of blood a heart pumps each time it beats.  It is calculated by dividing the <em>stroke volume</em> by the <em>end-diastolic volume</em>, all multiplied by 100.  An ejection fraction of 50-70% is considered healthy.  A low ejection fraction rate is an  indicator of heart failure and/or heart disease.    
+
+Although the numbers are slightly lower, <em>time</em>, <em>Serum_creatinine</em>, and <em>ejection_fraction</em> are also the top three variables for predicting heart failure according to the Mean Decrease Gini Index plot. 
 
 The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%.  There is a higher class error rate in the "positive" (death event occurrence) class than the "negative" (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.
 
