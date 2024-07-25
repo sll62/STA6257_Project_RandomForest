@@ -360,16 +360,9 @@ cf
 fourfoldplot(as.table(cf),color=c("yellow","blue"),main = "Confusion Matrix for Random Forest -- Default Settings")
 ```
 
-The visualization above is called a <em>FourFold Plot</em> and it is used to represent a 2 x 2 contingency table to support evaluation.  In this case the contingency table is the confusion matrix resulting from our model.  The top left square shows the algorithm correctly classifies ‘heart failure’ 36 times, and the bottom right shows the algorithm correctly classifies ‘not heart failure’ 17 times. The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classifies ‘heart failure’ as FALSE (not heart failure) 4 times when it should be classified as TRUE, and the bottom left shows the algorithm incorrectly classifies ‘not heart failure’ as TRUE (heart failure) 3 times when it should be classified as FALSE. The colors are used to dual-encode correct prediction (blue) and incorrect prediction (yellow).  The area of each quarter-circle is determined by a radius of $\sqrt{f_{ij}}$ where ${f_{ij}}$ is the cell frequency.
+The visualization above is called a <em>FourFold Plot</em> and it is used to represent a 2 x 2 contingency table to support evaluation.  In this case the contingency table is the confusion matrix resulting from our model.  The top left square shows the algorithm correctly classifies ‘heart failure’ 36 times, and the bottom right shows the algorithm correctly classifies ‘not heart failure’ 17 times. The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classifies ‘heart failure’ as FALSE (not heart failure) 4 times when it should be classified as TRUE, and the bottom left shows the algorithm incorrectly classifies ‘not heart failure’ as TRUE (heart failure) 3 times when it should be classified as FALSE. The colors are used to dual-encode correct prediction (blue) and incorrect prediction (yellow).  The area of each quarter-circle is determined by a radius of $\sqrt{f_{ij}}$ where ${f_{ij}}$ is the cell frequency [@fourfold].  The message being portrayed is that 53 classifications are correct, and only 7 are incorrect.  This yields and accuracy of 88.33%, as mentioned previously.
 
-From:  https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/fourfoldplot.html
 
-(Add to reference)
-
-```{r}
-# List the predicted classes produced by the model
-table(prediction)
-```
 
 ```{r}
 # The code below creates a heatmap from the values provided in the confusion matrix.
@@ -395,9 +388,7 @@ ggplot(hm, aes(x=x, y=y, fill=value)) + geom_tile() +
   scale_fill_distiller(palette="Blues", direction = 1)
 ```
 
-Need to edit below.
-
-The Confusion Matrix Heatmap above shows the performance of the algorithm regarding its ability to correctly predict an outcome.  In this case, the top left square shows the algorithm correctly classified 'heart failure' 36 times, and the bottom right shows the algorithm correctly classified 'not heart failure' 17 times.  The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classified 'heart failure' as FALSE (not heart failure) when it should have been classified as TRUE, and the bottom left shows the algorithm incorrectly classified 'not heart failure' as TRUE (heart failure) when it should have been classified as FALSE.  The darker color gradient helps one perceive the relative amount recorded in each of the four areas.  The message being portrayed is that 53 classifications are correct, and only 7 are incorrect.  This yields and accuracy of 88.33%, as mentioned previously.
+The Confusion Matrix Heatmap above shows an alternate way to visualize the performance of the algorithm regarding its ability to correctly predict an outcome.  Just like with the FourFold Plot, the top left square shows the algorithm correctly classified 'heart failure' 36 times, and the bottom right shows the algorithm correctly classified 'not heart failure' 17 times.  The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classified 'heart failure' as FALSE (not heart failure) when it should have been classified as TRUE, and the bottom left shows the algorithm incorrectly classified 'not heart failure' as TRUE (heart failure) when it should have been classified as FALSE.  The darker color gradient helps one perceive the relative amount recorded in each of the four areas.  
 
 
 ```{r}
@@ -406,6 +397,13 @@ corrplot(cor_matrix, method = "color")
 ```
 
 The Variable Correlation Heatmap above shows the correlation between multiple model variables as a color-coded matrix.  Model variables that are positively correlated have a blue square at their intersection and negatively correlated model variables have a red square at their intersection.  The color saturation represents the intensity of the correlation (blue) or lack of correlation (red).  For example, the intersection of serum_creatinine along the left side with age along the top results in a light blue square representing a slightly positive correlation between these two model variables.  On the other hand, serum_creatinine along the left side intersects with serum_sodium along the top resulting in a slightly red square representing a slightly negative correlation between these two model variables.  Other model  variables like diabetes and creatinine_phosphokinase intersect with no color, which means there is no positive or negative correlation between these two model variables.  
+
+```{r}
+# List the predicted classes produced by the model
+table(prediction)
+```
+
+The above table needs to be explained.
 
 ```{r}
 # Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set
@@ -418,10 +416,14 @@ library(DT)
 datatable(results)
 ```
 
+The above table needs to be explained.
+
 ```{r}
 # Calculate the classification accuracy of the model
 sum(prediction==heart_test$DEATH_EVENT) / nrow(heart_test)
 ```
+
+Is this redundant?  Do we need this?  I think we can keep it if we explain it.
 
 ```{r}
 # Create prediction matrix and utilize it to generate ROC values that can be graphed
@@ -434,6 +436,8 @@ ROC_rf <- roc(heart_test$DEATH_EVENT, prediction[,2])
 ROC_rf_auc <- auc(ROC_rf)
 ```
 
+Should the above be explained?
+
 ```{r}
 # Plot ROC curves
 plot(ROC_rf, col = "green", main = "ROC For Random Forest, Default Settings")
@@ -442,6 +446,8 @@ plot(ROC_rf, col = "green", main = "ROC For Random Forest, Default Settings")
 paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
 paste("Area under curve of default random forest: ", ROC_rf_auc)
 ```
+
+The above needs to be explained.
 
 The classification accuracy with the default hyperparameters for the randomForest package comes to 88.3%.
 

@@ -6194,45 +6194,31 @@ Prediction  0  1
 </div>
 </div>
 </div>
-<p>The visualization above is called a <em>FourFold Plot</em> and it is used to represent a 2 x 2 contingency table to support evaluation. In this case the contingency table is the confusion matrix resulting from our model. The top left square shows the algorithm correctly classifies ‘heart failure’ 36 times, and the bottom right shows the algorithm correctly classifies ‘not heart failure’ 17 times. The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classifies ‘heart failure’ as FALSE (not heart failure) 4 times when it should be classified as TRUE, and the bottom left shows the algorithm incorrectly classifies ‘not heart failure’ as TRUE (heart failure) 3 times when it should be classified as FALSE. The colors are used to dual-encode correct prediction (blue) and incorrect prediction (yellow). The area of each quarter-circle is determined by a radius of <span class="math inline">\(\sqrt{f_{ij}}\)</span> where <span class="math inline">\({f_{ij}}\)</span> is the cell frequency.</p>
-<p>From: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/fourfoldplot.html</p>
-<p>(Add to reference)</p>
+<p>The visualization above is called a <em>FourFold Plot</em> and it is used to represent a 2 x 2 contingency table to support evaluation. In this case the contingency table is the confusion matrix resulting from our model. The top left square shows the algorithm correctly classifies ‘heart failure’ 36 times, and the bottom right shows the algorithm correctly classifies ‘not heart failure’ 17 times. The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classifies ‘heart failure’ as FALSE (not heart failure) 4 times when it should be classified as TRUE, and the bottom left shows the algorithm incorrectly classifies ‘not heart failure’ as TRUE (heart failure) 3 times when it should be classified as FALSE. The colors are used to dual-encode correct prediction (blue) and incorrect prediction (yellow). The area of each quarter-circle is determined by a radius of <span class="math inline">\(\sqrt{f_{ij}}\)</span> where <span class="math inline">\({f_{ij}}\)</span> is the cell frequency <span class="citation" data-cites="fourfold">(<a href="#ref-fourfold" role="doc-biblioref">Maechler 2024</a>)</span>. The message being portrayed is that 53 classifications are correct, and only 7 are incorrect. This yields and accuracy of 88.33%, as mentioned previously.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List the predicted classes produced by the model</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(prediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>prediction
- 0  1 
-40 20 </code></pre>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The code below creates a heatmap from the values provided in the confusion matrix.</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Notice the values are hard-coded and do not come from an existing data structure.</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># https://stackoverflow.com/questions/7421503/how-to-plot-a-confusion-matrix-using-heatmaps-in-r</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyr&quot;</span>)</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the confusion matrix</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;y FALSE TRUE</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="st">FALSE 3 17</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="st">TRUE 36 4&quot;</span>, <span class="at">delim =</span> <span class="st">&quot; &quot;</span>)</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> hm <span class="sc">%&gt;%</span> <span class="fu">gather</span>(x, value, <span class="st">&quot;FALSE&quot;</span><span class="sc">:</span><span class="st">&quot;TRUE&quot;</span>)</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">fill=</span>value)) <span class="sc">+</span> <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Confusion Matrix Heatmap&quot;</span>, <span class="at">x=</span><span class="st">&quot;Predicted Values&quot;</span>, <span class="at">y=</span><span class="st">&quot;Actual Values&quot;</span>) <span class="sc">+</span></span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>value), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette=</span><span class="st">&quot;Blues&quot;</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The code below creates a heatmap from the values provided in the confusion matrix.</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Notice the values are hard-coded and do not come from an existing data structure.</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># https://stackoverflow.com/questions/7421503/how-to-plot-a-confusion-matrix-using-heatmaps-in-r</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyr&quot;</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the confusion matrix</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;y FALSE TRUE</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="st">FALSE 3 17</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="st">TRUE 36 4&quot;</span>, <span class="at">delim =</span> <span class="st">&quot; &quot;</span>)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> hm <span class="sc">%&gt;%</span> <span class="fu">gather</span>(x, value, <span class="st">&quot;FALSE&quot;</span><span class="sc">:</span><span class="st">&quot;TRUE&quot;</span>)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">fill=</span>value)) <span class="sc">+</span> <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Confusion Matrix Heatmap&quot;</span>, <span class="at">x=</span><span class="st">&quot;Predicted Values&quot;</span>, <span class="at">y=</span><span class="st">&quot;Actual Values&quot;</span>) <span class="sc">+</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>value), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette=</span><span class="st">&quot;Blues&quot;</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6242,13 +6228,12 @@ Prediction  0  1
 </div>
 </div>
 </div>
-<p>Need to edit below.</p>
-<p>The Confusion Matrix Heatmap above shows the performance of the algorithm regarding its ability to correctly predict an outcome. In this case, the top left square shows the algorithm correctly classified ‘heart failure’ 36 times, and the bottom right shows the algorithm correctly classified ‘not heart failure’ 17 times. The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classified ‘heart failure’ as FALSE (not heart failure) when it should have been classified as TRUE, and the bottom left shows the algorithm incorrectly classified ‘not heart failure’ as TRUE (heart failure) when it should have been classified as FALSE. The darker color gradient helps one perceive the relative amount recorded in each of the four areas. The message being portrayed is that 53 classifications are correct, and only 7 are incorrect. This yields and accuracy of 88.33%, as mentioned previously.</p>
+<p>The Confusion Matrix Heatmap above shows an alternate way to visualize the performance of the algorithm regarding its ability to correctly predict an outcome. Just like with the FourFold Plot, the top left square shows the algorithm correctly classified ‘heart failure’ 36 times, and the bottom right shows the algorithm correctly classified ‘not heart failure’ 17 times. The errors are shown in the remaining squares; the top right shows the algorithm incorrectly classified ‘heart failure’ as FALSE (not heart failure) when it should have been classified as TRUE, and the bottom left shows the algorithm incorrectly classified ‘not heart failure’ as TRUE (heart failure) when it should have been classified as FALSE. The darker color gradient helps one perceive the relative amount recorded in each of the four areas.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Draws the corelation heatmap</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">&quot;color&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Draws the corelation heatmap</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">&quot;color&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -6259,6 +6244,19 @@ Prediction  0  1
 </div>
 </div>
 <p>The Variable Correlation Heatmap above shows the correlation between multiple model variables as a color-coded matrix. Model variables that are positively correlated have a blue square at their intersection and negatively correlated model variables have a red square at their intersection. The color saturation represents the intensity of the correlation (blue) or lack of correlation (red). For example, the intersection of serum_creatinine along the left side with age along the top results in a light blue square representing a slightly positive correlation between these two model variables. On the other hand, serum_creatinine along the left side intersects with serum_sodium along the top resulting in a slightly red square representing a slightly negative correlation between these two model variables. Other model variables like diabetes and creatinine_phosphokinase intersect with no color, which means there is no positive or negative correlation between these two model variables.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List the predicted classes produced by the model</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(prediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>prediction
+ 0  1 
+40 20 </code></pre>
+</div>
+</div>
+<p>The above table needs to be explained.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -6276,6 +6274,7 @@ Prediction  0  1
 <script type="application/json" data-for="htmlwidget-ff634491cbb934b3b2c5">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60"],[2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,1,2,2,2,2,2,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>pred<\/th>\n      <th>real<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"pred","targets":1},{"name":"real","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
+<p>The above table needs to be explained.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -6286,6 +6285,7 @@ Prediction  0  1
 <pre><code>[1] 0.8833333</code></pre>
 </div>
 </div>
+<p>Is this redundant? Do we need this? I think we can keep it if we explain it.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -6367,6 +6367,7 @@ attr(,&quot;class&quot;)
 <span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>ROC_rf_auc <span class="ot">&lt;-</span> <span class="fu">auc</span>(ROC_rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>Should the above be explained?</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -6396,6 +6397,7 @@ attr(,&quot;class&quot;)
 <pre><code>[1] &quot;Area under curve of default random forest:  0.932844932844933&quot;</code></pre>
 </div>
 </div>
+<p>The above needs to be explained.</p>
 <p>The classification accuracy with the default hyperparameters for the randomForest package comes to 88.3%.</p>
 <div class="cell">
 <details class="code-fold">
@@ -7214,6 +7216,9 @@ Lötsch, Jörn, and Benjamin Mayer. 2022. <span>“A Biomedical Case Study Showi
 </div>
 <div id="ref-luo2020random" class="csl-entry" role="listitem">
 Luo, Guoliang, Yean Zhu, Rui Wang, Yang Tong, Wei Lu, and Haolun Wang. 2020. <span>“Random Forest–Based Classsification and Analysis of Hemiplegia Gait Using Low-Cost Depth Cameras.”</span> <em>Medical &amp; Biological Engineering &amp; Computing</em> 58: 373–82.
+</div>
+<div id="ref-fourfold" class="csl-entry" role="listitem">
+Maechler, Martin. 2024. <span>“<span>R-Manual</span>.”</span> <a href="https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/fourfoldplot.html" class="uri">https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/fourfoldplot.html</a>.
 </div>
 <div id="ref-mascaro2014tale" class="csl-entry" role="listitem">
 Mascaro, Joseph, Gregory P Asner, David E Knapp, Ty Kennedy-Bowdoin, Roberta E Martin, Christopher Anderson, Mark Higgins, and K Dana Chadwick. 2014. <span>“A Tale of Two <span>‘Forests’</span>: Random Forest Machine Learning Aids Tropical Forest Carbon Mapping.”</span> <em>PloS One</em> 9 (1): e85993.
