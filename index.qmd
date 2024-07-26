@@ -111,9 +111,11 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 
 ## Analysis and Results
 
-### Data and Visualization  
+In the following section we ingest the data into R-Studio, perform classification with Random Forest, and perform analysis.  Raw output is displayed for completeness.  We typeset the output when appropriate and use visualization techniques to enhance understanding.  We comment extensively in an effort to explain each step in the analytic process.    
 
-The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository [@misc_heart_failure_clinical_records_519]. The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad Pakistan and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine].  There are 299 patient records with 13 features per record.  We use this dataset to create and evaluate a model used for predicting heart failure events for patients.  
+### The Heart Failure Dataset
+
+The Random Forest classification method is implemented in the Heart Failure Clinical Records dataset provided by the University of California Irvine Machine Learning Repository [@misc_heart_failure_clinical_records_519]. The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad Pakistan and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine].  There are 299 patient records with 13 features per record.  We use this dataset to create and evaluate a Random Forest model used for predicting heart failure events for patients.  
 
 The features of the Heart Failure Clinical Records dataset are provided in the table below:
 
@@ -194,15 +196,11 @@ Source: [@misc_heart_failure_clinical_records_519]
 
 
 
-### Install and Load Packages
+### Software and Hardware Configuration
 
 The R programming language is used to support data processing and analysis as it is the standard for statistical programming and graphics.
 
 RStudio Pro, 2023.12.0, Build 369.pro3 is used.  Various R libraries and packages are employed including CaTools, RandomForest, Tidyverse, Readr, Dplyr, Party, Caret, Corrplot, Tidyr, Ggplot2, DT, and pRoc. 
-
-The RStudio Server is running on a RHEL9 based virtual machine within a VMware VSphere HA cluster. The VM itself has 50 vCPU's and 196 GB of ram assigned.  
-
-The physical hardware of the cluster nodes are Dell PowerEdge R750 servers with Dual Xeon Gold 6338N (32 core) CPU's, 512 GB of ram, and sfp28 25gbit networking for all communications (6 total sfp28 per server). Cluster storage is from a NVMe based Dell SAN.
 
 ```{r}
 #{r, echo=FALSE}
@@ -222,7 +220,25 @@ library(caret)
 library(corrplot)
 ```
 
-### Loading the Dataset
+The RStudio Server is running on a RHEL9 based virtual machine within a VMware VSphere HA cluster. The VM itself has 50 vCPU's and 196 GB of ram assigned.  
+
+The physical hardware of the cluster nodes are Dell PowerEdge R750 servers with Dual Xeon Gold 6338N (32 core) CPU's, 512 GB of ram, and sfp28 25gbit networking for all communications (6 total sfp28 per server). Cluster storage is from a NVMe based Dell SAN.
+
+### Model Evaluation Metrics
+
+There are a number of metrics available for assessing a classification model's performance. The metrics used are described in the following text:
+
+* **OOB error rate/accuracy**: The Out-of-Bag data is the data left unused by an individual predictor (decision tree) after a bootstrap sample is taken from the original data set. The OOB data is used for internal validation– the prediction error rate is taken after running the “unseen” data through each tree and averaged to provide the overall OOB error rate. [@breiman] A model's accuracy is calculated by subtracting the error rate from 100.
+
+* A **confusion matrix** shows the values of True Negative, False Negative, False Positive, and True Positive predictions produced by a model. Several performance metrics for classification algorithms like the random forest method are presented by the <em>confusionMatrix</em> function and derived from the values provided in confusion matrices. Here we focus on precision, recall, the F1 score, and balanced accuracy. 
+  + **Precision** is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive [@raschka2022machine]. 
+  + **Recall** is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive [@raschka2022machine]. 
+  + The **F1 score** is the harmonic mean of the precision and recall and so used to assess predictive performance. [@raschka2022machine] 
+  + **Balanced accuracy** is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class [@brodersen2010balanced].
+
+*  **AUC-ROC**: Area under the receiver operating characteristic curve. This is the model’s true positive rate (on the Y-axis) is plotted against the false positive rate (on the X-axis) using varying classification thresholds [@1388242]. An ideal ROC curve would have a high true positive rate and low false positive rate, falling into the upper left area of the graph. This equates to a value close to 1. A diagonal line on the graph represents an AUC of 0.5, equivalent to random guessing of the classifications [@raschka2022machine].
+
+### Loading and Examining the Dataset 
 
 The heart failure dataset is loaded from a .csv file.
 
@@ -231,12 +247,11 @@ heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
 #head(heart_df, 5)
 ```
 
-### Examining the Data and Preprocessing
 ```{r}
 #{r, echo=FALSE}
 cor_matrix <- cor(heart_df)
 #corrplot(cor_matrix, method = "color")
-# The drawing of the correlation heatmap was moved to may below.  However, some of this
+# The drawing of the correlation heatmap was moved to way below.  However, some of this
 # code is needed earlier, so it was not moved.
 ```
 
@@ -246,14 +261,12 @@ cor_matrix <- cor(heart_df)
 heart_df %>% summarise(across(everything(), ~ sum(is.na(.))))
 ```
 
-
 ```{r}
 #{r, echo=FALSE}
 # What does this code do?
 # does it need to be with the code above?  If so, should it be one code chunk?
 heart_df %>% count(DEATH_EVENT)
 ```
-
 
 ```{r}
 #{r, echo=FALSE}
@@ -268,19 +281,6 @@ The number of negative events (non-heart-failure events) are found to be about d
 
 The DEATH_EVENT feature is treated as a factor since it is a binary dependent variable.
 
-### Metrics Used for Model Evaluation
-
-There are a number of metrics available for assessing a classification model's performance. The metrics used are described in the following text:
-
-* **OOB error rate/accuracy**: The Out-of-Bag data is the data left unused by an individual predictor (decision tree) after a bootstrap sample is taken from the original data set. The OOB data is used for internal validation– the prediction error rate is taken after running the “unseen” data through each tree and averaged to provide the overall OOB error rate. [@breiman] A model's accuracy is calculated by subtracting the error rate from 100.
-
-* A **confusion matrix** shows the values of True Negative, False Negative, False Positive, and True Positive predictions produced by a model. Several performance metrics for classification algorithms like the random forest method are presented by the <em>confusionMatrix</em> function and derived from the values provided in confusion matrices. Here we focus on precision, recall, the F1 score, and balanced accuracy. 
-  + **Precision** is also known as the sensitivity and is calculated by dividing the number of true positive predictions by the sum of the true positives and false positives. This metric quantifies how many of the observations labeled as positive are actually positive [@raschka2022machine]. 
-  + **Recall** is also known as the true positive rate — this is calculated by dividing the number of true positive predictions by the the sum of the false negatives and true positives. It quantifies how many of the positive observations have been predicted as positive [@raschka2022machine]. 
-  + The **F1 score** is the harmonic mean of the precision and recall and so used to assess predictive performance. [@raschka2022machine] 
-  + **Balanced accuracy** is the average accuracy of classification for both classes. It is given by the average of the true positive rate and the true negative rate. It aids in reducing the effects of class imbalance in the data set so that accuracy of predicting the dominant class does not conceal the classification accuracy for the minority class [@brodersen2010balanced].
-
-*  **AUC-ROC**: Area under the receiver operating characteristic curve. This is the model’s true positive rate (on the Y-axis) is plotted against the false positive rate (on the X-axis) using varying classification thresholds [@1388242]. An ideal ROC curve would have a high true positive rate and low false positive rate, falling into the upper left area of the graph. This equates to a value close to 1. A diagonal line on the graph represents an AUC of 0.5, equivalent to random guessing of the classifications [@raschka2022machine].
 
 ### Running the Random Forest Model
 
@@ -309,9 +309,9 @@ dim(heart_train)
 dim(heart_test)
 ```
 
-239 subjects were randomly placed into the training set and the remaining 50 were designated for testing.
+239 subjects are randomly placed into the training set and the remaining 50 are designated for testing.
 
-The random forest model is then run on the dataset using the default settings.
+The random forest model is run on the dataset using the default settings.
 
 ```{r}
 model <- randomForest(
@@ -322,6 +322,8 @@ model <- randomForest(
 
 model
 ```
+
+The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%.  There is a higher class error rate in the "positive" (death event occurrence) class than the "negative" (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.
 
 ```{r}
 importance(model)
@@ -335,15 +337,13 @@ randomForest::varImpPlot(model,
 
 The Variable Importance Plot above is a visual representation of the importance of each variable in our model.  Circles are plotted on a scale at a location that is influenced by their accuracy and Gini Coefficient.  The resulting value provides an indication of how useful a variable is for predicting an outcome.  The higher the value, the greater the influence.
 
-In the mean Decrease Accuracy plot, <en>time</em> has the highest value of approximately 40.  Because time is the number of days between patient visits to their health care provider, it seems the longer a patient waits for a follow-up visit, the more at risk they are for heart failure.
+In the Mean Decrease Accuracy plot, <en>time</em> has the highest value of approximately 40.  Because time is the number of days between patient visits to their health care provider, it seems the longer a patient waits for a follow-up visit, the more at risk they are for heart failure.
 
 <em>Serum_creatinine</em> and <em>ejection_fraction</em> are tied for second at about 15 within the Mean Decrease Accuracy plot.  Serum creatinine is a waste product of muscles and is usually filtered out of one’s blood by a healthy kidney.  High serum_creatinine is often an indicator of unhealthy kidneys.  
 
 <Em>Ejection fraction</em> is the amount of blood a heart pumps each time it beats.  It is calculated by dividing the <em>stroke volume</em> by the <em>end-diastolic volume</em>, all multiplied by 100.  An ejection fraction of 50-70% is considered healthy.  A low ejection fraction rate is an  indicator of heart failure and/or heart disease.    
 
-Although the numbers are slightly lower, <em>time</em>, <em>Serum_creatinine</em>, and <em>ejection_fraction</em> are also the top three variables for predicting heart failure according to the Mean Decrease Gini Index plot. 
-
-The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%.  There is a higher class error rate in the "positive" (death event occurrence) class than the "negative" (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.
+Although the numbers are slightly lower, <em>time</em>, <em>serum_creatinine</em>, and <em>ejection_fraction</em> are also the top three variables for predicting heart failure according to the Mean Decrease Gini Index plot. 
 
 ```{r}
 prediction <- predict(model, newdata = heart_test)
@@ -397,6 +397,8 @@ corrplot(cor_matrix, method = "color")
 ```
 
 The Variable Correlation Heatmap above shows the correlation between multiple model variables as a color-coded matrix.  Model variables that are positively correlated have a blue square at their intersection and negatively correlated model variables have a red square at their intersection.  The color saturation represents the intensity of the correlation (blue) or lack of correlation (red).  For example, the intersection of serum_creatinine along the left side with age along the top results in a light blue square representing a slightly positive correlation between these two model variables.  On the other hand, serum_creatinine along the left side intersects with serum_sodium along the top resulting in a slightly red square representing a slightly negative correlation between these two model variables.  Other model  variables like diabetes and creatinine_phosphokinase intersect with no color, which means there is no positive or negative correlation between these two model variables.  
+
+Variable correlation is used to explore the data to understand relationships that might otherwise go unnoticed.  In some cases, understanding correlation can lead to the discovery of one variable causing another variable.  A review of the heatmap suggests serum_creatinine might be a cause of a death_event, whereas ejection_fraction shows a negative causal relationship.  We are making neither claim in our analysis and only offer these as examples for one way to interpret the results of a correlation heatmap.  Furthermore, we also recognize that correlation does not mean causation, so we are careful to make such a claim.  We recognize that further analysis and subject matter expertise is required to arrive at such a conclusion.
 
 ```{r}
 # List the predicted classes produced by the model
