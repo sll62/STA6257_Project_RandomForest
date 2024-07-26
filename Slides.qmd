@@ -7,36 +7,27 @@ editor: visual
 
 ## What is Random Forest?
 
-- A promising machine learning tool 
-- At the heart of the Random Forest model is the decision tree 
+-   A promising machine learning tool
+-   At the heart of the Random Forest model is the decision tree
 
+## Why use Random Forest?
 
-## Why use Random Forest? 
+-   It can correctly classify data from large data sets
+-   Be resistant to outliers
+-   Easy to use
 
-- It can correctly classify data from large data sets
-- Be resistant to outliers
-- Easy to use 
+## Methods
 
-## Methods 
-
-
-## Equations 
-
+## Equations
 
 ## Analysis & Process
 
+## Data Used
 
-## Data Used 
+## Assumptions
 
+## Results
 
-## Assumptions 
+## Conclusion
 
-
-## Results 
-
-
-## Conclusion 
-
-
-## References 
-
+## References
