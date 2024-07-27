@@ -432,6 +432,7 @@ ncol(heart_train)
 ```{r}
 # Implement a random search for tuned mtry
 control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
+metric <- "Accuracy"
 mtry <- sqrt(ncol(heart_train))
 rf_random <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric, tuneLength=13, trControl=control)
 print(rf_random)
@@ -635,7 +636,7 @@ The accuracy and area under the receiver operating characteristic curve (AUC-ROC
   </tr>
 </table>  
 
-When looking at the default model (model 1) we got an OOB error of error rate of 17.99%, which translates to a training accuracy of 82.01%. The testing accuracy was 0.8833 (88.33%). The precision value came to 85% which shows that the model is correct around 85% of the time. The recall is 80.9% which shows that this model identifies actual positive cases about 80.9% of the time. The F1 score is 82.9% which is the combination of the model’s precision and recall. Lastly the balanced accuracy is 86.6% which is the average of the models true positive and true negative.  	 
+When looking at the default model (model 1) we got an OOB error of error rate of 13.39%, which translates to a training accuracy of 82.01%. The testing accuracy was 0.8833 (88.33%). The precision value came to 85% which shows that the model is correct around 85% of the time. The recall is 80.9% which shows that this model identifies actual positive cases about 80.9% of the time. The F1 score is 82.9% which is the combination of the model’s precision and recall. Lastly the balanced accuracy is 86.6% which is the average of the models true positive and true negative.  	 
 
 The second model (model 2) the OOB error is 16.74% which translates to a training accuracy of 83.26%. The testing accuracy came to 0.8667 (86.67%). The precision value came to 0.8095 which shows that this model is correct around 80.95% of the time. The recall is also 0.8095 which shows that the model identifies actual positive cases around 80.95% of the time. The F1 score is 80.95% which is the combination of the model’s precision and recall. Lastly the balanced accuracy is 85.35% which is the average of the models true positive and true negative. 	 
 
