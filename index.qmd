@@ -526,44 +526,10 @@ summary(results)
 dotplot(results)
 ```
 
-The results suggest that, of the ntree values tested, the model's accuracy would be highest with an ntree value of 1300 as shown in the dotplot. This new ntree values is tested, along with the tuned mtry value of 5, using the randomForest model from before.
+The results suggest that, of the ntree values tested, the model's accuracy would be highest with an ntree value of 500 as shown in the dotplot. This ntree value is the same as the default so a new model run is not indicated.
 
 ```{r}
-set.seed(123)
-model3 <- randomForest(
-  formula = DEATH_EVENT~.,
-  data = heart_train,
-  mtry = 2,
-  ntree = 500,
-  importance = TRUE
-)
-
-model3
-```
-
-```{r}
-importance(model3)
-randomForest::varImpPlot(model3, 
-                         sort=FALSE, 
-                         main="Variable Importance Plot")
-```
-
-The OOB value decreased, in relation to the previous models, to 15.9% while the classification error rate for the positive class slightly increased to 29.3% and the negative class classification error rate decrease to 9.76%.
-
-```{r}
-prediction3 <- predict(model3, newdata = heart_test)
-
-
-cf3 <- confusionMatrix(prediction3, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf3
-```
-
-```{r}
-fourfoldplot(as.table(cf3),color=c("yellow","blue"),main = "Confusion Matrix for Random Forest -- Tuned (mtry and ntree)")
-```
-
-```{r}
-prediction2 <- predict(model3, heart_test, type = "prob") 
+prediction2 <- predict(model2, heart_test, type = "prob") 
 prediction2 
 ROC_rf2 <- roc(heart_test$DEATH_EVENT, prediction2[,2])  
 # Area Under Curve (AUC) for each ROC curve (higher -> better) 
@@ -582,7 +548,7 @@ paste("Accuracy % of tuned random forest: ", mean(heart_test$DEATH_EVENT == roun
 paste("Area under curve of tuned random forest: ", ROC_rf2_auc)
 ```
 
-The accuracy and area under the receiver operating characteristic curve (AUC-ROC) are higher for the model produced using the default hyperparameters (88.3% and 0.933, respectively) compared to the "tuned" model (86.7% and 0.910, respectively).
+The accuracy and area under the receiver operating characteristic curve (AUC-ROC) is higher for the model produced using the tuned mtry (88.3%) compared to the default model (81.7%). The AUC-ROC for the tuned model is slightly lower than that of the default model (0.844 and 0.858, respectively).
 
 ### Model Results
 
@@ -606,45 +572,35 @@ The accuracy and area under the receiver operating characteristic curve (AUC-ROC
   </tr>
   <tr>
     <td>Model 1 (default)</td>
-    <td>17.99%/82.01%</td>
-    <td>0.8833</td>
-    <td>0.8500</td>
-    <td>0.8095</td>
-    <td>0.8293</td>
-    <td>0.8663</td>
-    <td>0.9328</td>
+    <td>13.39%/86.61%</td>
+    <td>0.8167</td>
+    <td>0.7059</td>
+    <td>0.6667</td>
+    <td>0.6857</td>
+    <td>0.7738</td>
+    <td>0.8585</td>
   </tr>
   <tr>
     <td>Model 2 (Tuned mtry)</td>
-    <td>16.74%/83.26%</td>
-    <td>0.8667</td>
-    <td>0.8095</td>
-    <td>0.8095</td>
-    <td>0.8095</td>
-    <td>0.8535</td>
-    <td>N/A</td>
-  </tr>
-  <tr>
-    <td>Model 3 (Tuned mtry, ntree)</td>
-    <td>15.9%/84.1%</td>
-    <td>0.8667</td>
-    <td>0.8182</td>
-    <td>0.8571</td>
-    <td>0.8372</td>
-    <td>0.8773</td>
-    <td>0.9255</td>
+    <td>12.97%/87.03%</td>
+    <td>0.8333</td>
+    <td>0.7500</td>
+    <td>0.6667</td>
+    <td>0.7059</td>
+    <td>0.7857</td>
+    <td>0.8439</td>
   </tr>
 </table>  
 
-When looking at the default model (model 1) we got an OOB error of error rate of 13.39%, which translates to a training accuracy of 82.01%. The testing accuracy was 0.8833 (88.33%). The precision value came to 85% which shows that the model is correct around 85% of the time. The recall is 80.9% which shows that this model identifies actual positive cases about 80.9% of the time. The F1 score is 82.9% which is the combination of the model’s precision and recall. Lastly the balanced accuracy is 86.6% which is the average of the models true positive and true negative.  	 
+The testing accuracies of both models are slightly lower than their respective training accuracies which indicates some overfitting to the training data set.
 
-The second model (model 2) the OOB error is 16.74% which translates to a training accuracy of 83.26%. The testing accuracy came to 0.8667 (86.67%). The precision value came to 0.8095 which shows that this model is correct around 80.95% of the time. The recall is also 0.8095 which shows that the model identifies actual positive cases around 80.95% of the time. The F1 score is 80.95% which is the combination of the model’s precision and recall. Lastly the balanced accuracy is 85.35% which is the average of the models true positive and true negative. 	 
+When looking at the default model (model 1) we got an OOB error of error rate of 13.39%, which translates to a training accuracy of 86.61%. The testing accuracy was 0.8167 (81.67%). The precision value came to 70.59% which means that about 71% of the observations predicted as positive were truly positive. The recall is 66.67% which suggests that this model detects positive cases from the samples of true positives in the data about 67% of the time. The F1 score is 68.57% which is the harmonic mean of the model’s precision and recall, another measure of its reliability. Lastly the balanced accuracy is 73.38% which is the average of the models true positive and true negative.  	 
 
-In our final model (model 3) the OOB error is 16.32% which translates to a training accuracy of 83.68%. The testing accuracy was 0.8833 (88.33%). We have a precision value of 0.8182 which shows that this model is correct around 81.82% of the time. The recall is 0.8571 which shows that the model identifies actual positive cases around 85.71% of the time. The F1 score is 83.72% which is the combination of the model’s precision and recall. Lastly the balanced accuracy is 87.73%, which is the average of the models true positive and true negative. 
+The second model (model 2) the OOB error is 12.97% which translates to a training accuracy of 87.03%. The testing accuracy came to 0.8333 (83.33%). The precision value came to 0.7500 which indicates that the observations predicted as positive were truly positive 75% of the time. The recall is 66.67% which suggests that this model detects positive cases from the samples of true positives in the data about 67% of the time. The F1 score is 70.59% which is the harmonic mean of the model’s precision and recall. Lastly the balanced accuracy is 78.57% which is the average of the models true positive and true negative. 	 
 
-Out of the three models tested model 3 is best. This is going off the model’s F1, balanced accuracy, and recall percentages. The F1 score is 83.72% and the balanced accuracy is 87.73% are the highest percentages within the three models tested. The F1 provides the overall performance of the model since it is a combination of the precision and recall percentages. The balanced accuracy is the average accuracy of classifications for both classes. Lastly, although the precision decreased compared to the non-tuned model (Model 1), the third model's recall is the highest which is important in cases such as heart failure prediction-- a higher recall translates to a decrease in false negatives at the expense of a decrease in precision (which equates to an increase in false positives). It is typically more important to not fail to detect positive cases than to have a 'false alarm' diagnosis.
+The performance of model 2 is best. This is based off of the model’s training and testing accuracies; precision; F1; and balanced accuracy as they are all higher than those of the default model. The F1 provides the overall performance of the model since it is a combination of the precision and recall percentages. The balanced accuracy is the average accuracy of classifications for both classes. The recall did not change between models. This metric is of particular importance as it is vital in cases such as heart failure prediction-- a higher recall translates to a decrease in false negatives at the expense of a decrease in precision (which equates to an increase in false positives). It is typically more important to not fail to detect positive cases than to have a 'false alarm' diagnosis. The ROC-AUC for the tuned model was found to be slightly lower than the default model's (0.8439 vs 0.8585). This suggests that the default model is slightly better at distinguishing between negative and positive cases.
 
-The output of a Random Forest model is influenced by subsample size, the number of variables assessed at each node, the maximum nodesize of each leaf, and the number of predictors generated [@scornet2017tuning]. In R, the defaults are a subsample size of sqrt(𝑑) for classification (where d is the total number of dimensions), the generation of 500 predictors, and a nodesize of 5 [@scornet2017tuning]. In one comparison study, the balanced accuracy was found to be optimal at 1300 trees and 3 nodes in R and led to an increase of 0.09 (9%) in balanced accuracy as well as a 0.14 (14%) in the AUC-ROC compared to the values generated by the default hyperparameters [@lotsch2022biomedical].The results suggest the importance of tuning the hyperparameters of random forest algorithms, particularly in the case of exploratory analysis that has initial unfavorable accuracy. In the case of this dataset, the model with the tuned hyperparameters (Model 3) provided better performance according to training/testing accuracy, recall, F1 score, and balanced accuracy, which suggests the importance of considering hyperparameter tuning when constructing random forest models.
+The output of a Random Forest model is influenced by subsample size, the number of variables assessed at each node, the maximum nodesize of each leaf, and the number of predictors generated [@scornet2017tuning]. In R, the defaults are a subsample size of sqrt(𝑑) for classification (where d is the total number of dimensions), the generation of 500 predictors, and a nodesize of 5 [@scornet2017tuning]. In one comparison study, the balanced accuracy was found to be optimal at 1300 trees and 3 nodes in R and led to an increase of 0.09 (9%) in balanced accuracy as well as a 0.14 (14%) in the AUC-ROC compared to the values generated by the default hyperparameters [@lotsch2022biomedical].The results suggest the importance of tuning the hyperparameters of random forest algorithms, particularly in the case of exploratory analysis that has initial unfavorable accuracy. In the case of this dataset, the model with the tuned hyperparameters (Model 2) provided better performance according to training/testing accuracy, precision, F1 score, and balanced accuracy, which suggests the importance of considering hyperparameter tuning when constructing random forest models.
 
 The variable importance plots for each model reveal that the feature with the greatest influence on prediction is "time," which is . The variables "ejection_fraction" and "serum_creatinine" provided the second-most influence. The variables "age" and "serum_sodium" also showed relatively significant importance. 
 
