@@ -255,32 +255,26 @@ cor_matrix <- cor(heart_df)
 # code is needed earlier, so it was not moved.
 ```
 
+The dataset was checked for any null values.
 ```{r}
 #{r, echo=FALSE}
 # What does this code do?
 heart_df %>% summarise(across(everything(), ~ sum(is.na(.))))
 ```
-
+The target variable (DEATH_EVENT) was then examined for the balance between the negative and positive classes.
 ```{r}
 #{r, echo=FALSE}
-# What does this code do?
-# does it need to be with the code above?  If so, should it be one code chunk?
 heart_df %>% count(DEATH_EVENT)
 ```
-
+The DEATH_EVENT feature is converted to a factor feature since it is the binary dependent variable.
 ```{r}
 #{r, echo=FALSE}
-# What does this code do?
-# does it need to be with the code above?  If so, should it be one code chunk?
 heart_df$DEATH_EVENT = as.factor(heart_df$DEATH_EVENT)
 ```
 
 The dataset is examined for null values, and no null values are found. 
 
 The number of negative events (non-heart-failure events) are found to be about double the number of positive events (heart-failure events).  This imbalance is not considered significant as the Random Forest algorithm is robust enough to tolerate this asymmetry. 
-
-The DEATH_EVENT feature is treated as a factor since it is a binary dependent variable.
-
 
 ### Running the Random Forest Model - Default Settings
 
@@ -289,7 +283,7 @@ The patient health records dataset is split into a training set (80%) and a test
 ```{r}
 # Split the data, 80% goes to training and 20% to testing
 
-set.seed(1)
+set.seed(123)
 
 samp <- sample(nrow(heart_df), 0.8 * nrow(heart_df))
 
@@ -314,6 +308,7 @@ dim(heart_test)
 The random forest model is run on the dataset using the default settings.
 
 ```{r}
+set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~.,
   data = heart_train,
@@ -323,7 +318,7 @@ model <- randomForest(
 model
 ```
 
-The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 17.99%.  There is a higher class error rate in the "positive" (death event occurrence) class than the "negative" (no death occurrence) class, with 36.0 % versus 9.76% rate, respectively.
+The default random forest model produced an Out-of-the-Bag (OOB) estimate of error rate of 13.39%.  There is a higher class error rate in the "positive" (death event occurrence) class than the "negative" (no death occurrence) class, with 25.6% versus 7.45% rate, respectively.
 
 ```{r}
 importance(model)
@@ -400,32 +395,6 @@ The Variable Correlation Heatmap above shows the correlation between multiple mo
 
 Variable correlation is used to explore the data to understand relationships that might otherwise go unnoticed.  In some cases, understanding correlation can lead to the discovery of one variable causing another variable.  A review of the heatmap suggests serum_creatinine might be a cause of a death_event, whereas ejection_fraction shows a negative causal relationship.  We are making neither claim in our analysis and only offer these as examples for one way to interpret the results of a correlation heatmap.  Furthermore, we also recognize that correlation does not mean causation, so we are careful to make such a claim.  We recognize that further analysis and subject matter expertise is required to arrive at such a conclusion.
 
-```{r}
-# List the predicted classes produced by the model
-table(prediction)
-```
-
-The above table needs to be explained.  What are 0, 1, 40, and 20?
-
-```{r}
-# Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set
-results <- cbind(prediction, heart_test$DEATH_EVENT)
-colnames(results)<-c('pred','real')
-
-results<-as.data.frame(results)
-
-library(DT)
-datatable(results)
-```
-
-The above table needs to be explained.  What is "2" and what is "1".
-
-```{r}
-# Calculate the classification accuracy of the model
-sum(prediction==heart_test$DEATH_EVENT) / nrow(heart_test)
-```
-
-The classification accuracy of the model is calculated to be 88.33%.  This is consistent with previous calculations that provide an accuracy measurement as part of its output (e.g., Confusion and Matrix Statistics).
 
 ```{r}
 # Create prediction matrix and utilize it to generate ROC values that can be graphed
@@ -442,71 +411,55 @@ Should the above be explained?
 
 ```{r}
 # Plot ROC curves
-plot(ROC_rf, col = "green", main = "ROC For Random Forest, Default Settings")
+plot(ROC_rf, col = "green", legacy.axes = TRUE, main = "ROC For Random Forest, Default Settings")
 
 # Print the performance of each model
 paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
 paste("Area under curve of default random forest: ", ROC_rf_auc)
 ```
-[Is the graph correct?  Why does the X-axis start at 1 and go to 0?]
 
 The ROC (receiver operating characteristic) curve above provides a graphical representation of the true positive rate along the Y-axis vs. the false positive rate along the X-axis.  
 
-Without a correct plot, I cannot comment further.
-
-The classification accuracy with the default hyperparameters for the randomForest package comes to 88.3%.
-
-```{r}
-# Alternative way to create RF model with default parameters
-control <- trainControl(method="repeatedcv", number=10, repeats=3)
-seed <- 1
-metric <- "Accuracy"
-set.seed(seed)
-mtry <- sqrt(ncol(heart_train))
-tunegrid <- expand.grid(.mtry=mtry)
-rf_default <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control)
-print(rf_default)
-```
-
-Above is an alternate implementation of the Random Forest algorithm which produces a classification accuracy of 83.5% and a Cohen's kappa of 0.607.  Kappa is used to test <em>interrater reliability</em> which "represents the extent to which the data collected in the study are correct representations of the variables measured" [@mchugh2012].  A kappa score can range from -1 to +1 where 1 is the highest accuracy.  Kappa is regarded as a stronger indicator of accuracy over calculating the number of agreement score divided by the total number of scores.
-
-which is calculated by the observed and expected accuracy.
+The classification accuracy with the default hyperparameters for the randomForest package comes to 81.67%.
 
 ### Running the Random Forest Model - Tuning Attempt #1
+
+A random search algorithm was used to select a tuned mtry value.
+```{r}
+ncol(heart_train)
+```
 
 ```{r}
 # Implement a random search for tuned mtry
 control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
-set.seed(seed)
 mtry <- sqrt(ncol(heart_train))
 rf_random <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric, tuneLength=13, trControl=control)
 print(rf_random)
 plot(rf_random)
 ```
 
-How is the above different than the default approach?
 
-The random search found the model's accuracy to be highest at mtry = 3. This was the default value for our randomForest model.
+The random search found the model's accuracy to be highest at mtry = 2. 
+A grid search was then conducted to see if another mtry may provide increased accuracy.
 
 ```{r}
 # Use gridsearch to determine best mtry value
 control <- trainControl(method="repeatedcv", number=10, repeats=3, search="grid")
-set.seed(seed)
-tunegrid <- expand.grid(.mtry=c(1:13))
+tunegrid <- expand.grid(.mtry=c(1:12))
 rf_gridsearch <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control)
 print(rf_gridsearch)
 plot(rf_gridsearch)
 ```
 
-The grid search suggests that the optimal mtry value is 4. The randomForest model that was created earlier can now be tested with this new mtry.
+The grid search shows a peak accuracy at mtry = 2 so this appears to be an mtry value that will improve the accuracy of the model. The randomForest model that was created earlier can now be tested with this new mtry.
 
-How do we know it is 4???
 
 ```{r}
+set.seed(123)
 model2 <- randomForest(
   formula = DEATH_EVENT~.,
   data = heart_train,
-  mtry = 4,
+  mtry = 2,
   importance = TRUE
 )
 
@@ -532,11 +485,12 @@ cf2
 fourfoldplot(as.table(cf2),color=c("yellow","blue"),main = "Confusion Matrix for Random Forest -- Tuned mtry")
 ```
 
-After changing the mtry hyperparameter to 4, the OOB estimate of error rate decreased slightly to 17.15%. The "positive" classification error did not improve– it worsened slightly, coming to about 30.7%. The "negative" classification error also increased slightly at a new value of about 11.0%.
+After changing the mtry hyperparameter to 5, the OOB estimate of error rate decreased slightly to 16.74%. The "positive" classification error improved, coming to about 28.0%. The "negative" classification error increased slightly at a new value of about 11.6%.
 
 Next, the number of trees (ntree) is tested over the range 500 (default) to 1500 to see if accuracy can be improved by changes in this hyperparameter.
 
 ```{r}
+#set.seed(123)
 x <- heart_df[,1:12]
 y <- heart_df[,13]
 
@@ -571,17 +525,15 @@ summary(results)
 dotplot(results)
 ```
 
-The results suggest that the optimal ntree value is 600. This new ntree values is tested, along with the tuned mtry value of 4, using the randomForest model from before.
-
-How do we know it is 600???
-
+The results suggest that, of the ntree values tested, the model's accuracy would be highest with an ntree value of 1300 as shown in the dotplot. This new ntree values is tested, along with the tuned mtry value of 5, using the randomForest model from before.
 
 ```{r}
+set.seed(123)
 model3 <- randomForest(
   formula = DEATH_EVENT~.,
   data = heart_train,
-  mtry = 4,
-  ntree = 600,
+  mtry = 2,
+  ntree = 500,
   importance = TRUE
 )
 
@@ -595,7 +547,7 @@ randomForest::varImpPlot(model3,
                          main="Variable Importance Plot")
 ```
 
-The OOB value slightly decreased to 16.32% while the classification error rates returned to those generated by the default settings for randomForest.
+The OOB value decreased, in relation to the previous models, to 15.9% while the classification error rate for the positive class slightly increased to 29.3% and the negative class classification error rate decrease to 9.76%.
 
 ```{r}
 prediction3 <- predict(model3, newdata = heart_test)
@@ -610,24 +562,6 @@ fourfoldplot(as.table(cf3),color=c("yellow","blue"),main = "Confusion Matrix for
 ```
 
 ```{r}
-table(prediction2)
-
-```
-
-```{r}
-# Create a list of the prediction results alongside the actual DEATH_EVENT values from the test set 
-results2 <- cbind(prediction2, heart_test$DEATH_EVENT) 
-colnames(results2)<-c('pred','real')  
-results2<-as.data.frame(results2)  
-datatable(results2)
-```
-
-```{r}
-# Calculate the classification accuracy of the model 
-sum(prediction2==heart_test$DEATH_EVENT) / nrow(heart_test)
-```
-
-```{r}
 prediction2 <- predict(model3, heart_test, type = "prob") 
 prediction2 
 ROC_rf2 <- roc(heart_test$DEATH_EVENT, prediction2[,2])  
@@ -637,8 +571,8 @@ ROC_rf2_auc <- auc(ROC_rf2)
 
 ```{r}
 # plot ROC curves 
-plot(ROC_rf2, col = "red", main = "ROC For Random Forest, Default Settings")
-lines(ROC_rf, col = "green")
+plot(ROC_rf2, col = "red", legacy.axes = TRUE, main = "ROC For Random Forest, Default Settings")
+lines(ROC_rf, col = "green", legacy.axes = TRUE)
 # print the performance of each model 
 paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
 paste("Area under curve of default random forest: ", ROC_rf_auc)
@@ -647,7 +581,7 @@ paste("Accuracy % of tuned random forest: ", mean(heart_test$DEATH_EVENT == roun
 paste("Area under curve of tuned random forest: ", ROC_rf2_auc)
 ```
 
-The accuracy and area under the receiver operating characteristic curve (AUC-ROC) are higher for the model produced using the default hyperparameters (88.3% and 0.932, respectively) compared to the "tuned" model (86.7% and 0.926, respectively).
+The accuracy and area under the receiver operating characteristic curve (AUC-ROC) are higher for the model produced using the default hyperparameters (88.3% and 0.933, respectively) compared to the "tuned" model (86.7% and 0.910, respectively).
 
 ### Model Results
 
@@ -691,8 +625,8 @@ The accuracy and area under the receiver operating characteristic curve (AUC-ROC
   </tr>
   <tr>
     <td>Model 3 (Tuned mtry, ntree)</td>
-    <td>16.32%/83.68%</td>
-    <td>0.8833</td>
+    <td>15.9%/84.1%</td>
+    <td>0.8667</td>
     <td>0.8182</td>
     <td>0.8571</td>
     <td>0.8372</td>
