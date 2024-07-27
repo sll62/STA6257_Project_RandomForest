@@ -423,7 +423,8 @@ The ROC (receiver operating characteristic) curve above provides a graphical rep
 
 ### Running the Random Forest Model - Tuning Attempt #1
 
-A random search algorithm was used to select a tuned mtry value.
+A random search algorithm is used to select a tuned mtry value.  The mtry values is the number of randomly drawn candidate variables.  We expect mtry to be an acronym but we do not find any confirmation in the literature.
+
 ```{r}
 ncol(heart_train)
 ```
@@ -438,9 +439,7 @@ print(rf_random)
 plot(rf_random)
 ```
 
-
-The random search found the model's accuracy to be highest at mtry = 2. 
-A grid search was then conducted to see if another mtry may provide increased accuracy.
+The visualization above shows that random search found the model's accuracy to be highest at mtry = 2. 
 
 ```{r}
 # Use gridsearch to determine best mtry value
@@ -451,8 +450,7 @@ print(rf_gridsearch)
 plot(rf_gridsearch)
 ```
 
-The grid search shows a peak accuracy at mtry = 2 so this appears to be an mtry value that will improve the accuracy of the model. The randomForest model that was created earlier can now be tested with this new mtry.
-
+The grid search above was conducted to compare with the previous random search for an optimum mtry vale.  The grid search confirms a peak accuracy at mtry = 2.  The randomForest model is tested with this optimized mtry value below.
 
 ```{r}
 set.seed(123)

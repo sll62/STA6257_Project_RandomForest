@@ -3877,7 +3877,7 @@ attr(,&quot;class&quot;)
 </section>
 <section id="running-the-random-forest-model---tuning-attempt-1" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-random-forest-model---tuning-attempt-1">Running the Random Forest Model - Tuning Attempt #1</h3>
-<p>A random search algorithm was used to select a tuned mtry value.</p>
+<p>A random search algorithm is used to select a tuned mtry value. The mtry values is the number of randomly drawn candidate variables. We expect mtry to be an acronym but we do not find any confirmation in the literature.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3935,7 +3935,7 @@ The final value used for the model was mtry = 2.</code></pre>
 </div>
 </div>
 </div>
-<p>The random search found the model’s accuracy to be highest at mtry = 2. A grid search was then conducted to see if another mtry may provide increased accuracy.</p>
+<p>The visualization above shows that random search found the model’s accuracy to be highest at mtry = 2.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3986,7 +3986,7 @@ The final value used for the model was mtry = 2.</code></pre>
 </div>
 </div>
 </div>
-<p>The grid search shows a peak accuracy at mtry = 2 so this appears to be an mtry value that will improve the accuracy of the model. The randomForest model that was created earlier can now be tested with this new mtry.</p>
+<p>The grid search above was conducted to compare with the previous random search for an optimum mtry vale. The grid search confirms a peak accuracy at mtry = 2. The randomForest model is tested with this optimized mtry value below.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
