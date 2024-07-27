@@ -3458,7 +3458,7 @@ If the patient died during the follow-up period
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># code is needed earlier, so it was not moved.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The dataset was checked for any null values.</p>
+<p>The dataset was checked for any null values, and none were found. Null values can cause errors in calculations and need to eb addressed, often by removing them or providing a value for them (a median value, a random value, or somethong else).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3843,7 +3843,7 @@ attr(,&quot;class&quot;)
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>ROC_rf_auc <span class="ot">&lt;-</span> <span class="fu">auc</span>(ROC_rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Should the above be explained?</p>
+<p>The table above shows the classification prediction probabilities for each observation in the test dataset. Rather than just stating how each observation is classified, it is useful to state the probability of that classification as well. In this case, “0” means a classification of no heart failure and “1” means a classification of heart failure. Understanding classification probabilities provides insight into how statistically strong a prediction is. For example, record 7 above shows a probability of 0.098 for no heart failure and 0.902 for heart failure. This can be interpreted as strong confidence in this particular classification instance. On the other hand, record 58 shows probabilities of 0.540 and 0.460, which means the confidence is almost split evenly between the two possibilities.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3873,8 +3873,7 @@ attr(,&quot;class&quot;)
 <pre><code>[1] &quot;Area under curve of default random forest:  0.858465608465608&quot;</code></pre>
 </div>
 </div>
-<p>The ROC (receiver operating characteristic) curve above provides a graphical representation of the true positive rate along the Y-axis vs. the false positive rate along the X-axis.</p>
-<p>The classification accuracy with the default hyperparameters for the randomForest package comes to 81.67%.</p>
+<p>The ROC (receiver operating characteristic) curve above provides a graphical representation of the true positive rate along the Y-axis vs. the false positive rate along the X-axis. This is slightly different than accuracy (shown above the ROC curve), which is just a percentage of correct predictions. The diagonal line of the ROC curve represents what the accuracy is expected to be if the data points are classified at random. The closer a curve is to the top left corner, the more accurate the model is. Perfect classification is 100%. The output above shows the classification accuracy with the default hyperparameters for the randomForest package comes to 81.67% and the area under the ROC curve is 85.85%. In this case, these are considered indications of strong accuracy.</p>
 </section>
 <section id="running-the-random-forest-model---tuning-attempt-1" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-random-forest-model---tuning-attempt-1">Running the Random Forest Model - Tuning Attempt #1</h3>

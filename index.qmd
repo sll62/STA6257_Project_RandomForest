@@ -255,7 +255,8 @@ cor_matrix <- cor(heart_df)
 # code is needed earlier, so it was not moved.
 ```
 
-The dataset was checked for any null values.
+The dataset was checked for any null values, and none were found.  Null values can cause errors in calculations and need to eb addressed, often by removing them or providing a value for them (a median value, a random value, or somethong else).
+
 ```{r}
 #{r, echo=FALSE}
 # What does this code do?
@@ -407,7 +408,7 @@ ROC_rf <- roc(heart_test$DEATH_EVENT, prediction[,2])
 ROC_rf_auc <- auc(ROC_rf)
 ```
 
-Should the above be explained?
+The table above shows the classification prediction probabilities for each observation in the test dataset.  Rather than just stating how each observation is classified, it is useful to state the probability of that classification as well.  In this case, "0" means a classification of no heart failure and "1" means a classification of heart failure.  Understanding classification probabilities provides insight into how statistically strong a prediction is.  For example, record 7 above shows a probability of 0.098 for no heart failure and 0.902 for heart failure.  This can be interpreted as strong confidence in this particular classification instance.  On the other hand, record 58 shows probabilities of 0.540 and 0.460, which means the confidence is almost split evenly between the two possibilities.    
 
 ```{r}
 # Plot ROC curves
@@ -418,9 +419,7 @@ paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == ro
 paste("Area under curve of default random forest: ", ROC_rf_auc)
 ```
 
-The ROC (receiver operating characteristic) curve above provides a graphical representation of the true positive rate along the Y-axis vs. the false positive rate along the X-axis.  
-
-The classification accuracy with the default hyperparameters for the randomForest package comes to 81.67%.
+The ROC (receiver operating characteristic) curve above provides a graphical representation of the true positive rate along the Y-axis vs. the false positive rate along the X-axis.  This is slightly different than accuracy (shown above the ROC curve), which is just a percentage of correct predictions.  The diagonal line of the ROC curve represents what the accuracy is expected to be if the data points are classified at random.  The closer a curve is to the top left corner, the more accurate the model is.  Perfect classification is 100%.  The output above shows the classification accuracy with the default hyperparameters for the randomForest package comes to 81.67% and the area under the ROC curve is 85.85%.  In this case, these are considered indications of strong accuracy. 
 
 ### Running the Random Forest Model - Tuning Attempt #1
 
