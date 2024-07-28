@@ -423,7 +423,7 @@ The ROC (receiver operating characteristic) curve above provides a graphical rep
 
 ### Running the Random Forest Model - Tuning Attempt #1
 
-A random search algorithm is used to select a tuned mtry value.  The mtry values is the number of randomly drawn candidate variables.  We expect mtry to be an acronym but we do not find any confirmation in the literature.
+A random search algorithm is used to select an optimum (tuned) mtry value.  The mtry value is the number of randomly drawn candidate variables.  We expect mtry to be an acronym but we do not find any confirmation in the literature.
 
 ```{r}
 ncol(heart_train)
@@ -439,7 +439,7 @@ print(rf_random)
 plot(rf_random)
 ```
 
-The visualization above shows that random search found the model's accuracy to be highest at mtry = 2. 
+The visualization above shows that for a random search the model's accuracy is the highest at a mtry of 2. 
 
 ```{r}
 # Use gridsearch to determine best mtry value
@@ -483,7 +483,7 @@ cf2
 fourfoldplot(as.table(cf2),color=c("yellow","blue"),main = "Confusion Matrix for Random Forest -- Tuned mtry")
 ```
 
-After changing the mtry hyperparameter to 5, the OOB estimate of error rate decreased slightly to 16.74%. The "positive" classification error improved, coming to about 28.0%. The "negative" classification error increased slightly at a new value of about 11.6%.
+After changing the mtry hyperparameter to 2, the OOB estimate of error rate decreased significantly to 12.97%. The "positive" classification error stayed the same at 25.64%.  The "negative" classification error decreased slightly to 6.83% (down from 7.45%).  Thus, tuning the model resulted in a noticable improvement.
 
 Next, the number of trees (ntree) is tested over the range 500 (default) to 1500 to see if accuracy can be improved by changes in this hyperparameter.
 
@@ -525,6 +525,46 @@ dotplot(results)
 
 The results suggest that, of the ntree values tested, the model's accuracy would be highest with an ntree value of 500 as shown in the dotplot. This ntree value is the same as the default so a new model run is not indicated.
 
+The code below is a test.
+
+```{r}
+#set.seed(123)
+x <- heart_df[,1:12]
+y <- heart_df[,13]
+
+control <- trainControl(method = 'repeatedcv',
+                        number = 10,
+                        repeats = 3,
+                        search = 'grid')
+#create tunegrid
+tunegrid <- expand.grid(.mtry = c(sqrt(ncol(heart_train))))
+modellist <- list()
+
+#train with different ntree parameters
+for (ntree in seq(100,500,100)){
+  set.seed(1)
+  fit <- train(DEATH_EVENT~.,
+               data = heart_train,
+               method = 'rf',
+               metric = 'Accuracy',
+               tuneGrid = tunegrid,
+               trControl = control,
+               ntree = ntree)
+  key <- toString(ntree)
+  modellist[[key]] <- fit
+}
+
+#Compare results
+results <- resamples(modellist)
+summary(results)
+```
+
+```{r}
+dotplot(results)
+```
+
+
+The code above is a test.
 ```{r}
 prediction2 <- predict(model2, heart_test, type = "prob") 
 prediction2 
