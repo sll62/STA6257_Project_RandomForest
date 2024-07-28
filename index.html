@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sierra Landacre, Tim Leschke, Pamela Mishaw, Pallak Singh">
-<meta name="dcterms.date" content="2024-07-27">
+<meta name="dcterms.date" content="2024-07-28">
 
 <title>Random Forest Analysis of Heart Failure Dataset</title>
 <style>
@@ -3152,7 +3152,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 27, 2024</p>
+      <p class="date">July 28, 2024</p>
     </div>
   </div>
   
@@ -3875,9 +3875,9 @@ attr(,&quot;class&quot;)
 </div>
 <p>The ROC (receiver operating characteristic) curve above provides a graphical representation of the true positive rate along the Y-axis vs. the false positive rate along the X-axis. This is slightly different than accuracy (shown above the ROC curve), which is just a percentage of correct predictions. The diagonal line of the ROC curve represents what the accuracy is expected to be if the data points are classified at random. The closer a curve is to the top left corner, the more accurate the model is. Perfect classification is 100%. The output above shows the classification accuracy with the default hyperparameters for the randomForest package comes to 81.67% and the area under the ROC curve is 85.85%. In this case, these are considered indications of strong accuracy.</p>
 </section>
-<section id="running-the-random-forest-model---tuning-attempt-1" class="level3">
-<h3 class="anchored" data-anchor-id="running-the-random-forest-model---tuning-attempt-1">Running the Random Forest Model - Tuning Attempt #1</h3>
-<p>A random search algorithm is used to select an optimum (tuned) mtry value. The mtry value is the number of randomly drawn candidate variables. We expect mtry to be an acronym but we do not find any confirmation in the literature.</p>
+<section id="tuning-the-random-forest-model" class="level3">
+<h3 class="anchored" data-anchor-id="tuning-the-random-forest-model">Tuning the Random Forest Model</h3>
+<p>A random search algorithm is used to select an optimum (tuned) mtry value. The mtry value is the number of randomly drawn candidate variables. We expect “mtry” to be an acronym but we do not find any confirmation in the literature.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3887,6 +3887,7 @@ attr(,&quot;class&quot;)
 <pre><code>[1] 13</code></pre>
 </div>
 </div>
+<p>The output above confirms we have 13 variables (columns) in our dataset.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3935,7 +3936,7 @@ The final value used for the model was mtry = 2.</code></pre>
 </div>
 </div>
 </div>
-<p>The visualization above shows that for a random search the model’s accuracy is the highest at a mtry of 2.</p>
+<p>The visualization above is the result of running the trainControl() function with <em>random selection</em>. This function is used to specify parameters used for training. The visualization above shows the results of running the model with 2, 3, 4, 5, 7, 9, 10, 11, and 12 variables to simulate random selection. The general downward slope of the graph shows performance decreases as the number of parameters increases from 2 to 12. The conclusion is that for a random search the model’s accuracy is the highest when the number of candidate variables (mtry) is 2.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3986,7 +3987,7 @@ The final value used for the model was mtry = 2.</code></pre>
 </div>
 </div>
 </div>
-<p>The grid search above was conducted to compare with the previous random search for an optimum mtry vale. The grid search confirms a peak accuracy at mtry = 2. The randomForest model is tested with this optimized mtry value below.</p>
+<p>The visualization above is the result of running the trainControl() function and using <em>grid search</em> rather than random selection to identify the optimum number of parameters (mtry) to use in the model. The results confirm a peak accuracy when the number of candidtae variables (mtry) is 2. Thus, randomForest model is tested with this optimized mtry value below.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -4015,6 +4016,7 @@ Confusion matrix:
 1  20 58  0.25641026</code></pre>
 </div>
 </div>
+<p>The above output is the result of running the Random Forest algorithm with an <em>mtry</em> value of 2. Notice the confusion matrix shows a positive classification rate of 6.83% and a negative classification rate of 25.64%.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -4062,6 +4064,7 @@ time                            32.853615</code></pre>
 </div>
 </div>
 </div>
+<p>The Variable Importance plot above is run with the data from the optimized model. The results appear to be identical to the previous Variable Importance Plot, and there is no noticeable change in the most important variables. The top three most important variables for classification are still <em>time</em>, <em>serum_creatinine</em>, and <em>ejection_fraction</em>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -4104,6 +4107,7 @@ Prediction  0  1
                                           </code></pre>
 </div>
 </div>
+<p>Above.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>

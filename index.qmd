@@ -421,13 +421,15 @@ paste("Area under curve of default random forest: ", ROC_rf_auc)
 
 The ROC (receiver operating characteristic) curve above provides a graphical representation of the true positive rate along the Y-axis vs. the false positive rate along the X-axis.  This is slightly different than accuracy (shown above the ROC curve), which is just a percentage of correct predictions.  The diagonal line of the ROC curve represents what the accuracy is expected to be if the data points are classified at random.  The closer a curve is to the top left corner, the more accurate the model is.  Perfect classification is 100%.  The output above shows the classification accuracy with the default hyperparameters for the randomForest package comes to 81.67% and the area under the ROC curve is 85.85%.  In this case, these are considered indications of strong accuracy. 
 
-### Running the Random Forest Model - Tuning Attempt #1
+### Tuning the Random Forest Model
 
-A random search algorithm is used to select an optimum (tuned) mtry value.  The mtry value is the number of randomly drawn candidate variables.  We expect mtry to be an acronym but we do not find any confirmation in the literature.
+A random search algorithm is used to select an optimum (tuned) mtry value.  The mtry value is the number of randomly drawn candidate variables.  We expect "mtry" to be an acronym but we do not find any confirmation in the literature.
 
 ```{r}
 ncol(heart_train)
 ```
+
+The output above confirms we have 13 variables (columns) in our dataset.
 
 ```{r}
 # Implement a random search for tuned mtry
@@ -439,7 +441,7 @@ print(rf_random)
 plot(rf_random)
 ```
 
-The visualization above shows that for a random search the model's accuracy is the highest at a mtry of 2. 
+The visualization above is the result of running the trainControl() function with <em>random selection</em>.  This function is used to specify parameters used for training.  The visualization above shows the results of running the model with 2, 3, 4, 5, 7, 9, 10, 11, and 12 variables to simulate random selection.  The general downward slope of the graph shows performance decreases as the number of parameters increases from 2 to 12.  The conclusion is that for a random search the model's accuracy is the highest when the number of candidate variables (mtry) is 2. 
 
 ```{r}
 # Use gridsearch to determine best mtry value
@@ -450,7 +452,7 @@ print(rf_gridsearch)
 plot(rf_gridsearch)
 ```
 
-The grid search above was conducted to compare with the previous random search for an optimum mtry vale.  The grid search confirms a peak accuracy at mtry = 2.  The randomForest model is tested with this optimized mtry value below.
+The visualization above is the result of running the trainControl() function and using <em>grid search</em> rather than random selection to identify the optimum number of parameters (mtry) to use in the model.  The results confirm a peak accuracy when the number of candidtae variables (mtry) is 2.  Thus, randomForest model is tested with this optimized mtry value below.
 
 ```{r}
 set.seed(123)
@@ -464,12 +466,16 @@ model2 <- randomForest(
 model2
 ```
 
+The above output is the result of running the Random Forest algorithm with an <em>mtry</em> value of 2.  Notice the confusion matrix shows a positive classification rate of 6.83% and a negative classification rate of 25.64%.
+
 ```{r}
 importance(model2)
 randomForest::varImpPlot(model2, 
                          sort=FALSE, 
                          main="Variable Importance Plot")
 ```
+
+The Variable Importance plot above is run with the data from the optimized model.  The results appear to be identical to the previous Variable Importance Plot, and there is no noticeable change in the most important variables.  The top three most important variables for classification are still <em>time</em>, <em>serum_creatinine</em>, and <em>ejection_fraction</em>.
 
 ```{r}
 prediction2 <- predict(model2, newdata = heart_test)
@@ -478,6 +484,10 @@ prediction2 <- predict(model2, newdata = heart_test)
 cf2 <- confusionMatrix(prediction2, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
 cf2
 ```
+
+
+Above.
+
 
 ```{r}
 fourfoldplot(as.table(cf2),color=c("yellow","blue"),main = "Confusion Matrix for Random Forest -- Tuned mtry")
