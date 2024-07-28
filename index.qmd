@@ -541,10 +541,12 @@ ROC_rf2 <- roc(heart_test$DEATH_EVENT, prediction2[,2])
 ROC_rf2_auc <- auc(ROC_rf2)
 ```
 
+The table above shows the classification prediction probabilities for each observation in the modified/tuning dataset.  This output is similar to the output for the default dataset.  No additional understanding is gained from this.  This output is included in the this report for completeness. 
+
 ```{r}
 # plot ROC curves 
-plot(ROC_rf2, col = "red", legacy.axes = TRUE, main = "ROC For Random Forest, Default Settings")
-lines(ROC_rf, col = "green", legacy.axes = TRUE)
+plot(ROC_rf2, col = "orange", legacy.axes = TRUE, main = "ROC For Random Forest, Default Settings")
+lines(ROC_rf, col = "blue", legacy.axes = TRUE)
 # print the performance of each model 
 paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
 paste("Area under curve of default random forest: ", ROC_rf_auc)
@@ -553,7 +555,9 @@ paste("Accuracy % of tuned random forest: ", mean(heart_test$DEATH_EVENT == roun
 paste("Area under curve of tuned random forest: ", ROC_rf2_auc)
 ```
 
-The accuracy and area under the receiver operating characteristic curve (AUC-ROC) is higher for the model produced using the tuned mtry (88.3%) compared to the default model (81.7%). The AUC-ROC for the tuned model is slightly lower than that of the default model (0.844 and 0.858, respectively).
+The ROC (receiver operating characteristic) curve above is similar to the previous one except that both the default (orange) and tuned (blue) datasets are plotted together.  As was stated previously, a ROC curve is a visual representation of the <em>performance</em> (not accuracy) of a model.  Greater performance is represented as more area under the curve.  In this case, we see the tuned (blue) curve and the default (orange) curve are approximately the same.  Numerical analysis shows the default model has a slightly better <em>performance</em> at 85.85% vs. 84.39% for the tuned model for area under the curve.  
+
+Furthermore, the tuned model has a slightly better <em>accuracy</em> at 83.33% vs. 81.66% for the default model.  The apparent conflict between <em>performance</em> and <em>accuracy</em> is resolved by understanding the area under the curve is based on actual values and the accuracy is calculated from expected values.  Each is measuring something different.   
 
 ### Model Results
 
