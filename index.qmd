@@ -466,7 +466,7 @@ model2 <- randomForest(
 model2
 ```
 
-The above output is the result of running the Random Forest algorithm with an <em>mtry</em> value of 2.  Notice the confusion matrix shows a positive classification rate of 6.83% and a negative classification rate of 25.64%.
+The above output is the result of running the Random Forest algorithm with an <em>mtry</em> value of 2 rather than the default 3.  Notice the confusion matrix shows a negative classification rate of 6.83% and a positive classification rate of 25.64% (vs. 7.45% and 25.64% previously).  The OOB estimate of error rate decreased significantly to 12.97% from 13.39% previously.  These results confirm that slight improvements can be achieved if the model is tuned.
 
 ```{r}
 importance(model2)
@@ -485,17 +485,13 @@ cf2 <- confusionMatrix(prediction2, heart_test$DEATH_EVENT, positive = "1", mode
 cf2
 ```
 
-
-Above.
-
+The Confusion Matrix and Statistics above shows a slight improvement from previous results.  The correct positive predictions increase from 37 previously to 38.  The incorrect negative predictions decrease from 5 previously to 4.  This results in an accuracy improvement from 81.67% to 83.33%.  Thus, tuning the model results in an accuracy improvement of about 1.66%.
 
 ```{r}
 fourfoldplot(as.table(cf2),color=c("yellow","blue"),main = "Confusion Matrix for Random Forest -- Tuned mtry")
 ```
 
-After changing the mtry hyperparameter to 2, the OOB estimate of error rate decreased significantly to 12.97%. The "positive" classification error stayed the same at 25.64%.  The "negative" classification error decreased slightly to 6.83% (down from 7.45%).  Thus, tuning the model resulted in a noticable improvement.
-
-Next, the number of trees (ntree) is tested over the range 500 (default) to 1500 to see if accuracy can be improved by changes in this hyperparameter.
+After changing the mtry hyperparameter to 2, the OOB estimate of error rate decreased significantly to 12.97%. The "positive" classification error stayed the same at 25.64%.  The "negative" classification error decreased slightly to 6.83% (down from 7.45%).  Thus, tuning the model resulted in a small but noticable improvement.
 
 ```{r}
 #set.seed(123)
@@ -511,7 +507,7 @@ tunegrid <- expand.grid(.mtry = c(sqrt(ncol(heart_train))))
 modellist <- list()
 
 #train with different ntree parameters
-for (ntree in seq(500,1500,100)){
+for (ntree in seq(100,1500,100)){
   set.seed(1)
   fit <- train(DEATH_EVENT~.,
                data = heart_train,
@@ -533,48 +529,10 @@ summary(results)
 dotplot(results)
 ```
 
-The results suggest that, of the ntree values tested, the model's accuracy would be highest with an ntree value of 500 as shown in the dotplot. This ntree value is the same as the default so a new model run is not indicated.
+In the code above the number of trees (ntree) is evaluated over the range 100 to 1500 with increments of 100 trees per set to see if accuracy can be improved by changing this hyperparameter.  Note, the default value used previously is ntree = 500.
 
-The code below is a test.
+The results are easiest to understand by reviewing the visualization above. The location of the circle in each row of the accuracy visualization on the left shows the greatest accuracy is achieved when the number of trees is 500.  Furthermore, the greatest <em>kappa</em> value is also achieved when the number of trees is 500.  Cohen's <em>kappa</em> is essentially a measure of "how reliably two raters measure the same thing" [@datatab].  Thus, the original model that uses 500 trees as a default value is also the optimum configuration for our model.  Therefore, a new model run is not indicated.
 
-```{r}
-#set.seed(123)
-x <- heart_df[,1:12]
-y <- heart_df[,13]
-
-control <- trainControl(method = 'repeatedcv',
-                        number = 10,
-                        repeats = 3,
-                        search = 'grid')
-#create tunegrid
-tunegrid <- expand.grid(.mtry = c(sqrt(ncol(heart_train))))
-modellist <- list()
-
-#train with different ntree parameters
-for (ntree in seq(100,500,100)){
-  set.seed(1)
-  fit <- train(DEATH_EVENT~.,
-               data = heart_train,
-               method = 'rf',
-               metric = 'Accuracy',
-               tuneGrid = tunegrid,
-               trControl = control,
-               ntree = ntree)
-  key <- toString(ntree)
-  modellist[[key]] <- fit
-}
-
-#Compare results
-results <- resamples(modellist)
-summary(results)
-```
-
-```{r}
-dotplot(results)
-```
-
-
-The code above is a test.
 ```{r}
 prediction2 <- predict(model2, heart_test, type = "prob") 
 prediction2 
