@@ -590,6 +590,24 @@ The default random forest model produced an Out-of-the-Bag (OOB)
 estimate of error rate of 13.39%. There is a higher class error rate in
 the "positive" (death event occurrence) class than the "negative" (no
 death occurrence) class, with 25.6% versus 7.45% rate, respectively.
+```{r}
+# Load the reprtree package from github
+options(repos='http://cran.rstudio.org')
+have.packages <- installed.packages()
+cran.packages <- c('devtools','plotrix','randomForest','tree')
+to.install <- setdiff(cran.packages, have.packages[,1])
+if(length(to.install)>0) install.packages(to.install)
+
+library(devtools)
+if(!('reprtree' %in% installed.packages())){
+   install_github('munoztd0/reprtree')
+}
+for(p in c(cran.packages, 'reprtree')) eval(substitute(library(pkg), list(pkg=p)))
+
+# Run the visualization of a decision tree from the model
+library(reprtree)
+reprtree:::plot.getTree(model)
+```
 
 ```{r}
 importance(model)
