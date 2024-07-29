@@ -17,6 +17,7 @@ editor:
     wrap: 72
 ---
 
+
 ## Introduction
 
 Correctly classifying a person for being at risk for heart failure is essential for strong preventive health care.  Contributing factors are known to include coronary artery disease, hypertension, obesity, infection, certain medications, and lifestyle choices such as alcohol consumption, smoking, and drug abuse.  Understanding the influences of these competing factors is made easier through unsupervised machine learning which can find patterns and insights in data without explicit human guidance or instruction.  Random Forest is a promising machine learning model because it correctly classifies data from large data sets, is resistant to outliers, and is easy to use.  In this report we validate the application of Random Forest machine learning to support the accurate classification of heart failure among 299 patient profiles.
