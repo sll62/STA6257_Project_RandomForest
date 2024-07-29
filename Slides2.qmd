@@ -2,7 +2,9 @@
 title: "Random Forest Analysis of Heart Failure Dataset"
 author: "Sierra Landacre, Tim Leschke, Pamela Mishaw, Pallak Singh "
 date: '`r Sys.Date()`'
-format: revealjs
+format: 
+  revealjs:
+    theme: moon
 course: STA 6257 - Advanced Statistical Modeling
 bibliography: references.bib # file contains bibtex for references
 #always_allow_html: true # this allows to get PDF with HTML features
