@@ -92,6 +92,7 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 -   Perform classification with Random Forest
 -   Perform analysis of results
 
+<!--
 ## Software and Hardware Configuration
 
 -   RStudio Pro 2023.12.0, Build 369.pro3
@@ -103,6 +104,7 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
     6338N (32 core) CPUs, 512 GB RAM, and sfp28 25 gbit networking for
     all communications
 -   Cluster storage is from an NVMe based Dell SAN.
+-->
 
 ## Data Used
 
@@ -132,6 +134,10 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 - <b>F1</b> - harmonic mean of the precision and recall; assesses predictive performance.
 - <b>Balanced accuracy</b> - average accuracy of both true-positive and true-negative classes.
 - <b>AUC-ROC</b> - area under a curve created by the true positive rate vs. false positive rate.
+
+## Examining the Dataset
+
+![](DeathEventBarChart.png)
 
 ## Variable Importance Plot
 
