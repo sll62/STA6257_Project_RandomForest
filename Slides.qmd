@@ -25,20 +25,18 @@ editor: visual
 ## Analysis & Process
 
 ## Data Used
-::: {.panel-tabset}
 
+::: panel-tabset
 ### Heart Failure Table
 
-![](images/HF Table.png){fig-align="center"}
+![](images/HF%20Table.png){fig-align="center"}
 
 ### Dataset Information
 
-- The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad Pakistan and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine].
-- There are 299 patient records with 13 features per record.
-- We use this dataset to create and evaluate a Random Forest model used for predicting heart failure events for patients.
-
+-   The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad Pakistan and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine].
+-   There are 299 patient records with 13 features per record.
+-   We use this dataset to create and evaluate a Random Forest model used for predicting heart failure events for patients.
 :::
-
 
 ## Assumptions
 
