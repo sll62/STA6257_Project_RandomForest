@@ -19,12 +19,16 @@ editor:
 
 ## Random Forest
 
--   Random Forest is a promising machine learning model because it
-    correctly classifies data from large data sets, is resistant to
-    outliers, and is easy to use.
--   Random Forest is a group of decision trees (a forest) that are
-    created from identically distributed, independent random samples of
-    data drawn with replacement from the original dataset [@breiman].
+- Random Forest is a promising machine learning model because it correctly classifies data from large data sets, is resistant to outliers, and is easy to use.
+- Random Forest is a group of decision trees (a forest) that are created from identically distributed, independent random samples of data drawn with replacement from the original dataset [@breiman].
+- Leo Breiman addresses poor-partitioning, noise, and long compute time with his proposal of the Random Forest model (Breiman 2001).
+- An important feature of random Forest is its ability to provide measures of how strong a given variable is associated with a classification result.
+
+## Random Forest Cont. 
+- Random forest provides valuable insights into feature importance, aiding researchers in understanding which variables contribute most significantly to predictions.
+- This attribute is critical in applications where identifying key factors, such as genetic markers in genome-wide association studies, environmental variables in ecological analyses, and heart failure classification is paramount.
+- It is an ideal algorithm for studies that involve numerous features such as those found in the biomedical sciences. 
+- Its methodology is also more easily conveyed and understood by medical professionals than many other machine learning models, allowing for greater promise in successful real-world implementation.
 
 ## Methods
 
@@ -32,13 +36,13 @@ editor:
 ::: {.column width="60%"}
 ![](SingleTree.png){fig-align="left"}
 
--   single classification tree.
+single classification tree.
 :::
 
 ::: {.column width="40%"}
 ![](images/rf%20fig%201-01.png){fig-align="right"}
 
--   Random Forest uses multiple classification trees.
+ Random Forest uses multiple classification trees.
 :::
 :::
 
@@ -183,6 +187,10 @@ Various metrics are used to assess the Random Forest model performance:
 :::
 
 ## Conclusion
+- The Random Forest model is applied to a heart failure dataset of patients from Faisalabad Pakistan. 
+- The Random Forest model provides strong classification results with its default settings. 
+- Random Forest makes its decisions in a black box, which means we do not fully understand how is classifies data or which variables are used. 
+- We do know from a review of the variable importance plot that time before follow-up visit, serum creatinine levels, and ejection fraction amount are all likely influential in the classification process.
 
 ## Software and Hardware Configuration
 
