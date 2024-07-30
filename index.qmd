@@ -529,8 +529,7 @@ heart_df %>% count(DEATH_EVENT)
 
 ```{r}
 ggplot(data = heart_df) +
-  geom_bar(mapping = aes(x = DEATH_EVENT)) +
-  scale_fill_manual(values=c("blue","purple"))
+  geom_bar(mapping = aes(x = DEATH_EVENT, fill="blue"))
 ```
 ```{r}
 # heart_df <- heart_df %>%
