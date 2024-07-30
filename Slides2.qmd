@@ -24,31 +24,30 @@ editor:
     outliers, and is easy to use.
 -   Random Forest is a group of decision trees (a forest) that are
     created from identically distributed, independent random samples of
-    data drawn with replacement from the original dataset (Breiman
-    2001).
+    data drawn with replacement from the original dataset [@breiman].
+
+## Methods
+
+::: columns
+::: {.column width="60%"}
+![](SingleTree.png){fig-align="left"}
+
+-   single classification tree.
+:::
+
+::: {.column width="40%"}
+![](images/rf%20fig%201-01.png){fig-align="right"}
+
+-   Random Forest uses multiple classification trees.
+:::
+:::
 
 ## Methods
 
 ::: panel-tabset
 ### Random Forest Algorithm
 
-![](images/RF Algorith.png){fig-align="center"}
-
-### Generation of a Random Forest
-
-::: columns
-::: {.column width="60%"}
-![](images/rf fig 1.png){fig-align="left"}
-:::
-
-::: {.column width="40%"}
--   Figure 1 shows the generation of a Random Forest. The uniqueness of
-    each tree, as a result of random data samples, allows the ensemble
-    to avoid misclassification, and improve classification accuracy.
-:::
-:::
-
-### 
+![](images/RF%20Algorith.png){fig-align="center"}
 
 ### Formulas
 
@@ -77,6 +76,12 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 :::
 :::
 
+## Analysis and Results
+
+> -   We ingest the data into R-Studio
+> -   Perform classification with Random Forest
+> -   Perform analysis
+
 ## Data Used
 
 ::: panel-tabset
@@ -87,52 +92,77 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 ### Dataset Information
 
 -   The dataset comes from the Faisalabad Institute of Cardiology and
-    the Allied Hospital in Faisalabad Pakistan and consists of the
-    medical records of 299 patients who experienced heart failure
-    [@chicco2020machine].
+    the Allied Hospital in Faisalabad Pakistan.
 -   There are 299 patient records with 13 features per record.
--   We use this dataset to create and evaluate a Random Forest model
-    used for predicting heart failure events for patients.
+-   Random Forest model used for predicting heart failure events for
+    patients.
+
+![](FaisalabadLogo.png){fig-align="center"}
 :::
 
 ## Model Evaluation Metrics
 
-::: panel-tabset
-### OOB error rate/accuracy
+Various metrics are used to assess the Random Forest model performance:
 
--   The Out-of-Bag data is the data left unused by an individual
-    predictor (decision tree) after a bootstrap sample is taken from the
-    original data set.
--   The OOB data is used for internal validation– the prediction error
-    rate is taken after running the “unseen” data through each tree and
-    averaged to provide the overall OOB error rate. (Breiman 2001)
+> -   Out of Bag error rate/accuracy - OOB data is data left unused by a
+>     decision tree.
+> -   Confusion Matrix - shows True Positive, False Positive, False
+>     Negative and True Negative values to support performance
+>     evaluation
+> -   Precision - also known as <em>sensitivity</em> and it represents
+>     how many observations labeled positive are actually positive.
+> -   Recall - quantifies how many positive observations are actually
+>     predicted as positive.
+> -   F1 - harmonic mean of the precision and recall; assesses
+>     predictive performance.
+> -   Balanced accuracy - average accuracy of both true-positive and
+>     true-negative classes.
+> -   AUC-ROC - area under a curve created by the true positive rate vs.
+>     false positive rate.
 
-### Confusion Matrix
+## Variable Importance Plot
 
-::: incremental
--   Shows the values of True Negative, False Negative, False Positive,
-    and True Positive predictions produced by a model.
--   Precision: This metric quantifies how many of the observations
-    labeled as positive are actually positive (Raschka, Liu, and
-    Mirjalili 2022).
--   Recall: It quantifies how many of the positive observations have
-    been predicted as positive (Raschka, Liu, and Mirjalili 2022).
--   F1 Score: Is the harmonic mean of the precision and recall and so
-    used to assess predictive performance. (Raschka, Liu, and Mirjalili
-    2022).
--   Balanced Accuracy: Aids in reducing the effects of class imbalance
-    in the data set so that accuracy of predicting the dominant class
-    does not conceal the classification accuracy for the minority class
-    (Brodersen et al. 2010).
-:::
+![](VariableImportancePlot.png){fig-align="center"}
 
-### AUC-ROC
+## FourFold Plot (Confusion Matrix)
 
--   Area under the receiver operating characteristic curve.
--   This is the model’s true positive rate (on the Y-axis) is plotted
-    against the false positive rate (on the X-axis) using varying
-    classification thresholds (Huang and Ling 2005).
-:::
+![](FourFoldPlot.png){fig-align="center"}
+
+## Confusion Matrix Heatmap
+
+![](ConfusionMatrixHeatmap.png){fig-align="center"}
+
+## Variable Correlation Heatmap
+
+![](VariableCorrelationHeatmap.png){fig-align="center"}
+
+## ROC - Default Values
+
+![](DefaultROC.png){fig-align="center"}
+
+## trainControl() - Random Selection
+
+![](TrainControl_RandomSelection.png){fig-align="center"}
+
+## trainControl() - Grid Search
+
+![](TrainControl_GridSearch.png){fig-align="center"}
+
+## Variable Importance Plot - Tuned
+
+![](VariableImportancePlot_tuned.png){fig-align="center"}
+
+## FourFold Plot (Confusion Matrix)
+
+![](FourFoldPlot_tuned.png){fig-align="center"}
+
+## Kappa Plot
+
+![](KappaPlot.png){fig-align="center"}
+
+## Tuned vs. Default ROC
+
+![](TunedROC.png){fig-align="center"}
 
 ## Model Results
 
@@ -151,165 +181,19 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
     model.
 :::
 :::
-## References 
 
+## Conclusion
 
-***
-## Methods
+## Software and Hardware Configuration
 
-- We assume the reader knows single classification trees.
+-   RStudio Pro 2023.12.0, Build 369.pro3
+-   Various R libraries
+-   RStudio Server running on RHEL9 based virtual machine within a
+    VMware VSphere HA cluster. The VM has 50 vCPU's and 196 GB ram
+    assigned
+-   Hardware includes Dell PowerEdge R750 servers with Dual Xeon Gold
+    6338N (32 core) CPUs, 512 GB RAM, and sfp28 25 gbit networking for
+    all communications
+-   Cluster storage is from an NVMe based Dell SAN.
 
->![](SingleTree.png)
-
-***
-### The Random Forest
-
-- Random Forest uses multiple classification trees.
-
->![](Forest.png){width=70%}
-
-***
-### Random Forest Algorithm
->![](Algorithm.png)
-
-
-***
-### The Gini Index
-
-![](GiniIndex.png)
-
-***
-### Bagging
-
-![](Bagging.png)
-
-::: {.notes}
-Speaker notes go here.
-:::
-
-***
-## Analysis and Results
-
->- We ingest the data into R-Studio
->- Perform classification with Random Forest
->- Perform analysis
-
-***
-## Heart Failure Dataset
-
-::: {.columns}
-
-::: {.column width="70%"}
-- Dataset from Faisalabad Institute of Cardiology  
-
-- 299 patient records
-
-- 13 features per record  
-
-- Random Forest used to classify patients for heart failure
-:::
-
-::: {.column width="30%"}
-![](FaisalabadLogo.png)
-:::
-
-:::
-
-***
-### Dataset Features
-
-![](FeaturesTable.png)  
-
-***
-### Software and Hardware Configuration
-
-- RStudio Pro 2023.12.0, Build 369.pro3
-- Various R libraries  
-
-- RStudio Server running on RHEL9 based virtual machine within a VMware VSphere HA cluster.  The VM has 50 vCPU's and 196 GB ram assigned  
-
-- Hardware includes Dell PowerEdge R750 servers with Dual Xeon Gold 6338N (32 core) CPUs, 512 GB RAM, and sfp28 25 gbit networking for all communications
-- Cluster storage is from an NVMe based Dell SAN.  
-
-***
-### Model Evaluation Metrics   
-
-Various metrics are used to assess the Random Forest model performance:
-
->- Out of Bag error rate/accuracy - OOB data is data left unused by a decision tree.
->- Confusion Matrix - shows True Positive, False Positive, False Negative and True Negative values to support performance evaluation
->- Precision - also known as <em>sensitivity</em> and it represents how many observations labeled positive are actually positive. 
->- Recall - quantifies how many positive observations are actually predicted as positive.
->- F1 - harmonic mean of the precision and recall; assesses predictive performance.
->- Balanced accuracy - average accuracy of both true-positive and true-negative classes.
->- AUC-ROC - area under a curve created by the true positive rate vs. false positive rate.
-
-***
-### Variable Importance Plot
-
-![](VariableImportancePlot)
-
-***
-### FourFold Plot (Confusion Matrix)
-
-![](FourFoldPlot.png)
-
-***
-### Confusion Matrix Heatmap
-
-![](ConfusionMatrixHeatmap.png)
-
-***
-### Variable Correlation Heatmap
-
-![](VariableCorrelationHeatmap.png)
-
-***
-### ROC - Default Values
-
-![](DefaultROC.png)
-
-***
-### trainControl() - Random Selection
-
-![](TrainControl_RandomSelection.png)
-
-***
-### trainControl() - Grid Search
-
-![](TrainControl_GridSearch.png)
-
-***  
-### Variable Importance Plot - Tuned  
-
-![](VariableImportancePlot_tuned.png)
-
-***    
-### FourFold Plot (Confusion Matrix)   
-
-![](FourFoldPlot_tuned.png)  
-
-***
-### Kappa Plot  
-
-![](KappaPlot.png)  
-
-
-***
-### Tuned vs. Default ROC  
-
-![](TunedROC.png)  
-
-***
-### Model Results
-
-![](ModelResults.png)
-
-***
-### Conclusion
-
-***
-
-
-
-
+## References
