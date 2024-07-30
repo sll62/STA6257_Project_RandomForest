@@ -135,10 +135,14 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 - <b>Balanced accuracy</b> - average accuracy of both true-positive and true-negative classes.
 - <b>AUC-ROC</b> - area under a curve created by the true positive rate vs. false positive rate.
 
-## Examining the Dataset
+## Examining the Dataset  
 
-![](DeathEventBarChart.png)
+![](DeathEventBarChart.png)    
 
+
+## Variable Correlation Heatmap  
+
+![](VariableCorrelationHeatmap.png){fig-align="center"}
 ## Variable Importance Plot
 
 ![](VariableImportancePlot.png){fig-align="center"}
@@ -151,9 +155,7 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 
 ![](ConfusionMatrixHeatmap.png){fig-align="center"}
 
-## Variable Correlation Heatmap
 
-![](VariableCorrelationHeatmap.png){fig-align="center"}
 
 ## ROC - Default Values
 
