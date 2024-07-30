@@ -1,6 +1,6 @@
 ---
 title: "Random Forest Analysis of Heart Failure Dataset"
-author: "Tim Leschke, Pamela Mishaw, Sierra Landacre, Pallak Singh "
+author: "Sierra Landacre, Tim Leschke, Pamela Mishaw, and Pallak Singh "
 format: 
   revealjs:
     smaller: true
@@ -24,25 +24,31 @@ editor:
 - Leo Breiman addresses poor-partitioning, noise, and long compute time with his proposal of the Random Forest model (Breiman 2001).
 - An important feature of random Forest is its ability to provide measures of how strong a given variable is associated with a classification result.
 
-## Random Forest Cont. 
+## Random Forest Continued 
 - Random forest provides valuable insights into feature importance, aiding researchers in understanding which variables contribute most significantly to predictions.
 - This attribute is critical in applications where identifying key factors, such as genetic markers in genome-wide association studies, environmental variables in ecological analyses, and heart failure classification is paramount.
 - It is an ideal algorithm for studies that involve numerous features such as those found in the biomedical sciences. 
 - Its methodology is also more easily conveyed and understood by medical professionals than many other machine learning models, allowing for greater promise in successful real-world implementation.
 
+## Random Forest Success Stories
+- Random Forest is used to accurately predict <b>in-hospital mortality</b> for acute kidney injury patients in intensive care [@lin2019predicting].
+- Random Forest is used to accurately predict future estimated <b>glomerular filtration rates</b> using electronic medical record data [@zhao2019predicting].
+- Random Forest is used to accurately classify gait as displaying or lacking the characteristic of <b>hemiplegia</b> [@luo2020random].
+- Random Forest is used to accurately classify persons with type 1 and type 2 <b>diabetes</b> [@rachmawanto].
+
 ## Methods
 
 ::: columns
-::: {.column width="60%"}
+::: {.column width="30%"}
 ![](SingleTree.png){fig-align="left"}
 
-single classification tree.
+Single classification tree.
 :::
 
-::: {.column width="40%"}
+::: {.column width="70%"}
 ![](images/rf%20fig%201-01.png){fig-align="right"}
 
- Random Forest uses multiple classification trees.
+ <center>Random Forest uses multiple classification trees.</center>
 :::
 :::
 
@@ -51,7 +57,7 @@ single classification tree.
 ::: panel-tabset
 ### Random Forest Algorithm
 
-![](images/RF%20Algorith.png){fig-align="center"}
+![](Algorithm.png){fig-align="center"}
 
 ### Formulas
 
@@ -82,9 +88,21 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 
 ## Analysis and Results
 
-> -   We ingest the data into R-Studio
-> -   Perform classification with Random Forest
-> -   Perform analysis
+-   We ingest the data into R-Studio
+-   Perform classification with Random Forest
+-   Perform analysis of results
+
+## Software and Hardware Configuration
+
+-   RStudio Pro 2023.12.0, Build 369.pro3
+-   Various R libraries
+-   RStudio Server running on RHEL9 based virtual machine within a
+    VMware VSphere HA cluster. The VM has 50 vCPU's and 196 GB ram
+    assigned
+-   Hardware includes Dell PowerEdge R750 servers with Dual Xeon Gold
+    6338N (32 core) CPUs, 512 GB RAM, and sfp28 25 gbit networking for
+    all communications
+-   Cluster storage is from an NVMe based Dell SAN.
 
 ## Data Used
 
@@ -101,28 +119,19 @@ $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
 -   Random Forest model used for predicting heart failure events for
     patients.
 
-![](FaisalabadLogo.png){fig-align="center"}
+![](FaisalabadLogo.png){fig-align="center"}  
+
 :::
 
 ## Model Evaluation Metrics
 
-Various metrics are used to assess the Random Forest model performance:
-
-> -   Out of Bag error rate/accuracy - OOB data is data left unused by a
->     decision tree.
-> -   Confusion Matrix - shows True Positive, False Positive, False
->     Negative and True Negative values to support performance
->     evaluation
-> -   Precision - also known as <em>sensitivity</em> and it represents
->     how many observations labeled positive are actually positive.
-> -   Recall - quantifies how many positive observations are actually
->     predicted as positive.
-> -   F1 - harmonic mean of the precision and recall; assesses
->     predictive performance.
-> -   Balanced accuracy - average accuracy of both true-positive and
->     true-negative classes.
-> -   AUC-ROC - area under a curve created by the true positive rate vs.
->     false positive rate.
+- <b>Out of Bag error rate/accuracy</b> - OOB data is data left unused by a decision tree.
+- <b>Confusion Matrix</b> - shows True Positive, False Positive, False Negative and True Negative values to support performance evaluation
+- <b>Precision</b> - also known as <em>sensitivity</em> and it represents how many observations labeled positive are actually positive.
+- <b>Recall</b> - quantifies how many positive observations are actually predicted as positive.
+- <b>F1</b> - harmonic mean of the precision and recall; assesses predictive performance.
+- <b>Balanced accuracy</b> - average accuracy of both true-positive and true-negative classes.
+- <b>AUC-ROC</b> - area under a curve created by the true positive rate vs. false positive rate.
 
 ## Variable Importance Plot
 
@@ -152,13 +161,37 @@ Various metrics are used to assess the Random Forest model performance:
 
 ![](TrainControl_GridSearch.png){fig-align="center"}
 
-## Variable Importance Plot - Tuned
+## Variable Importance Plots
 
-![](VariableImportancePlot_tuned.png){fig-align="center"}
+::: columns
 
-## FourFold Plot (Confusion Matrix)
+::: {.column width="50%"}
+Default
+![](VariableImportancePlot.png){fig-align="center" width="100%"}
 
-![](FourFoldPlot_tuned.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+Tuned
+![](VariableImportancePlot_tuned.png){fig-align="center" width="100%"}
+:::
+
+:::
+
+## FourFold Plot - Default vs. Tuned
+
+::: columns
+::: {.column width="50%"}
+
+![](FourFoldPlot.png){fig-align="center" width="100%"}
+:::
+
+::: {.column width="50%"}
+![](FourFoldPlot_tuned.png){fig-align="center" width="100%"}
+
+:::
+
+:::
 
 ## Kappa Plot
 
@@ -170,38 +203,20 @@ Various metrics are used to assess the Random Forest model performance:
 
 ## Model Results
 
-::: columns
-::: {.column width="60%"}
-![](images/data.png)
-:::
+![](ModelResults.png)
 
-::: {.column width="40%"}
 -   The testing accuracies of both models are slightly lower than their
     respective training accuracies which indicates overfitting of the
     training dataset.
--   The performance of model 2 is better than model 1. This is based off
+-   The performance of Model 2 is better than model 1. This is based off
     of the model’s training and testing accuracies; precision; F1; and
     balanced accuracy as they are all higher than those of the default
     model.
-:::
-:::
 
 ## Conclusion
 - The Random Forest model is applied to a heart failure dataset of patients from Faisalabad Pakistan. 
 - The Random Forest model provides strong classification results with its default settings. 
-- Random Forest makes its decisions in a black box, which means we do not fully understand how is classifies data or which variables are used. 
-- We do know from a review of the variable importance plot that time before follow-up visit, serum creatinine levels, and ejection fraction amount are all likely influential in the classification process.
-
-## Software and Hardware Configuration
-
--   RStudio Pro 2023.12.0, Build 369.pro3
--   Various R libraries
--   RStudio Server running on RHEL9 based virtual machine within a
-    VMware VSphere HA cluster. The VM has 50 vCPU's and 196 GB ram
-    assigned
--   Hardware includes Dell PowerEdge R750 servers with Dual Xeon Gold
-    6338N (32 core) CPUs, 512 GB RAM, and sfp28 25 gbit networking for
-    all communications
--   Cluster storage is from an NVMe based Dell SAN.
+- Random Forest makes its decisions in a <em>black box</em>, which means we do not fully understand how is classifies data or which variables are used. 
+- We do know from a review of the variable importance plot that <em>time before follow-up visit</em>, <em>serum creatinine levels</em>, and <em>ejection fraction amount</em> are all likely influential in the classification process.
 
 ## References
