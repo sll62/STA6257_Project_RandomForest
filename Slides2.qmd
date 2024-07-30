@@ -301,7 +301,14 @@ Various metrics are used to assess the Random Forest model performance:
 ![](TunedROC.png)  
 
 ***
-### 
+### Model Results
+
+![](ModelResults.png)
+
+***
+### Conclusion
+
+***
 
 
 
