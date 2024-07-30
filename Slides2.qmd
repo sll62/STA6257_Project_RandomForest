@@ -17,271 +17,43 @@ editor:
     wrap: 72
 ---
 
-## Introduction
+## Random Forest
 
-Correctly classifying a person for being at risk for heart failure is
-essential for strong preventive health care. Contributing factors are
-known to include coronary artery disease, hypertension, obesity,
-infection, certain medications, and lifestyle choices such as alcohol
-consumption, smoking, and drug abuse. Understanding the influences of
-these competing factors is made easier through unsupervised machine
-learning which can find patterns and insights in data without explicit
-human guidance or instruction. Random Forest is a promising machine
-learning model because it correctly classifies data from large data
-sets, is resistant to outliers, and is easy to use. In this report we
-validate the application of Random Forest machine learning to support
-the accurate classification of heart failure among 299 patient profiles.
-
-### Classification with Decision Trees
-
-At the heart of the Random Forest model is the decision tree. A decision
-tree “is a unidirectional, compact, tree-like data structure where each
-branch point is an attribute-data test that partitions the data rows
-into two or more branches.” [@sheppard]. An optimized tree is shallow
-and has few branches. A decision tree may be used to perform
-classification or regression analysis to predict a future value given
-particular features of a subject.
-
-Yuan et. al. state the most influential decision tree algorithm is
-Iterative Dichotomiser 3 (ID3) [@yuan]. ID3 is presented by Quinlan in
-his 1986 seminal paper <em>Induction of Decision Trees</em> [@quinlan].
-This paper lays the foundation for using machine learning to address the
-bottleneck caused by expert systems. Quinlan demonstrates it is possible
-to use decision trees to generate knowledge and solve difficult problems
-through automation without much computation [@quinlan]. Low-levels of
-noise do not cause the tree building to “fall over a cliff” and fail
-[@quinlan]. Furthermore, training the decision tree with noise has been
-discovered to yield optimal results. In addition, unbalanced trees tend
-to perform statistically better than those balanced through
-stratification [@mascaro2014tale].
-
-A decision tree does not have domain knowledge [@sheppard]. It begins as
-a data structure with a single node that divides the dataset into
-subsets according to a partitioning algorithm that learns from exposure
-to training data. Training data is a smaller representation of the main
-data set, and it contains examples of each class of datapoint found in
-the main data set. As the decision tree processes the training data, it
-grows branches and additional nodes to support the recursive
-partitioning of subsets into smaller subsets until this process
-terminates with each datapoint being assigned to a category found at
-each leaf node. This automated machine learning algorithm is challenged
-by poor-partitioning, noise, and long compute-time [@sheppard].
-
-Poor-partitioning results in elongated decision trees with impure
-subsets. An impure subset occurs when a branch point does not perform a
-pure classification. Dirty subsets lead to incorrect classifications,
-and ultimately to poor heart failure classification in a preventive
-healthcare workflow.
-
-Noise is another challenge facing machine learning with decision trees.
-Noise is any impurity found within the dataset. It is random,
-unpredictable, and unexpected data that disrupts the ability to
-correctly partition data into categories. It is what some call entropy
-[@sheppard]. The more entropy there is, the more challenging it is to
-correctly classify each datapoint.
-
-Long compute-time is influenced by both size and complexity of the
-classification dataset. Complex datasets with more categories require a
-decision tree with more nodes and more branches. Taller and fatter
-decision trees require more compute-time for processing. Pushing more
-data through a larger and more complex decision tree has a multiplying
-effect on the compute-time.
-
-### Classification with Random Forest
-
-Leo Breiman addresses poor-partitioning, noise, and long compute time
-with his proposal of the Random Forest model [@breiman]. Random Forest
-is a group of decision trees (a forest) that are created from
-identically distributed, independent random samples of data drawn with
-replacement from the original dataset [@breiman]. Breiman calls this
-random sample process a <em>bootstrap</em>, which others have re-worded
-as <em>bootstrapping</em>. At each node, a random subset of variables is
-taken from the array of features and the one that provides the best
-split is selected for that point. This randomness provides robustness in
-the presence of misclassifications and noise [@breiman],
-[@moradi2024random], [@casanova2014application]. This classification by
-aggregation is known as <em>ensemble learning</em> and is a proven
-approach for dealing with bad data [@sheppard]. Bad data, however,
-cannot include missing values for response or predictor variables
-[@brieuc2018practical].
-
-Because each decision tree is processed with a different random set of
-data, each grows into a unique structure with a unique classification
-result. The final classification from Random Forest is a result of
-aggregating the results from each decision tree; a process Breiman calls
-<em>bagging</em> [@breiman]. This bagging technique addresses both the
-noise and poor-partitioning of traditional decision trees that results
-in inaccurate classification. By using multiple trees and aggregating
-the results, the effects of noise and poor-partitioning are minimized,
-and accuracy is increased [@breiman]. Furthermore, bagging can be used
-to calculate an “ongoing estimate of the generalization error” which is
-the error rate of the training set [@breiman]. This can be used to
-predict how well the model is performing during classification.
-
-Accuracy is optimized through a process called <em>boosting</em>.
-Boosting is a technique by which more weight is given to the votes that
-come from decision trees that predict correctly versus those that do not
-predict correctly. Sheppard states “boosting earned a 1-2 percent
-overall improvement in the ability to predict the correct outcome while
-also achieving the percentage more consistently” [@sheppard]. Accuracy
-is also improved through a heuristic known as Ant Colony Optimization
-(ACO) [@boryczka]. This approach is inspired by ant colony behavior in
-which individual ants leave traces of pheromone to communicate to other
-ants regarding the best path to take. Similarly, the ACO algorithm
-improves dataset splitting by providing feedback to subsequent splitting
-choices. By improving the choice of criteria to split on, one achieves
-“maximum homogeneity in the decision classes” which improves overall
-decision tree accuracy [@boryczka].
-
-An important feature of random Forest is its ability to provide measures
-of how strong a given variable is associated with a classification
-result. These measures include <em>raw importance score for class
-0</em>, <em>raw importance score for class 1</em>, <em>decrease in
-accuracy</em>, and the <em>Gini Index</em> [@esmaily2018comparison].
-Gini Index is explained later. These scores help users fine-tune the
-Random Forest method so optimal classification results are achieved.
-
-### Related Work
-
-There are many examples of how Random Forest is used as a successful and
-scaleable classifier. In one study, researchers created a Random Forest
-model to predict in-hospital mortality for acute kidney injury patients
-in the intensive care unit [@lin2019predicting]. The Random Forest model
-displays the lowest Brier score (associated with accuracy) and the
-largest AUROC (associated with discrimination), meaning Random Forest
-produces the best values for these assessments of the compaired models,
-with the second best F1 score and accuracy.
-
-In another experiment, researchers developed a random forest regression
-model capable of accurately predicting future estimated glomerular
-filtration rates using electronic medical record data
-[@zhao2019predicting]. This tool allows identification of chronic kidney
-disease in its early stages to more likely prevent progression into
-end-stage renal disease. The random forest models that are created are
-found to have accuracies of about 90% for stages 2 and 3, and about 80%
-for stages 4 and 5 of chronic kidney disease.
-
-Scientists also investigate the accuracy of the Random Forest algorithm
-for the classification of gait as displaying or lacking the
-characteristics of hemiplegia, which is the paralysis of one side of the
-body [@luo2020random]. Researchers achieve a classification accuracy of
-95.45%, which they state "is superior than all existing methods."
-Because of the natural tendency for Random Forest to be resistant to
-over-fitting, the researchers "do not have to have careful control over
-the percentage of patients in the training data" [@luo2020random].
-
-When the Random Forest model is applied to the classification of persons
-with type 1 and type 2 diabetes, the conclusion is that “the types of
-attributes used have an important role in the classification process”
-[@rachmawanto]. In their study, Random Forest executed with the Abel
-Vika dataset achieves 100% accuracy, 100% precision, and 100% recall. In
-contrast, when the Pima Indian Diabetes Dataset is used, the results
-show at most scores of 75-85% for accuracy, precision, and recall. The
-conclusion is that Random Forest excels when the data is noisy and
-unbalanced as is the case with the first dataset.
-
-In practical applications, Random Forest’s scalability and
-parallelization capabilities are noteworthy, allowing it to efficiently
-process large datasets using parallel computing techniques like
-MapReduce [@yuan]. This scalability makes random forest suitable for
-tasks ranging from clinical prediction in healthcare to large-scale
-genetic analyses, where handling big data is essential for achieving
-accurate and reliable results.
-
-Random forest provides valuable insights into feature importance, aiding
-researchers in understanding which variables contribute most
-significantly to predictions. This attribute is critical in applications
-where identifying key factors, such as genetic markers in genome-wide
-association studies, environmental variables in ecological analyses, and
-heart failure classification is paramount. Since the Random Forest model
-shows robustness in the face of noisy datasets, it is an ideal algorithm
-for studies that involve numerous features such as those found in the
-biomedical sciences. Its methodology is also more easily conveyed and
-understood by medical professionals than many other machine learning
-models, allowing for greater promise in successful real-world
-implementation. However, in other study types Random Forest is used due
-to simplicity and diversity, making it one of the commonly used
-algorithms used for solar energy predictions [@wang2020taxonomy].
-
-In the following sections we explain the Methods pertaining to Random
-Forest. This includes the algorithm, measuring node purity with the
-<em>Gini Index</em>, and aggregation of classification votes from
-individual decision trees via a processes called <em>bagging</em>. The
-Analysis and Results section presents the classification of the Heart
-Failure Clinical Records dataset processed with R-code and explains how
-the algorithm is tuned for optimized results
-[@misc_heart_failure_clinical_records_519]. Lastly, the Conclusion ties
-all of this work together and crowns Random Forest as a promising
-machine learning model for classifying people at risk for heart failure.
+-   Random Forest is a promising machine learning model because it
+    correctly classifies data from large data sets, is resistant to
+    outliers, and is easy to use.
+-   Random Forest is a group of decision trees (a forest) that are
+    created from identically distributed, independent random samples of
+    data drawn with replacement from the original dataset (Breiman
+    2001).
 
 ## Methods
 
-We assume the reader knows single classification trees. A Random Forest
-performs classification via aggregated votes from a group of
-classification trees built from random data samples.
+::: panel-tabset
+### Random Forest Algorithm
 
-The algorithm for classification with Random Forest is provided below.\
-(Copied, with additions, from [@hastie]).
+![](images/RF Algorith.png){fig-align="center"}
 
-```{=html}
-<pre><span style="text-decoration:overline underline">Random Forest Algorithm                                                                               </span></pre>
-```
-<ol type ="1">
+### Generation of a Random Forest
 
-<li>
+::: columns
+::: {.column width="60%"}
+![](images/rf fig 1.png){fig-align="left"}
+:::
 
-For b = 1 to B where B is the number of trees in the forest:
+::: {.column width="40%"}
+-   Figure 1 shows the generation of a Random Forest. The uniqueness of
+    each tree, as a result of random data samples, allows the ensemble
+    to avoid misclassification, and improve classification accuracy.
+:::
+:::
 
-<ol type="a">
+### 
 
-<li>Draw a bootstrap sample <b>Z\*</b> of size <em>N</em> from the
-training data.</li>
+### Formulas
 
-<li>Grow a random-forest tree <em>T<sub>b</sub></em> to the bootstrapped
-data, by recursively repeating the following steps for each terminal
-node of the tree, until the minimum node size <em>n<sub>min</sub></em>
-is reached.</li>
-
-<ol type="i">
-
-<li>Select <em>m</em> variables at random from the <em>p</em>
-variables.</li>
-
-<li>Pick the best variable/split-point among the <em>m</em>.</li>
-
-<li>Split the node into two daughter nodes.</li>
-
-</ol>
-
-</li>
-
-</ol>
-
-<li>Output the ensemble of trees.</li>
-
-</ol>
-
-To make a classification prediction at a new point <em>x</em>:
-
-Let <em>Ĉ<sub>b</sub>(<em>x</em>)</em> be the class prediction of the
-<em>b</em>th random-forest tree. Then
-<em>Ĉ<sub>rf</sub><sup>B</sup>(<em>x</em>) = <em> majority vote</em>
-{Ĉ<sub>b</sub>(<em>x</em>)}<sub>1</sub><sup>B</sup></em>.
-
-```{=html}
-<pre><span style="text-decoration:overline">                                                                                                     </span></pre>
-```
-Figure 1 shows the generation of a Random Forest. The uniqueness of each
-tree, as a result of random data samples, allows the ensemble to avoid
-misclassification, and improve classification accuracy.
-
-![](Forest.png)
-
-<center>Figure 1. (Modified from TikZ.net,
-https://tikz.net/random-forest/, accessed 7/13/2024)</center>
-
- 
-
+::: columns
+::: {.column width="50%"}
 The <em>Gini Index</em> is referred to as a measure of node purity
 [@james]. It can also be used to measure the importance of each
 predictor. The Gini Index is defined by the following formula where K is
@@ -290,7 +62,9 @@ observations in the <em>m</em>th region that are from the <em>k</em>th
 class. A Gini Index of 0 represents perfect purity.
 
 $$D=-\sum_{n=1}^{K} {\hat{p}_{mk}}(1-\hat{p}_{mk})$$
+:::
 
+::: {.column width="50%"}
 <em>Bagging</em> is the aggregation of the results from each decision
 tree. It is defined by the following formula where B is the number of
 training sets and $\hat{f}^{*b}$ is the prediction model. Although
@@ -299,752 +73,82 @@ harder as they cannot be visualized as easily as a single decision tree
 [@james].
 
 $${\hat{f}bag(x) = 1/B \sum_{b=1}^{B}\hat{f}^{*b}(x)}$$
+:::
+:::
+:::
 
 ## Data Used
 
-### The Heart Failure Dataset
-::: {.panel-tabset}
-
+::: panel-tabset
 ### Heart Failure Table
 
-![](images/HF Table.png){fig-align="center"}
+![](images/HF%20Table.png){fig-align="center" width="70%"}
 
 ### Dataset Information
 
-- The dataset comes from the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad Pakistan and consists of the medical records of 299 patients who experienced heart failure [@chicco2020machine].
-- There are 299 patient records with 13 features per record.
-- We use this dataset to create and evaluate a Random Forest model used for predicting heart failure events for patients.
-
+-   The dataset comes from the Faisalabad Institute of Cardiology and
+    the Allied Hospital in Faisalabad Pakistan and consists of the
+    medical records of 299 patients who experienced heart failure
+    [@chicco2020machine].
+-   There are 299 patient records with 13 features per record.
+-   We use this dataset to create and evaluate a Random Forest model
+    used for predicting heart failure events for patients.
 :::
 
-### Software and Hardware Configuration
+## Model Evaluation Metrics
 
-The R programming language is used to support data processing and
-analysis as it is the standard for statistical programming and graphics.
+::: panel-tabset
+### OOB error rate/accuracy
 
-RStudio Pro, 2023.12.0, Build 369.pro3 is used. Various R libraries and
-packages are employed including CaTools, RandomForest, Tidyverse, Readr,
-Dplyr, Party, Caret, Corrplot, Tidyr, Ggplot2, DT, and pRoc.
+-   The Out-of-Bag data is the data left unused by an individual
+    predictor (decision tree) after a bootstrap sample is taken from the
+    original data set.
+-   The OOB data is used for internal validation– the prediction error
+    rate is taken after running the “unseen” data through each tree and
+    averaged to provide the overall OOB error rate. (Breiman 2001)
 
-The RStudio Server is running on a RHEL9 based virtual machine within a
-VMware VSphere HA cluster. The VM itself has 50 vCPU's and 196 GB of ram
-assigned.
+### Confusion Matrix
 
-The physical hardware of the cluster nodes are Dell PowerEdge R750
-servers with Dual Xeon Gold 6338N (32 core) CPU's, 512 GB of ram, and
-sfp28 25gbit networking for all communications (6 total sfp28 per
-server). Cluster storage is from a NVMe based Dell SAN.
+::: incremental
+-   Shows the values of True Negative, False Negative, False Positive,
+    and True Positive predictions produced by a model.
+-   Precision: This metric quantifies how many of the observations
+    labeled as positive are actually positive (Raschka, Liu, and
+    Mirjalili 2022).
+-   Recall: It quantifies how many of the positive observations have
+    been predicted as positive (Raschka, Liu, and Mirjalili 2022).
+-   F1 Score: Is the harmonic mean of the precision and recall and so
+    used to assess predictive performance. (Raschka, Liu, and Mirjalili
+    2022).
+-   Balanced Accuracy: Aids in reducing the effects of class imbalance
+    in the data set so that accuracy of predicting the dominant class
+    does not conceal the classification accuracy for the minority class
+    (Brodersen et al. 2010).
+:::
 
-### Software and Hardware Configuration
+### AUC-ROC
 
-The R programming language is used to support data processing and
-analysis as it is the standard for statistical programming and graphics.
-
-RStudio Pro, 2023.12.0, Build 369.pro3 is used. Various R libraries and
-packages are employed including CaTools, RandomForest, Tidyverse, Readr,
-Dplyr, Party, Caret, Corrplot, Tidyr, Ggplot2, DT, and pRoc.
-
-```{r}
-#{r, echo=FALSE}
-install.packages("caTools", repos="http://cran.us.r-project.org")
-install.packages("randomForest", repos="http://cran.us.r-project.org")
-install.packages("tidyverse", repos="http://cran.us.r-project.org")
-install.packages("dplyr", repos="http://cran.us.r-project.org")
-install.packages("party", repos="http://cran.us.r-project.org")
-
-library(caTools)
-library(randomForest)
-library(tidyverse)
-library(readr)
-library(dplyr)
-library(party)
-library(caret)
-library(corrplot)
-```
-
-The RStudio Server is running on a RHEL9 based virtual machine within a
-VMware VSphere HA cluster. The VM itself has 50 vCPU's and 196 GB of ram
-assigned.
-
-The physical hardware of the cluster nodes are Dell PowerEdge R750
-servers with Dual Xeon Gold 6338N (32 core) CPU's, 512 GB of ram, and
-sfp28 25gbit networking for all communications (6 total sfp28 per
-server). Cluster storage is from a NVMe based Dell SAN.
-
-### Model Evaluation Metrics
-
-There are a number of metrics available for assessing a classification
-model's performance. The metrics used are described in the following
-text:
-
--   **OOB error rate/accuracy**: The Out-of-Bag data is the data left
-    unused by an individual predictor (decision tree) after a bootstrap
-    sample is taken from the original data set. The OOB data is used for
-    internal validation– the prediction error rate is taken after
-    running the “unseen” data through each tree and averaged to provide
-    the overall OOB error rate. [@breiman] A model's accuracy is
-    calculated by subtracting the error rate from 100.
-
--   A **confusion matrix** shows the values of True Negative, False
-    Negative, False Positive, and True Positive predictions produced by
-    a model. Several performance metrics for classification algorithms
-    like the random forest method are presented by the
-    <em>confusionMatrix</em> function and derived from the values
-    provided in confusion matrices. Here we focus on precision, recall,
-    the F1 score, and balanced accuracy.
-
-    -   **Precision** is also known as the sensitivity and is calculated
-        by dividing the number of true positive predictions by the sum
-        of the true positives and false positives. This metric
-        quantifies how many of the observations labeled as positive are
-        actually positive [@raschka2022machine].
-    -   **Recall** is also known as the true positive rate — this is
-        calculated by dividing the number of true positive predictions
-        by the the sum of the false negatives and true positives. It
-        quantifies how many of the positive observations have been
-        predicted as positive [@raschka2022machine].
-    -   The **F1 score** is the harmonic mean of the precision and
-        recall and so used to assess predictive performance.
-        [@raschka2022machine]
-    -   **Balanced accuracy** is the average accuracy of classification
-        for both classes. It is given by the average of the true
-        positive rate and the true negative rate. It aids in reducing
-        the effects of class imbalance in the data set so that accuracy
-        of predicting the dominant class does not conceal the
-        classification accuracy for the minority class
-        [@brodersen2010balanced].
-
--   **AUC-ROC**: Area under the receiver operating characteristic curve.
-    This is the model’s true positive rate (on the Y-axis) is plotted
+-   Area under the receiver operating characteristic curve.
+-   This is the model’s true positive rate (on the Y-axis) is plotted
     against the false positive rate (on the X-axis) using varying
-    classification thresholds [@1388242]. An ideal ROC curve would have
-    a high true positive rate and low false positive rate, falling into
-    the upper left area of the graph. This equates to a value close
-    to 1. A diagonal line on the graph represents an AUC of 0.5,
-    equivalent to random guessing of the classifications
-    [@raschka2022machine].
-
-### Loading and Examining the Dataset
-
-The heart failure dataset is loaded from a .csv file.
-
-```{r, echo=FALSE}
-library(readr)
-heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
-#head(heart_df, 5)
-```
-
-```{r}
-#{r, echo=FALSE}
-cor_matrix <- cor(heart_df)
-#corrplot(cor_matrix, method = "color")
-# The drawing of the correlation heatmap was moved to way below.  However, some of this
-# code is needed earlier, so it was not moved.
-```
-
-The dataset was checked for any null values, and none were found. Null
-values can cause errors in calculations and need to eb addressed, often
-by removing them or providing a value for them (a median value, a random
-value, or somethong else).
-
-```{r}
-#{r, echo=FALSE}
-# What does this code do?
-heart_df %>% summarise(across(everything(), ~ sum(is.na(.))))
-```
-
-The target variable (DEATH_EVENT) was then examined for the balance
-between the negative and positive classes.
-
-```{r}
-#{r, echo=FALSE}
-heart_df %>% count(DEATH_EVENT)
-```
-
-The DEATH_EVENT feature is converted to a factor feature since it is the
-binary dependent variable.
-
-```{r}
-#{r, echo=FALSE}
-heart_df$DEATH_EVENT = as.factor(heart_df$DEATH_EVENT)
-```
-
-The dataset is examined for null values, and no null values are found.
-
-The number of negative events (non-heart-failure events) are found to be
-about double the number of positive events (heart-failure events). This
-imbalance is not considered significant as the Random Forest algorithm
-is robust enough to tolerate this asymmetry.
-
-### Running the Random Forest Model - Default Settings
-
-The patient health records dataset is split into a training set (80%)
-and a testing set (20%). An id column is created to assist in the split.
-
-```{r}
-# Split the data, 80% goes to training and 20% to testing
-
-set.seed(123)
-
-samp <- sample(nrow(heart_df), 0.8 * nrow(heart_df))
-
-heart_train <- heart_df[samp, ]
-
-heart_test <- heart_df[-samp, ]
-
-head(heart_train)
-head(heart_test)
-```
-
-The training and testing sets are inspected.
-
-```{r}
-dim(heart_train)
-
-dim(heart_test)
-```
-
-239 subjects are randomly placed into the training set and the remaining
-50 are designated for testing.
-
-The random forest model is run on the dataset using the default
-settings.
-
-```{r}
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~.,
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-```
-
-The default random forest model produced an Out-of-the-Bag (OOB)
-estimate of error rate of 13.39%. There is a higher class error rate in
-the "positive" (death event occurrence) class than the "negative" (no
-death occurrence) class, with 25.6% versus 7.45% rate, respectively.
-
-```{r}
-importance(model)
-```
-
-```{r}
-randomForest::varImpPlot(model, 
-                         sort=FALSE, 
-                         main="Variable Importance Plot")
-```
-
-The Variable Importance Plot above is a visual representation of the
-importance of each variable in our model. Circles are plotted on a scale
-at a location that is influenced by their accuracy and Gini Coefficient.
-The resulting value provides an indication of how useful a variable is
-for predicting an outcome. The higher the value, the greater the
-influence.
-
-In the Mean Decrease Accuracy plot, <en>time</em> has the highest value
-of approximately 40. Because time is the number of days between patient
-visits to their health care provider, it seems the longer a patient
-waits for a follow-up visit, the more at risk they are for heart
-failure.
-
-<em>Serum_creatinine</em> and <em>ejection_fraction</em> are tied for
-second at about 15 within the Mean Decrease Accuracy plot. Serum
-creatinine is a waste product of muscles and is usually filtered out of
-one’s blood by a healthy kidney. High serum_creatinine is often an
-indicator of unhealthy kidneys.
-
-<Em>Ejection fraction</em> is the amount of blood a heart pumps each
-time it beats. It is calculated by dividing the <em>stroke volume</em>
-by the <em>end-diastolic volume</em>, all multiplied by 100. An ejection
-fraction of 50-70% is considered healthy. A low ejection fraction rate
-is an indicator of heart failure and/or heart disease.
-
-Although the numbers are slightly lower, <em>time</em>,
-<em>serum_creatinine</em>, and <em>ejection_fraction</em> are also the
-top three variables for predicting heart failure according to the Mean
-Decrease Gini Index plot.
-
-```{r}
-prediction <- predict(model, newdata = heart_test)
-
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-```{r}
-# Produce plot of the confusion matrix
-
-fourfoldplot(as.table(cf),color=c("yellow","blue"),main = "Confusion Matrix for Random Forest -- Default Settings")
-```
-
-The visualization above is called a <em>FourFold Plot</em> and it is
-used to represent a 2 x 2 contingency table to support evaluation. In
-this case the contingency table is the confusion matrix resulting from
-our model. The top left square shows the algorithm correctly classifies
-‘heart failure’ 36 times, and the bottom right shows the algorithm
-correctly classifies ‘not heart failure’ 17 times. The errors are shown
-in the remaining squares; the top right shows the algorithm incorrectly
-classifies ‘heart failure’ as FALSE (not heart failure) 4 times when it
-should be classified as TRUE, and the bottom left shows the algorithm
-incorrectly classifies ‘not heart failure’ as TRUE (heart failure) 3
-times when it should be classified as FALSE. The colors are used to
-dual-encode correct prediction (blue) and incorrect prediction (yellow).
-The area of each quarter-circle is determined by a radius of
-$\sqrt{f_{ij}}$ where ${f_{ij}}$ is the cell frequency [@fourfold]. The
-message being portrayed is that 53 classifications are correct, and only
-7 are incorrect. This yields and accuracy of 88.33%, as mentioned
-previously.
-
-```{r}
-# The code below creates a heatmap from the values provided in the confusion matrix.
-# Notice the values are hard-coded and do not come from an existing data structure.
-# https://stackoverflow.com/questions/7421503/how-to-plot-a-confusion-matrix-using-heatmaps-in-r
-
-library("dplyr")
-library("tidyr")
-
-# Loading the confusion matrix
-hm <- readr::read_delim("y FALSE TRUE
-FALSE 3 17
-TRUE 36 4", delim = " ")
-
-hm <- hm %>% gather(x, value, "FALSE":"TRUE")
-
-
-library("ggplot2")
-ggplot(hm, aes(x=x, y=y, fill=value)) + geom_tile() +
-  scale_x_discrete(label = c("TRUE", "FALSE")) +
-  labs(title="Confusion Matrix Heatmap", x="Predicted Values", y="Actual Values") +
-  geom_text(aes(label=value), color="black") +
-  scale_fill_distiller(palette="Blues", direction = 1)
-```
-
-The Confusion Matrix Heatmap above shows an alternate way to visualize
-the performance of the algorithm regarding its ability to correctly
-predict an outcome. Just like with the FourFold Plot, the top left
-square shows the algorithm correctly classified 'heart failure' 36
-times, and the bottom right shows the algorithm correctly classified
-'not heart failure' 17 times. The errors are shown in the remaining
-squares; the top right shows the algorithm incorrectly classified 'heart
-failure' as FALSE (not heart failure) when it should have been
-classified as TRUE, and the bottom left shows the algorithm incorrectly
-classified 'not heart failure' as TRUE (heart failure) when it should
-have been classified as FALSE. The darker color gradient helps one
-perceive the relative amount recorded in each of the four areas.
-
-```{r}
-# Draws the corelation heatmap
-corrplot(cor_matrix, method = "color")
-```
-
-The Variable Correlation Heatmap above shows the correlation between
-multiple model variables as a color-coded matrix. Model variables that
-are positively correlated have a blue square at their intersection and
-negatively correlated model variables have a red square at their
-intersection. The color saturation represents the intensity of the
-correlation (blue) or lack of correlation (red). For example, the
-intersection of serum_creatinine along the left side with age along the
-top results in a light blue square representing a slightly positive
-correlation between these two model variables. On the other hand,
-serum_creatinine along the left side intersects with serum_sodium along
-the top resulting in a slightly red square representing a slightly
-negative correlation between these two model variables. Other model
-variables like diabetes and creatinine_phosphokinase intersect with no
-color, which means there is no positive or negative correlation between
-these two model variables.
-
-Variable correlation is used to explore the data to understand
-relationships that might otherwise go unnoticed. In some cases,
-understanding correlation can lead to the discovery of one variable
-causing another variable. A review of the heatmap suggests
-serum_creatinine might be a cause of a death_event, whereas
-ejection_fraction shows a negative causal relationship. We are making
-neither claim in our analysis and only offer these as examples for one
-way to interpret the results of a correlation heatmap. Furthermore, we
-also recognize that correlation does not mean causation, so we are
-careful to make such a claim. We recognize that further analysis and
-subject matter expertise is required to arrive at such a conclusion.
-
-```{r}
-# Create prediction matrix and utilize it to generate ROC values that can be graphed
-prediction <- predict(model, heart_test, type = "prob")
-prediction
-library(pROC)
-ROC_rf <- roc(heart_test$DEATH_EVENT, prediction[,2])
-
-# Generate Area Under Curve (AUC) for ROC curve (higher -> better)
-ROC_rf_auc <- auc(ROC_rf)
-```
-
-The table above shows the classification prediction probabilities for
-each observation in the test dataset. Rather than just stating how each
-observation is classified, it is useful to state the probability of that
-classification as well. In this case, "0" means a classification of no
-heart failure and "1" means a classification of heart failure.
-Understanding classification probabilities provides insight into how
-statistically strong a prediction is. For example, record 7 above shows
-a probability of 0.098 for no heart failure and 0.902 for heart failure.
-This can be interpreted as strong confidence in this particular
-classification instance. On the other hand, record 58 shows
-probabilities of 0.540 and 0.460, which means the confidence is almost
-split evenly between the two possibilities.
-
-```{r}
-# Plot ROC curves
-plot(ROC_rf, col = "green", legacy.axes = TRUE, main = "ROC For Random Forest, Default Settings")
-
-# Print the performance of each model
-paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
-paste("Area under curve of default random forest: ", ROC_rf_auc)
-```
-
-The ROC (receiver operating characteristic) curve above provides a
-graphical representation of the true positive rate along the Y-axis vs.
-the false positive rate along the X-axis. This is slightly different
-than accuracy (shown above the ROC curve), which is just a percentage of
-correct predictions. The diagonal line of the ROC curve represents what
-the accuracy is expected to be if the data points are classified at
-random. The closer a curve is to the top left corner, the more accurate
-the model is. Perfect classification is 100%. The output above shows the
-classification accuracy with the default hyperparameters for the
-randomForest package comes to 81.67% and the area under the ROC curve is
-85.85%. In this case, these are considered indications of strong
-accuracy.
-
-### Tuning the Random Forest Model
-
-A random search algorithm is used to select an optimum (tuned) mtry
-value. The mtry value is the number of randomly drawn candidate
-variables. We expect "mtry" to be an acronym but we do not find any
-confirmation in the literature.
-
-```{r}
-ncol(heart_train)
-```
-
-The output above confirms we have 13 variables (columns) in our dataset.
-
-```{r}
-# Implement a random search for tuned mtry
-control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
-metric <- "Accuracy"
-mtry <- sqrt(ncol(heart_train))
-rf_random <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric, tuneLength=13, trControl=control)
-print(rf_random)
-plot(rf_random)
-```
-
-The visualization above is the result of running the trainControl()
-function with <em>random selection</em>. This function is used to
-specify parameters used for training. The visualization above shows the
-results of running the model with 2, 3, 4, 5, 7, 9, 10, 11, and 12
-variables to simulate random selection. The general downward slope of
-the graph shows performance decreases as the number of parameters
-increases from 2 to 12. The conclusion is that for a random search the
-model's accuracy is the highest when the number of candidate variables
-(mtry) is 2.
-
-```{r}
-# Use gridsearch to determine best mtry value
-control <- trainControl(method="repeatedcv", number=10, repeats=3, search="grid")
-tunegrid <- expand.grid(.mtry=c(1:12))
-rf_gridsearch <- train(DEATH_EVENT~., data=heart_train, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control)
-print(rf_gridsearch)
-plot(rf_gridsearch)
-```
-
-The visualization above is the result of running the trainControl()
-function and using <em>grid search</em> rather than random selection to
-identify the optimum number of parameters (mtry) to use in the model.
-The results confirm a peak accuracy when the number of candidtae
-variables (mtry) is 2. Thus, randomForest model is tested with this
-optimized mtry value below.
-
-```{r}
-set.seed(123)
-model2 <- randomForest(
-  formula = DEATH_EVENT~.,
-  data = heart_train,
-  mtry = 2,
-  importance = TRUE
-)
-
-model2
-```
-
-The above output is the result of running the Random Forest algorithm
-with an <em>mtry</em> value of 2 rather than the default 3. Notice the
-confusion matrix shows a negative classification rate of 6.83% and a
-positive classification rate of 25.64% (vs. 7.45% and 25.64%
-previously). The OOB estimate of error rate decreased significantly to
-12.97% from 13.39% previously. These results confirm that slight
-improvements can be achieved if the model is tuned.
-
-```{r}
-importance(model2)
-randomForest::varImpPlot(model2, 
-                         sort=FALSE, 
-                         main="Variable Importance Plot")
-```
-
-The Variable Importance plot above is run with the data from the
-optimized model. The results appear to be identical to the previous
-Variable Importance Plot, and there is no noticeable change in the most
-important variables. The top three most important variables for
-classification are still <em>time</em>, <em>serum_creatinine</em>, and
-<em>ejection_fraction</em>.
-
-```{r}
-prediction2 <- predict(model2, newdata = heart_test)
-
-
-cf2 <- confusionMatrix(prediction2, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf2
-```
-
-The Confusion Matrix and Statistics above shows a slight improvement
-from previous results. The correct positive predictions increase from 37
-previously to 38. The incorrect negative predictions decrease from 5
-previously to 4. This results in an accuracy improvement from 81.67% to
-83.33%. Thus, tuning the model results in an accuracy improvement of
-about 1.66%.
-
-```{r}
-fourfoldplot(as.table(cf2),color=c("yellow","blue"),main = "Confusion Matrix for Random Forest -- Tuned mtry")
-```
-
-After changing the mtry hyperparameter to 2, the OOB estimate of error
-rate decreased significantly to 12.97%. The "positive" classification
-error stayed the same at 25.64%. The "negative" classification error
-decreased slightly to 6.83% (down from 7.45%). Thus, tuning the model
-resulted in a small but noticable improvement.
-
-```{r}
-#set.seed(123)
-x <- heart_df[,1:12]
-y <- heart_df[,13]
-
-control <- trainControl(method = 'repeatedcv',
-                        number = 10,
-                        repeats = 3,
-                        search = 'grid')
-#create tunegrid
-tunegrid <- expand.grid(.mtry = c(sqrt(ncol(heart_train))))
-modellist <- list()
-
-#train with different ntree parameters
-for (ntree in seq(100,1500,100)){
-  set.seed(1)
-  fit <- train(DEATH_EVENT~.,
-               data = heart_train,
-               method = 'rf',
-               metric = 'Accuracy',
-               tuneGrid = tunegrid,
-               trControl = control,
-               ntree = ntree)
-  key <- toString(ntree)
-  modellist[[key]] <- fit
-}
-
-#Compare results
-results <- resamples(modellist)
-summary(results)
-```
-
-```{r}
-dotplot(results)
-```
-
-In the code above the number of trees (ntree) is evaluated over the
-range 100 to 1500 with increments of 100 trees per set to see if
-accuracy can be improved by changing this hyperparameter. Note, the
-default value used previously is ntree = 500.
-
-The results are easiest to understand by reviewing the visualization
-above. The location of the circle in each row of the accuracy
-visualization on the left shows the greatest accuracy is achieved when
-the number of trees is 500. Furthermore, the greatest <em>kappa</em>
-value is also achieved when the number of trees is 500. Cohen's
-<em>kappa</em> is essentially a measure of "how reliably two raters
-measure the same thing" [@datatab]. Thus, the original model that uses
-500 trees as a default value is also the optimum configuration for our
-model. Therefore, a new model run is not indicated.
-
-```{r}
-prediction2 <- predict(model2, heart_test, type = "prob") 
-prediction2 
-ROC_rf2 <- roc(heart_test$DEATH_EVENT, prediction2[,2])  
-# Area Under Curve (AUC) for each ROC curve (higher -> better) 
-ROC_rf2_auc <- auc(ROC_rf2)
-```
-
-The table above shows the classification prediction probabilities for
-each observation in the modified/tuning dataset. This output is similar
-to the output for the default dataset. No additional understanding is
-gained from this. This output is included in the this report for
-completeness.
-
-```{r}
-# plot ROC curves 
-plot(ROC_rf2, col = "orange", legacy.axes = TRUE, main = "ROC For Random Forest, Default Settings")
-lines(ROC_rf, col = "blue", legacy.axes = TRUE)
-# print the performance of each model 
-paste("Accuracy % of default random forest: ", mean(heart_test$DEATH_EVENT == round(prediction[,2], digits = 0)))
-paste("Area under curve of default random forest: ", ROC_rf_auc)
-
-paste("Accuracy % of tuned random forest: ", mean(heart_test$DEATH_EVENT == round(prediction2[,2], digits = 0))) 
-paste("Area under curve of tuned random forest: ", ROC_rf2_auc)
-```
-
-The ROC (receiver operating characteristic) curve above is similar to
-the previous one except that both the default (orange) and tuned (blue)
-datasets are plotted together. As was stated previously, a ROC curve is
-a visual representation of the <em>performance</em> (not accuracy) of a
-model. Greater performance is represented as more area under the curve.
-In this case, we see the tuned (blue) curve and the default (orange)
-curve are approximately the same. Numerical analysis shows the default
-model has a slightly better <em>performance</em> at 85.85% vs. 84.39%
-for the tuned model for area under the curve.
-
-Furthermore, the tuned model has a slightly better <em>accuracy</em> at
-83.33% vs. 81.66% for the default model. The apparent conflict between
-<em>performance</em> and <em>accuracy</em> is resolved by understanding
-the area under the curve is based on actual values and the accuracy is
-calculated from expected values. Each is measuring something different.
-
-### Model Results
-
-<center>Model Results</center>
-
-```{=html}
-<style>
-  table.tb { border-collapse: collapse; width:900px; }
-  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
-  .tb th { background-color: lightblue;}
-</style>
-```
-+-------+-------+-------+-------+-------+-------+-------+-------+
-| Model | OOB   | Te    | Prec  | R     | F1    | Bal   | AU    |
-|       | Erro  | sting | ision | ecall | Score | anced | C-ROC |
-|       | r/Tra | Acc   |       |       |       | Acc   |       |
-|       | ining |       |       |       |       | uracy |       |
-|       | Acc   |       |       |       |       |       |       |
-+=======+=======+=======+=======+=======+=======+=======+=======+
-| Model | 13.   | 0     | 0     | 0     | 0     | 0     | 0     |
-| 1     | 39%/8 | .8167 | .7059 | .6667 | .6857 | .7738 | .8585 |
-| (def  | 6.61% |       |       |       |       |       |       |
-| ault) |       |       |       |       |       |       |       |
-+-------+-------+-------+-------+-------+-------+-------+-------+
-| Model | **    | **0.8 | **0.7 | 0     | **0.7 | **0.7 | 0     |
-| 2     | 12.97 | 333** | 500** | .6667 | 059** | 857** | .8439 |
-| (     | %/87. |       |       |       |       |       |       |
-| Tuned | 03%** |       |       |       |       |       |       |
-| mtry) |       |       |       |       |       |       |       |
-+-------+-------+-------+-------+-------+-------+-------+-------+
-
-The testing accuracies of both models are slightly lower than their
-respective training accuracies which indicates overfitting of the
-training dataset. We suspect this is caused by the training dataset
-being too small, or too noisy. This is a small concern and its
-resolution is out of scope for this report.
-
-When looking at the default model (Model 1) we got an OOB error rate of
-13.39%, which translates to a training accuracy of 86.61%. The testing
-accuracy was 0.8167 (81.67%). The precision value is 70.59% which means
-that about 71% of the observations predicted as positive are truly
-positive. The recall is 66.67% which suggests that this model detects
-positive cases from the samples of true positives in the data about 67%
-of the time. The F1 score is 68.57% which is the harmonic mean of the
-model’s precision and recall, another measure of the model's
-reliability. Lastly the balanced accuracy is 73.38% which is the average
-of the models true positive and true negative. This value ensures both
-minority and majority classes are equally important in the evaluation.
-
-The second model (Model 2) the OOB error is 12.97% which translates to a
-training accuracy of 87.03%. The testing accuracy is 0.8333 (83.33%).
-The precision value came to 0.7500 which indicates that the observations
-predicted as positive are truly positive 75% of the time. The recall is
-66.67% which suggests that this model detects positive cases from the
-samples of true positives in the data about 67% of the time. The F1
-score is 70.59% which is the harmonic mean of the model’s precision and
-recall. Lastly the balanced accuracy is 78.57% which is the average of
-the models true positive and true negative.
-
-The performance of model 2 is better than model 1. This is based off of
-the model’s training and testing accuracies; precision; F1; and balanced
-accuracy as they are all higher than those of the default model. The F1
-provides the overall performance of the model since it is a combination
-of the precision and recall percentages. The balanced accuracy is the
-average accuracy of classifications for both classes. The recall did not
-change between models. This metric is of particular importance as it is
-vital in cases such as heart failure prediction -- a higher recall
-translates to a decrease in false negatives at the expense of a decrease
-in precision (which equates to an increase in false positives). It is
-typically more important to not fail to detect positive cases than to
-have a positive diagnosis for risk of heart failure that is a 'false
-alarm.' The ROC-AUC for the tuned model was found to be slightly lower
-than the default model's (0.8439 vs 0.8585). This suggests that although
-the tuned model is more <em>accurate</em>, it did not <em>perform</em>
-as well as the default model.
-
-```{=html}
-<!--
-
-The following paragraph seems to have noting to do with this section dealing with "Model Results."  Perhaps this information can be added womewhere else.
-
-The output of a Random Forest model is influenced by subsample size, the number of variables assessed at each node, the maximum nodesize of each leaf, and the number of predictors generated [@scornet2017tuning]. In R, the defaults are a subsample size of $\sqrt{d}$ for classification (where d is the total number of dimensions), the generation of 500 predictors, and a nodesize of 5 [@scornet2017tuning]. In one comparison study, the balanced accuracy was found to be optimal at 1300 trees and 3 nodes in R and led to an increase of 0.09 (9%) in balanced accuracy as well as a 0.14 (14%) in the AUC-ROC compared to the values generated by the default hyperparameters [@lotsch2022biomedical].The results suggest the importance of tuning the hyperparameters of random forest algorithms, particularly in the case of exploratory analysis that has initial unfavorable accuracy. In the case of this dataset, the model with the tuned hyperparameters (Model 2) provided better performance according to training/testing accuracy, precision, F1 score, and balanced accuracy, which suggests the importance of considering hyperparameter tuning when constructing random forest models.
--->
-```
-Although we know which patients Random Forest classifies for heart
-failure, we do not know how Random Forest comes to these decisions. This
-is consistent with black-box machine learning. The variable importance
-plot provides some indication of which variables influence the
-classification process, but we can never know for certain. The variable
-importance plots for each model reveal that the top three features with
-the greatest influence on heart failure prediction are <em>time</em>
-before follow-up visit, <em>serum creatinine</em> levels, and
-<em>ejection fraction</em> amount. <em>Age</em> of the patient and
-<em>serum sodium</em> amount also have an influence over classification,
-but to a lesser degree.
-
-## Conclusion
-
-We began by asserting the importance of correctly classifying a person
-at risk for heart failure. This analysis is made easier with the
-automated machine learning <em>decision tree</em>. This approach,
-however, is challenged by poor-partitioning, noise, and long compute
-time. Leo Breiman addresses these issues with his proposal of the Random
-Forest model which exploits the power of random data subset selection,
-ensemble learning via multiple decision trees, and an algorithm that
-supports both hardware and software optimization [@breiman].
-
-The Random Forest model is applied to a heart failure dataset of
-patients from Faisalabad Pakistan. The Random Forest model provides
-strong classification results with its default settings. The model is
-tuned to generate an OOB Error of 12.97%, a training accuracy of 87.03%,
-a testing accuracy of 83.33%, a precision score of .7500, a recall score
-of .6667, an F1 score of .7059, a balanced accuracy of .7857, and an
-AUC-ROC score of .8439. We consider these results to be strong for
-automated analysis.
-
-Random Forest makes its decisions in a <em>black box</em>, which means
-we do not fully understand how is classifies data or which variables are
-used. We do know from a review of the variable importance plot that
-<em>time before follow-up visit</em>, <em>serum creatinine levels</em>,
-and <em>ejection fraction amount</em> are all likely influential in the
-classification process.
-
-```{=html}
-<!--  Below is the original conclusion.
-
-In conclusion, the application of Random Forest classification on the Heart Failure Clinical Records dataset yielded promising results in predicting heart failure events. By leveraging a diverse range of patient data including age, medical conditions, physiological indicators, and lifestyle factors, the model achieved an accuracy of approximately 86.7% on the testing set. This indicates a strong ability to discern between patients who are likely to experience heart failure and those who are not.
-
-The initial recognition of class imbalance and subsequent hyperparameter tuning were critical steps in enhancing the model's performance. Adjusting the mtry parameter to 4 through cross-validation improved sensitivity, thereby reducing errors in predicting positive instances of heart failure. Moreover, experiments with varying tree numbers reaffirmed that the default setting of 500 trees was optimal, demonstrating stable accuracy levels without significant gains beyond this point.
-
-Overall, the tuned Random Forest model not only addressed the dataset's inherent challenges but also showcased robustness in handling class imbalance and leveraging multiple features effectively. Its high sensitivity (89.7%) and specificity (80.9%) underscore its reliability in clinical applications, offering potential for early detection and personalized management of heart failure. Moving forward, further validation on larger datasets could solidify its role as a valuable tool in cardiovascular risk assessment and patient care.
--->
-```
-## References
+    classification thresholds (Huang and Ling 2005).
+:::
+
+## Model Results
+
+::: columns
+::: {.column width="60%"}
+![](images/data.png)
+:::
+
+::: {.column width="40%"}
+-   The testing accuracies of both models are slightly lower than their
+    respective training accuracies which indicates overfitting of the
+    training dataset.
+-   The performance of model 2 is better than model 1. This is based off
+    of the model’s training and testing accuracies; precision; F1; and
+    balanced accuracy as they are all higher than those of the default
+    model.
+:::
+:::
+## References 
