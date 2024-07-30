@@ -527,6 +527,28 @@ between the negative and positive classes.
 heart_df %>% count(DEATH_EVENT)
 ```
 
+```{r}
+ggplot(data = heart_df) +
+  geom_bar(mapping = aes(x = DEATH_EVENT), fill='red')
+```
+```{r}
+# heart_df <- heart_df %>%
+#   mutate(across(where(is.numeric), as.factor))
+# 
+# col_names <- colnames(heart_df)
+# col_names <- col_names[-1]
+# 
+# # plot_list <- list()
+# 
+# for (i in col_names){
+#     # df[,i] <- as.factor(df[,i])
+#     plot <- ggplot(data = heart_df, aes(x = i)) +
+#     geom_bar()+
+#       xlab(i)
+#     print(plot)
+# }
+```
+
 The DEATH_EVENT feature is converted to a factor feature since it is the
 binary dependent variable.
 
