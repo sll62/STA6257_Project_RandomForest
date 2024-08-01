@@ -1167,10 +1167,45 @@ heart_df_noBinary = select(heart_df, age, creatinine_phosphokinase, ejection_fra
 head(heart_df_noBinary)
 
 ageVector <- heart_df_noBinary$age
-
 GiniIndex_AgeVector <- Gini(ageVector, unbiased=FALSE)
-
 GiniIndex_AgeVector # the output is [1] 0.1101127
+
+cpVector <- heart_df_noBinary$creatinine_phosphokinase
+GiniIndex_cpVector <- Gini(cpVector, unbiased=FALSE)
+GiniIndex_cpVector # the output is [1] 0.6082741
+
+efVector <- heart_df_noBinary$ejection_fraction
+GiniIndex_efVector <- Gini(efVector, unbiased=FALSE)
+GiniIndex_efVector # the output is [1] 0.1712855
+
+plateletsVector <- heart_df_noBinary$platelets
+GiniIndex_plateletsVector <- Gini(plateletsVector, unbiased=FALSE)
+GiniIndex_plateletsVector # the output is [1] 0.1909926
+
+scVector <- heart_df_noBinary$serum_creatinine
+GiniIndex_scVector <- Gini(scVector, unbiased=FALSE)
+GiniIndex_scVector  # the output is [1] 0.2799149
+
+ssVector <- heart_df_noBinary$serum_sodium
+GiniIndex_ssVector <- Gini(ssVector, unbiased=FALSE)
+GiniIndex_ssVector  # The output is [1] 0.01707994
+
+timeVector <- heart_df_noBinary$time
+GiniIndex_timeVector <- Gini(timeVector, unbiased=FALSE)
+GiniIndex_timeVector  # The output is [1] 0.3416812
+
+# BELOW IS A SUMMARY OF THE RESULTS
+# 
+# creatinine_phosphokinase	0.6082741
+# time	                    0.3416812
+# serum_creatinine	        0.2799149
+# platelets	                0.1909926
+# ejection_fraction	        0.1712855
+# Age	                      0.1101127
+# serum_sodium	            0.01707994
+
+
+
 
 #  I Think I generated the Gini Coefficient for Age.
 #  Do you think this ic correct?
