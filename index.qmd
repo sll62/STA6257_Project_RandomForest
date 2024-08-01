@@ -1153,4 +1153,19 @@ The initial recognition of class imbalance and subsequent hyperparameter tuning 
 Overall, the tuned Random Forest model not only addressed the dataset's inherent challenges but also showcased robustness in handling class imbalance and leveraging multiple features effectively. Its high sensitivity (89.7%) and specificity (80.9%) underscore its reliability in clinical applications, offering potential for early detection and personalized management of heart failure. Moving forward, further validation on larger datasets could solidify its role as a valuable tool in cardiovascular risk assessment and patient care.
 -->
 ```
+
+## Below is new analysis conducted after the in-class presentation
+
+```{r}
+# heart_df is the original data frame created with the import of the entire dataset
+head(heart_df)
+
+heart_df_noBinary = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time)
+
+head(heart_df_noBinary)
+
+```
+
+
+
 ## References

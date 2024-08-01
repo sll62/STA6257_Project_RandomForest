@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sierra Landacre, Tim Leschke, Pamela Mishaw, Pallak Singh">
-<meta name="dcterms.date" content="2024-07-30">
+<meta name="dcterms.date" content="2024-08-01">
 
 <title>Random Forest Analysis of Heart Failure Dataset</title>
 <style>
@@ -3152,7 +3152,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 30, 2024</p>
+      <p class="date">August 1, 2024</p>
     </div>
   </div>
   
@@ -4488,6 +4488,48 @@ The initial recognition of class imbalance and subsequent hyperparameter tuning 
 
 Overall, the tuned Random Forest model not only addressed the dataset's inherent challenges but also showcased robustness in handling class imbalance and leveraging multiple features effectively. Its high sensitivity (89.7%) and specificity (80.9%) underscore its reliability in clinical applications, offering potential for early detection and personalized management of heart failure. Moving forward, further validation on larger datasets could solidify its role as a valuable tool in cardiovascular risk assessment and patient care.
 -->
+</section>
+<section id="below-is-new-analysis-conducted-after-the-in-class-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="below-is-new-analysis-conducted-after-the-in-class-presentation">Below is new analysis conducted after the in-class presentation</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># heart_df is the original data frame created with the import of the entire dataset</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(heart_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 13
+    age anaemia creatinine_phosphokinase diabetes ejection_fraction
+  &lt;dbl&gt;   &lt;dbl&gt;                    &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;
+1    75       0                      582        0                20
+2    55       0                     7861        0                38
+3    65       0                      146        0                20
+4    50       1                      111        0                20
+5    65       1                      160        1                20
+6    90       1                       47        0                40
+# ℹ 8 more variables: high_blood_pressure &lt;dbl&gt;, platelets &lt;dbl&gt;,
+#   serum_creatinine &lt;dbl&gt;, serum_sodium &lt;dbl&gt;, sex &lt;dbl&gt;, smoking &lt;dbl&gt;,
+#   time &lt;dbl&gt;, DEATH_EVENT &lt;fct&gt;</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>heart_df_noBinary <span class="ot">=</span> <span class="fu">select</span>(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(heart_df_noBinary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+    age creatinine_phosphokinase ejection_fraction platelets serum_creatinine
+  &lt;dbl&gt;                    &lt;dbl&gt;             &lt;dbl&gt;     &lt;dbl&gt;            &lt;dbl&gt;
+1    75                      582                20   265000               1.9
+2    55                     7861                38   263358.              1.1
+3    65                      146                20   162000               1.3
+4    50                      111                20   210000               1.9
+5    65                      160                20   327000               2.7
+6    90                       47                40   204000               2.1
+# ℹ 2 more variables: serum_sodium &lt;dbl&gt;, time &lt;dbl&gt;</code></pre>
+</div>
+</div>
 </section>
 <section id="references" class="level2 unnumbered">
 
