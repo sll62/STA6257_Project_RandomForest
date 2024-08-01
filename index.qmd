@@ -417,6 +417,7 @@ install.packages("randomForest", repos="http://cran.us.r-project.org")
 install.packages("tidyverse", repos="http://cran.us.r-project.org")
 install.packages("dplyr", repos="http://cran.us.r-project.org")
 install.packages("party", repos="http://cran.us.r-project.org")
+install.packages("DescTools", repos="http://cran.us.r-project.org") # for Gini index
 
 library(caTools)
 library(randomForest)
@@ -426,6 +427,7 @@ library(dplyr)
 library(party)
 library(caret)
 library(corrplot)
+library(DescTools) # for Gini index
 ```
 
 The RStudio Server is running on a RHEL9 based virtual machine within a
@@ -1163,6 +1165,16 @@ head(heart_df)
 heart_df_noBinary = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time)
 
 head(heart_df_noBinary)
+
+ageVector <- heart_df_noBinary$age
+
+GiniIndex_AgeVector <- Gini(ageVector, unbiased=FALSE)
+
+GiniIndex_AgeVector # the output is [1] 0.1101127
+
+#  I Think I generated the Gini Coefficient for Age.
+#  Do you think this ic correct?
+#  Is there a better way to do this for all of the variables?
 
 ```
 
