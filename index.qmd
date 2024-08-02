@@ -1290,6 +1290,11 @@ model <- randomForest(
 )
 
 model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
 ```
 
 ## Below is Random Forest performance for heart_df_noBinary_noSerum_sodium
@@ -1506,6 +1511,11 @@ model <- randomForest(
 )
 
 model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
 ```
 
 ## Below is Random Forest performance for heart_df_noTime
@@ -1529,6 +1539,11 @@ model <- randomForest(
 )
 
 model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
 ```
 
 ## Below is Random Forest performance for heart_df_noSerum_creatinine
@@ -1552,6 +1567,11 @@ model <- randomForest(
 )
 
 model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
 ```
 
 ## Below is Random Forest performance for heart_df_noPlatelets
@@ -1575,6 +1595,11 @@ model <- randomForest(
 )
 
 model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
 ```
 
 ## Below is Random Forest performance for heart_df_noEjection_fraction
@@ -1598,6 +1623,11 @@ model <- randomForest(
 )
 
 model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
 ```
 
 ## Below is Random Forest performance for heart_df_noAge
@@ -1621,7 +1651,79 @@ model <- randomForest(
 )
 
 model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
 ```
+
+## RESULTS
+
+<center>Heart Failure Clinical Records - UCI Machine Learning Repository</center>
+ <style>
+  table.tb { border-collapse: collapse; width:900px; }
+  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
+  .tb th { background-color: lightblue;}
+</style>
+
+<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
+  <tr>
+    <th>Variable</th>
+    <th>Gini Index</th>
+    <th>Models contains</th>
+    <th>Model Accuracy</th>
+  </tr>
+  <tr>
+    <td>Creatine_Phosphokinase (CP)</td>
+    <td>0.6082741</td>
+    <td>SS, A, EF, P, SC, T, and CP</td> 
+    <td>80.00 %</td>
+  </tr>
+  <tr>
+    <td>Time (T)</td>
+    <td>.03416812</td>
+     <td>SS, A, EF, P, SC, and T</td> 
+    <td>80.00 %</td>
+  </tr>
+  <tr>
+    <td>Serum_Creatinine (SC)</td>
+    <td>0.2799149</td>
+    <td>SS, A, EF, P, and SC</td> 
+    <td>71.67 %</td>
+  </tr>
+  <tr>
+    <td>Platelets (P)</td>
+    <td>0.1909926</td>
+    <td>SS, A, EF, and P</td> 
+    <td>70.00 %</td>
+  </tr>
+  <tr>
+    <td>Ejection_Fraction (EF)</td></td>
+    <td>0.1712855</td>
+    <td>SS, A, and EF</td> 
+    <td>63.33 %</td>
+  </tr>
+  <tr>
+    <td>Age (A)</td>
+    <td>0.1101127</td>
+    <td>SS, and A</td> 
+    <td>58.33%</td>
+  </tr>
+  <tr>
+    <td>Serum_Sodium (SS)</td>
+    <td>0.01707994</td>
+    <td>Only SS</td> 
+    <td>66.67 %</td>
+  </tr>
+</table>
+
+
+## Team, above are the results I get, but I do not know if I did the analysis the correct way.
+
+## From my results, it seems the highest accuracy is 80%, and this happens when we use all of the variables in the model, and also when we use all but creatinine_phosphokinase.
+
+
 
 
 ## References
