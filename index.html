@@ -4951,10 +4951,13 @@ Confusion matrix:
 1  63 15   0.8076923</code></pre>
 </div>
 </div>
+</section>
+<section id="below-i-am-starting-over-with-the-datasets-created-in-the-opposite-order." class="level2">
+<h2 class="anchored" data-anchor-id="below-i-am-starting-over-with-the-datasets-created-in-the-opposite-order.">Below I am starting over with the datasets created in the opposite order.</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># It seems I did the above backwards.  I should have removed thos variables with the largest Gini index.</span></span>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># It seems I did the above backwards.  I should have removed those variables with the largest Gini index.</span></span>
 <span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="co"># See https://www.cloudzilla.ai/dev-education/hyperparmeter-tuning/</span></span>
 <span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is the dataset with no binary variables and creatinine_phosphokinase removed </span></span>
@@ -4968,8 +4971,283 @@ Confusion matrix:
 <span id="cb103-12"><a href="#cb103-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Age                         </span></span>
 <span id="cb103-13"><a href="#cb103-13" aria-hidden="true" tabindex="-1"></a><span class="co"># serum_sodium</span></span>
 <span id="cb103-14"><a href="#cb103-14" aria-hidden="true" tabindex="-1"></a><span class="co"># DEATH_EVENT</span></span>
-<span id="cb103-15"><a href="#cb103-15" aria-hidden="true" tabindex="-1"></a>heart_df_noCreatinine_phosphokinase <span class="ot">=</span> <span class="fu">select</span>(heart_df, age, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb103-15"><a href="#cb103-15" aria-hidden="true" tabindex="-1"></a>heart_df_noCreatinine_phosphokinase <span class="ot">=</span> <span class="fu">select</span>(heart_df, age, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)</span>
+<span id="cb103-16"><a href="#cb103-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-17"><a href="#cb103-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is the dataset with no binary variables and time removed </span></span>
+<span id="cb103-18"><a href="#cb103-18" aria-hidden="true" tabindex="-1"></a><span class="co"># serum_creatinine          </span></span>
+<span id="cb103-19"><a href="#cb103-19" aria-hidden="true" tabindex="-1"></a><span class="co"># platelets               </span></span>
+<span id="cb103-20"><a href="#cb103-20" aria-hidden="true" tabindex="-1"></a><span class="co"># ejection_fraction        </span></span>
+<span id="cb103-21"><a href="#cb103-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Age                         </span></span>
+<span id="cb103-22"><a href="#cb103-22" aria-hidden="true" tabindex="-1"></a><span class="co"># serum_sodium</span></span>
+<span id="cb103-23"><a href="#cb103-23" aria-hidden="true" tabindex="-1"></a><span class="co"># DEATH_EVENT</span></span>
+<span id="cb103-24"><a href="#cb103-24" aria-hidden="true" tabindex="-1"></a>heart_df_noTime <span class="ot">=</span> <span class="fu">select</span>(heart_df, age, ejection_fraction, platelets, serum_creatinine, serum_sodium, DEATH_EVENT)</span>
+<span id="cb103-25"><a href="#cb103-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-26"><a href="#cb103-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is the dataset with no binary variables and serum_creatinine removed </span></span>
+<span id="cb103-27"><a href="#cb103-27" aria-hidden="true" tabindex="-1"></a><span class="co"># platelets               </span></span>
+<span id="cb103-28"><a href="#cb103-28" aria-hidden="true" tabindex="-1"></a><span class="co"># ejection_fraction        </span></span>
+<span id="cb103-29"><a href="#cb103-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Age                         </span></span>
+<span id="cb103-30"><a href="#cb103-30" aria-hidden="true" tabindex="-1"></a><span class="co"># serum_sodium</span></span>
+<span id="cb103-31"><a href="#cb103-31" aria-hidden="true" tabindex="-1"></a><span class="co"># DEATH_EVENT</span></span>
+<span id="cb103-32"><a href="#cb103-32" aria-hidden="true" tabindex="-1"></a>heart_df_noSerum_creatinine <span class="ot">=</span> <span class="fu">select</span>(heart_df, age, ejection_fraction, platelets, serum_sodium, DEATH_EVENT)</span>
+<span id="cb103-33"><a href="#cb103-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-34"><a href="#cb103-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is the dataset with no binary variables and platelets removed </span></span>
+<span id="cb103-35"><a href="#cb103-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ejection_fraction        </span></span>
+<span id="cb103-36"><a href="#cb103-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Age                         </span></span>
+<span id="cb103-37"><a href="#cb103-37" aria-hidden="true" tabindex="-1"></a><span class="co"># serum_sodium</span></span>
+<span id="cb103-38"><a href="#cb103-38" aria-hidden="true" tabindex="-1"></a><span class="co"># DEATH_EVENT</span></span>
+<span id="cb103-39"><a href="#cb103-39" aria-hidden="true" tabindex="-1"></a>heart_df_noPlatelets <span class="ot">=</span> <span class="fu">select</span>(heart_df, age, ejection_fraction, serum_sodium, DEATH_EVENT)</span>
+<span id="cb103-40"><a href="#cb103-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-41"><a href="#cb103-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is the dataset with no binary variables and ejection_fraction removed </span></span>
+<span id="cb103-42"><a href="#cb103-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Age                         </span></span>
+<span id="cb103-43"><a href="#cb103-43" aria-hidden="true" tabindex="-1"></a><span class="co"># serum_sodium</span></span>
+<span id="cb103-44"><a href="#cb103-44" aria-hidden="true" tabindex="-1"></a><span class="co"># DEATH_EVENT</span></span>
+<span id="cb103-45"><a href="#cb103-45" aria-hidden="true" tabindex="-1"></a>heart_df_noEjection_fraction <span class="ot">=</span> <span class="fu">select</span>(heart_df, age, serum_sodium, DEATH_EVENT)</span>
+<span id="cb103-46"><a href="#cb103-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-47"><a href="#cb103-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is the dataset with no binary variables and age removed </span></span>
+<span id="cb103-48"><a href="#cb103-48" aria-hidden="true" tabindex="-1"></a><span class="co"># serum_sodium</span></span>
+<span id="cb103-49"><a href="#cb103-49" aria-hidden="true" tabindex="-1"></a><span class="co"># DEATH_EVENT</span></span>
+<span id="cb103-50"><a href="#cb103-50" aria-hidden="true" tabindex="-1"></a>heart_df_noAge <span class="ot">=</span> <span class="fu">select</span>(heart_df, serum_sodium, DEATH_EVENT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
+</section>
+<section id="below-is-random-forest-performance-for-heart_df_nocreatinine_phosphokinase" class="level2">
+<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_nocreatinine_phosphokinase">Below is Random Forest performance for heart_df_noCreatinine_phosphokinase</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is Random Forest performance for heart_df_noBinary_noTime</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data, 80% goes to training and 20% goes to testing</span></span>
+<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(heart_df_noCreatinine_phosphokinase), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(heart_df_noCreatinine_phosphokinase))</span>
+<span id="cb104-7"><a href="#cb104-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-8"><a href="#cb104-8" aria-hidden="true" tabindex="-1"></a>heart_train <span class="ot">&lt;-</span> heart_df_noCreatinine_phosphokinase[samp, ]</span>
+<span id="cb104-9"><a href="#cb104-9" aria-hidden="true" tabindex="-1"></a>heart_test <span class="ot">&lt;-</span> heart_df_noCreatinine_phosphokinase[<span class="sc">-</span>samp, ]</span>
+<span id="cb104-10"><a href="#cb104-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-11"><a href="#cb104-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb104-12"><a href="#cb104-12" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb104-13"><a href="#cb104-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>., </span>
+<span id="cb104-14"><a href="#cb104-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
+<span id="cb104-15"><a href="#cb104-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb104-16"><a href="#cb104-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb104-17"><a href="#cb104-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-18"><a href="#cb104-18" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = DEATH_EVENT ~ ., data = heart_train, importance = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 14.23%
+Confusion matrix:
+    0  1 class.error
+0 145 16  0.09937888
+1  18 60  0.23076923</code></pre>
+</div>
+</div>
+</section>
+<section id="below-is-random-forest-performance-for-heart_df_notime" class="level2">
+<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_notime">Below is Random Forest performance for heart_df_noTime</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is Random Forest performance for heart_df_noBinary_noTime</span></span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data, 80% goes to training and 20% goes to testing</span></span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(heart_df_noTime), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(heart_df_noTime))</span>
+<span id="cb106-7"><a href="#cb106-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-8"><a href="#cb106-8" aria-hidden="true" tabindex="-1"></a>heart_train <span class="ot">&lt;-</span> heart_df_noTime[samp, ]</span>
+<span id="cb106-9"><a href="#cb106-9" aria-hidden="true" tabindex="-1"></a>heart_test <span class="ot">&lt;-</span> heart_df_noTime[<span class="sc">-</span>samp, ]</span>
+<span id="cb106-10"><a href="#cb106-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-11"><a href="#cb106-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb106-12"><a href="#cb106-12" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb106-13"><a href="#cb106-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>., </span>
+<span id="cb106-14"><a href="#cb106-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
+<span id="cb106-15"><a href="#cb106-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb106-16"><a href="#cb106-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb106-17"><a href="#cb106-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-18"><a href="#cb106-18" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = DEATH_EVENT ~ ., data = heart_train, importance = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 25.94%
+Confusion matrix:
+    0  1 class.error
+0 133 28   0.1739130
+1  34 44   0.4358974</code></pre>
+</div>
+</div>
+</section>
+<section id="below-is-random-forest-performance-for-heart_df_noserum_creatinine" class="level2">
+<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_noserum_creatinine">Below is Random Forest performance for heart_df_noSerum_creatinine</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is Random Forest performance for heart_df_noBinary_noTime</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data, 80% goes to training and 20% goes to testing</span></span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(heart_df_noSerum_creatinine), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(heart_df_noSerum_creatinine))</span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a>heart_train <span class="ot">&lt;-</span> heart_df_noSerum_creatinine[samp, ]</span>
+<span id="cb108-9"><a href="#cb108-9" aria-hidden="true" tabindex="-1"></a>heart_test <span class="ot">&lt;-</span> heart_df_noSerum_creatinine[<span class="sc">-</span>samp, ]</span>
+<span id="cb108-10"><a href="#cb108-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-11"><a href="#cb108-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb108-12"><a href="#cb108-12" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb108-13"><a href="#cb108-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>., </span>
+<span id="cb108-14"><a href="#cb108-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
+<span id="cb108-15"><a href="#cb108-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb108-16"><a href="#cb108-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb108-17"><a href="#cb108-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-18"><a href="#cb108-18" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = DEATH_EVENT ~ ., data = heart_train, importance = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 29.71%
+Confusion matrix:
+    0  1 class.error
+0 133 28   0.1739130
+1  43 35   0.5512821</code></pre>
+</div>
+</div>
+</section>
+<section id="below-is-random-forest-performance-for-heart_df_noplatelets" class="level2">
+<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_noplatelets">Below is Random Forest performance for heart_df_noPlatelets</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is Random Forest performance for heart_df_noBinary_noTime</span></span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data, 80% goes to training and 20% goes to testing</span></span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(heart_df_noPlatelets), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(heart_df_noPlatelets))</span>
+<span id="cb110-7"><a href="#cb110-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-8"><a href="#cb110-8" aria-hidden="true" tabindex="-1"></a>heart_train <span class="ot">&lt;-</span> heart_df_noPlatelets[samp, ]</span>
+<span id="cb110-9"><a href="#cb110-9" aria-hidden="true" tabindex="-1"></a>heart_test <span class="ot">&lt;-</span> heart_df_noPlatelets[<span class="sc">-</span>samp, ]</span>
+<span id="cb110-10"><a href="#cb110-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-11"><a href="#cb110-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb110-12"><a href="#cb110-12" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb110-13"><a href="#cb110-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>., </span>
+<span id="cb110-14"><a href="#cb110-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
+<span id="cb110-15"><a href="#cb110-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb110-16"><a href="#cb110-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb110-17"><a href="#cb110-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-18"><a href="#cb110-18" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = DEATH_EVENT ~ ., data = heart_train, importance = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 1
+
+        OOB estimate of  error rate: 29.71%
+Confusion matrix:
+    0  1 class.error
+0 138 23   0.1428571
+1  48 30   0.6153846</code></pre>
+</div>
+</div>
+</section>
+<section id="below-is-random-forest-performance-for-heart_df_noejection_fraction" class="level2">
+<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_noejection_fraction">Below is Random Forest performance for heart_df_noEjection_fraction</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is Random Forest performance for heart_df_noBinary_noTime</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data, 80% goes to training and 20% goes to testing</span></span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(heart_df_noEjection_fraction), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(heart_df_noEjection_fraction))</span>
+<span id="cb112-7"><a href="#cb112-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-8"><a href="#cb112-8" aria-hidden="true" tabindex="-1"></a>heart_train <span class="ot">&lt;-</span> heart_df_noEjection_fraction[samp, ]</span>
+<span id="cb112-9"><a href="#cb112-9" aria-hidden="true" tabindex="-1"></a>heart_test <span class="ot">&lt;-</span> heart_df_noEjection_fraction[<span class="sc">-</span>samp, ]</span>
+<span id="cb112-10"><a href="#cb112-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-11"><a href="#cb112-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb112-12"><a href="#cb112-12" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb112-13"><a href="#cb112-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>., </span>
+<span id="cb112-14"><a href="#cb112-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
+<span id="cb112-15"><a href="#cb112-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb112-16"><a href="#cb112-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb112-17"><a href="#cb112-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-18"><a href="#cb112-18" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = DEATH_EVENT ~ ., data = heart_train, importance = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 1
+
+        OOB estimate of  error rate: 27.62%
+Confusion matrix:
+    0  1 class.error
+0 143 18   0.1118012
+1  48 30   0.6153846</code></pre>
+</div>
+</div>
+</section>
+<section id="below-is-random-forest-performance-for-heart_df_noage" class="level2">
+<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_noage">Below is Random Forest performance for heart_df_noAge</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is Random Forest performance for heart_df_noBinary_noTime</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data, 80% goes to training and 20% goes to testing</span></span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(heart_df_noAge), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(heart_df_noAge))</span>
+<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a>heart_train <span class="ot">&lt;-</span> heart_df_noAge[samp, ]</span>
+<span id="cb114-9"><a href="#cb114-9" aria-hidden="true" tabindex="-1"></a>heart_test <span class="ot">&lt;-</span> heart_df_noAge[<span class="sc">-</span>samp, ]</span>
+<span id="cb114-10"><a href="#cb114-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-11"><a href="#cb114-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb114-12"><a href="#cb114-12" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb114-13"><a href="#cb114-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> DEATH_EVENT<span class="sc">~</span>., </span>
+<span id="cb114-14"><a href="#cb114-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> heart_train,</span>
+<span id="cb114-15"><a href="#cb114-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb114-16"><a href="#cb114-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb114-17"><a href="#cb114-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-18"><a href="#cb114-18" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = DEATH_EVENT ~ ., data = heart_train, importance = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 1
+
+        OOB estimate of  error rate: 31.38%
+Confusion matrix:
+    0  1 class.error
+0 139 22   0.1366460
+1  53 25   0.6794872</code></pre>
+</div>
 </div>
 </section>
 <section id="references" class="level2 unnumbered">

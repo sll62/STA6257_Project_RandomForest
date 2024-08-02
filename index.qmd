@@ -1430,8 +1430,10 @@ model <- randomForest(
 model
 ```
 
+## Below I am starting over with the datasets created in the opposite order.
+
 ```{r}
-# It seems I did the above backwards.  I should have removed thos variables with the largest Gini index.
+# It seems I did the above backwards.  I should have removed those variables with the largest Gini index.
 # See https://www.cloudzilla.ai/dev-education/hyperparmeter-tuning/
 
 # Below is the dataset with no binary variables and creatinine_phosphokinase removed 
@@ -1446,8 +1448,180 @@ heart_df_noCreatinine_phosphokinase = select(heart_df, time, serum_creatinine, p
 # serum_sodium
 # DEATH_EVENT
 heart_df_noCreatinine_phosphokinase = select(heart_df, age, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)
+
+# Below is the dataset with no binary variables and time removed 
+# serum_creatinine	        
+# platelets	              
+# ejection_fraction	       
+# Age	                      
+# serum_sodium
+# DEATH_EVENT
+heart_df_noTime = select(heart_df, age, ejection_fraction, platelets, serum_creatinine, serum_sodium, DEATH_EVENT)
+
+# Below is the dataset with no binary variables and serum_creatinine removed 
+# platelets	              
+# ejection_fraction	       
+# Age	                      
+# serum_sodium
+# DEATH_EVENT
+heart_df_noSerum_creatinine = select(heart_df, age, ejection_fraction, platelets, serum_sodium, DEATH_EVENT)
+
+# Below is the dataset with no binary variables and platelets removed 
+# ejection_fraction	       
+# Age	                      
+# serum_sodium
+# DEATH_EVENT
+heart_df_noPlatelets = select(heart_df, age, ejection_fraction, serum_sodium, DEATH_EVENT)
+
+# Below is the dataset with no binary variables and ejection_fraction removed 
+# Age	                      
+# serum_sodium
+# DEATH_EVENT
+heart_df_noEjection_fraction = select(heart_df, age, serum_sodium, DEATH_EVENT)
+
+# Below is the dataset with no binary variables and age removed 
+# serum_sodium
+# DEATH_EVENT
+heart_df_noAge = select(heart_df, serum_sodium, DEATH_EVENT)
 ```
 
+## Below is Random Forest performance for heart_df_noCreatinine_phosphokinase
+
+```{r}
+# Below is Random Forest performance for heart_df_noBinary_noTime
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noCreatinine_phosphokinase), 0.8 * nrow(heart_df_noCreatinine_phosphokinase))
+
+heart_train <- heart_df_noCreatinine_phosphokinase[samp, ]
+heart_test <- heart_df_noCreatinine_phosphokinase[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+```
+
+## Below is Random Forest performance for heart_df_noTime
+
+```{r}
+# Below is Random Forest performance for heart_df_noBinary_noTime
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noTime), 0.8 * nrow(heart_df_noTime))
+
+heart_train <- heart_df_noTime[samp, ]
+heart_test <- heart_df_noTime[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+```
+
+## Below is Random Forest performance for heart_df_noSerum_creatinine
+
+```{r}
+# Below is Random Forest performance for heart_df_noBinary_noTime
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noSerum_creatinine), 0.8 * nrow(heart_df_noSerum_creatinine))
+
+heart_train <- heart_df_noSerum_creatinine[samp, ]
+heart_test <- heart_df_noSerum_creatinine[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+```
+
+## Below is Random Forest performance for heart_df_noPlatelets
+
+```{r}
+# Below is Random Forest performance for heart_df_noBinary_noTime
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noPlatelets), 0.8 * nrow(heart_df_noPlatelets))
+
+heart_train <- heart_df_noPlatelets[samp, ]
+heart_test <- heart_df_noPlatelets[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+```
+
+## Below is Random Forest performance for heart_df_noEjection_fraction
+
+```{r}
+# Below is Random Forest performance for heart_df_noBinary_noTime
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noEjection_fraction), 0.8 * nrow(heart_df_noEjection_fraction))
+
+heart_train <- heart_df_noEjection_fraction[samp, ]
+heart_test <- heart_df_noEjection_fraction[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+```
+
+## Below is Random Forest performance for heart_df_noAge
+
+```{r}
+# Below is Random Forest performance for heart_df_noBinary_noTime
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noAge), 0.8 * nrow(heart_df_noAge))
+
+heart_train <- heart_df_noAge[samp, ]
+heart_test <- heart_df_noAge[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+```
 
 
 ## References
