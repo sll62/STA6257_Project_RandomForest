@@ -3461,7 +3461,7 @@ If the patient died during the follow-up period
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># code is needed earlier, so it was not moved.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The dataset was checked for any null values, and none were found. Null values can cause errors in calculations and need to eb addressed, often by removing them or providing a value for them (a median value, a random value, or somethong else).</p>
+<p>The dataset was checked for any null values, and none were found. Null values can cause errors in calculations and need to be addressed, often by removing them or providing a value for them (a median value, a random value, or somethong else).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3536,11 +3536,19 @@ If the patient died during the follow-up period
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>heart_df<span class="sc">$</span>DEATH_EVENT <span class="ot">=</span> <span class="fu">as.factor</span>(heart_df<span class="sc">$</span>DEATH_EVENT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The dataset is examined for null values, and no null values are found.</p>
 <p>The number of negative events (non-heart-failure events) are found to be about double the number of positive events (heart-failure events). This imbalance is not considered significant as the Random Forest algorithm is robust enough to tolerate this asymmetry.</p>
 </section>
-<section id="running-the-random-forest-model---default-settings" class="level3">
-<h3 class="anchored" data-anchor-id="running-the-random-forest-model---default-settings">Running the Random Forest Model - Default Settings</h3>
+<section id="fitting-the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="fitting-the-dataset">Fitting the Dataset</h3>
+<p>We fit the dataset by removing all binary variables. The removed variables include the following;</p>
+<ul>
+<li>anemia</li>
+<li>diabetes</li>
+<li>high blood pressure</li>
+<li>sex</li>
+<li>smoking</li>
+</ul>
+<p>We calculate the <em>Gini Index</em> for each of the remaining variables and display them in the table that follows.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3656,10 +3664,85 @@ If the patient died during the follow-up period
 <span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># serum_sodium              0.01707994</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<center>
+Gini Index Table
+</center>
+<style>
+table.tb { border-collapse: collapse; width:900px; }
+.tb th, .tb td { padding: 5px; border: solid 1px #777; }
+.tb th { background-color: lightblue;}
+</style>
+<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
+<tbody><tr>
+<th>
+Variable
+</th>
+<th>
+Gini Index
+</th>
+</tr>
+<tr>
+<td>
+Creatine_Phosphokinase (CP)
+</td>
+<td>
+0.6082741
+</td>
+</tr>
+<tr>
+<td>
+Time (T)
+</td>
+<td>
+0.3416812
+</td>
+</tr>
+<tr>
+<td>
+Serum_Creatinine (SC)
+</td>
+<td>
+0.2799149
+</td>
+</tr>
+<tr>
+<td>
+Platelets (P)
+</td>
+<td>
+0.1909926
+</td>
+</tr>
+<tr>
+<td>
+Ejection_Fraction (EF)
+</td>
+
+<td>
+0.1712855
+</td>
+</tr>
+<tr>
+<td>
+Age (A)
+</td>
+<td>
+0.1101127
+</td>
+</tr>
+<tr>
+<td>
+Serum_Sodium (SS)
+</td>
+<td>
+0.01707994
+</td>
+</tr>
+</tbody></table>
 </section>
-</section>
-<section id="pasted-below" class="level2">
-<h2 class="anchored" data-anchor-id="pasted-below">pasted below</h2>
+<section id="permutations-of-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="permutations-of-the-model">Permutations of the Model</h3>
+<p>We create multiple permutations of the model, and with each permutation we remove the variable with the lowest Gini Index. We display the results in the table that follows.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3720,9 +3803,6 @@ If the patient died during the follow-up period
 <span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a>heart_df_noBinary_noTime <span class="ot">=</span> <span class="fu">select</span>(heart_df, creatinine_phosphokinase, DEATH_EVENT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="below-is-random-forest-performance-for-heart_df_nobinary" class="level2">
-<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_nobinary">Below is Random Forest performance for heart_df_noBinary</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3799,9 +3879,6 @@ Prediction  0  1
                                           </code></pre>
 </div>
 </div>
-</section>
-<section id="below-is-random-forest-performance-for-heart_df_nobinary_noserum_sodium" class="level2">
-<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_nobinary_noserum_sodium">Below is Random Forest performance for heart_df_noBinary_noSerum_sodium</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3878,9 +3955,6 @@ Prediction  0  1
                                           </code></pre>
 </div>
 </div>
-</section>
-<section id="below-is-random-forest-performance-for-heart_df_nobinary_noage" class="level2">
-<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_nobinary_noage">Below is Random Forest performance for heart_df_noBinary_noAge</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -3957,9 +4031,6 @@ Prediction  0  1
                                           </code></pre>
 </div>
 </div>
-</section>
-<section id="below-is-random-forest-performance-for-heart_df_nobinary_noejection_fraction" class="level2">
-<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_nobinary_noejection_fraction">Below is Random Forest performance for heart_df_noBinary_noEjection_fraction</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -4036,9 +4107,6 @@ Prediction  0  1
                                          </code></pre>
 </div>
 </div>
-</section>
-<section id="below-is-random-forest-performance-for-heart_df_nobianry_noplatelets" class="level2">
-<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_nobianry_noplatelets">Below is Random Forest performance for heart_df_noBianry_noPlatelets</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -4115,9 +4183,6 @@ Prediction  0  1
                                          </code></pre>
 </div>
 </div>
-</section>
-<section id="below-is-random-forest-performance-for-heart_df_nobinary_noserum_creatinine" class="level2">
-<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_nobinary_noserum_creatinine">Below is Random Forest performance for heart_df_noBinary_noSerum_creatinine</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -4194,9 +4259,6 @@ Prediction  0  1
                                           </code></pre>
 </div>
 </div>
-</section>
-<section id="below-is-random-forest-performance-for-heart_df_nobinary_notime" class="level2">
-<h2 class="anchored" data-anchor-id="below-is-random-forest-performance-for-heart_df_nobinary_notime">Below is Random Forest performance for heart_df_noBinary_noTime</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -4281,86 +4343,8 @@ Prediction  0  1
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;The lower the Gini Index, the better the lower the likelihood of misclassification.&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">RESULTS</h2>
 <center>
-Gini Index Table
-</center>
-<style>
-table.tb { border-collapse: collapse; width:900px; }
-.tb th, .tb td { padding: 5px; border: solid 1px #777; }
-.tb th { background-color: lightblue;}
-</style>
-<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
-<tbody><tr>
-<th>
-Variable
-</th>
-<th>
-Gini Index
-</th>
-</tr>
-<tr>
-<td>
-Creatine_Phosphokinase (CP)
-</td>
-<td>
-0.6082741
-</td>
-</tr>
-<tr>
-<td>
-Time (T)
-</td>
-<td>
-0.3416812
-</td>
-</tr>
-<tr>
-<td>
-Serum_Creatinine (SC)
-</td>
-<td>
-0.2799149
-</td>
-</tr>
-<tr>
-<td>
-Platelets (P)
-</td>
-<td>
-0.1909926
-</td>
-</tr>
-<tr>
-<td>
-Ejection_Fraction (EF)
-</td>
-
-<td>
-0.1712855
-</td>
-</tr>
-<tr>
-<td>
-Age (A)
-</td>
-<td>
-0.1101127
-</td>
-</tr>
-<tr>
-<td>
-Serum_Sodium (SS)
-</td>
-<td>
-0.01707994
-</td>
-</tr>
-</tbody></table>
-<center>
-Model Accuracy After Fitting
+Model Accuracy After Permutations of Variables
 </center>
 <style>
 table.tb { border-collapse: collapse; width:900px; }
@@ -4434,8 +4418,11 @@ Only CP
 </tr>
 </tbody></table>
 </section>
+</section>
 <section id="pasted-above" class="level2">
 <h2 class="anchored" data-anchor-id="pasted-above">pasted above</h2>
+<section id="running-the-random-forest-model---default-settings" class="level3">
+<h3 class="anchored" data-anchor-id="running-the-random-forest-model---default-settings">Running the Random Forest Model - Default Settings</h3>
 <p>The patient health records dataset is split into a training set (80%) and a testing set (20%). An id column is created to assist in the split.</p>
 <div class="cell">
 <details class="code-fold">
@@ -4834,6 +4821,7 @@ attr(,&quot;class&quot;)
 </div>
 </div>
 <p>The ROC (receiver operating characteristic) curve above provides a graphical representation of the true positive rate along the Y-axis vs. the false positive rate along the X-axis. This is slightly different than accuracy (shown above the ROC curve), which is just a percentage of correct predictions. The diagonal line of the ROC curve represents what the accuracy is expected to be if the data points are classified at random. The closer a curve is to the top left corner, the more accurate the model is. Perfect classification is 100%. The output above shows the classification accuracy with the default hyperparameters for the randomForest package comes to 81.67% and the area under the ROC curve is 85.85%. In this case, these are considered indications of strong accuracy.</p>
+</section>
 <section id="tuning-the-random-forest-model" class="level3">
 <h3 class="anchored" data-anchor-id="tuning-the-random-forest-model">Tuning the Random Forest Model</h3>
 <p>A random search algorithm is used to select an optimum (tuned) mtry value. The mtry value is the number of randomly drawn candidate variables. The variable “mtry” should be read as “m-try” and it means the “number of variables tried to split a node” <span class="citation" data-cites="genuer">(<a href="#ref-genuer" role="doc-biblioref">Genuer and Poggi 2020</a>)</span>.</p>

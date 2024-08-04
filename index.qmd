@@ -511,7 +511,7 @@ cor_matrix <- cor(heart_df)
 ```
 
 The dataset was checked for any null values, and none were found. Null
-values can cause errors in calculations and need to eb addressed, often
+values can cause errors in calculations and need to be addressed, often
 by removing them or providing a value for them (a median value, a random
 value, or somethong else).
 
@@ -559,15 +559,23 @@ binary dependent variable.
 heart_df$DEATH_EVENT = as.factor(heart_df$DEATH_EVENT)
 ```
 
-The dataset is examined for null values, and no null values are found.
-
 The number of negative events (non-heart-failure events) are found to be
 about double the number of positive events (heart-failure events). This
 imbalance is not considered significant as the Random Forest algorithm
 is robust enough to tolerate this asymmetry.
 
-### Running the Random Forest Model - Default Settings
 
+### Fitting the Dataset
+
+We fit the dataset by removing all binary variables.  The removed variables include the following;
+
+- anemia
+- diabetes
+- high blood pressure
+- sex
+- smoking
+
+We calculate the <em>Gini Index</em> for each of the remaining variables and display them in the table that follows.
 
 ```{r}
 # heart_df is the original data frame created with the import of the entire dataset
@@ -618,9 +626,51 @@ GiniIndex_timeVector  # The output is [1] 0.3416812
 
 ```
 
+<center>Gini Index Table</center>
+ <style>
+  table.tb { border-collapse: collapse; width:900px; }
+  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
+  .tb th { background-color: lightblue;}
+</style>
 
+<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
+  <tr>
+    <th>Variable</th>
+    <th>Gini Index</th>
+  </tr>
+  <tr>
+    <td>Creatine_Phosphokinase (CP)</td>
+    <td>0.6082741</td>
+  </tr>
+  <tr>
+    <td>Time (T)</td>
+    <td>0.3416812</td>
+  </tr>
+  <tr>
+    <td>Serum_Creatinine (SC)</td>
+    <td>0.2799149</td>
+  </tr>
+  <tr>
+    <td>Platelets (P)</td>
+    <td>0.1909926</td>
+  </tr>
+  <tr>
+    <td>Ejection_Fraction (EF)</td></td>
+    <td>0.1712855</td>
+  </tr>
+  <tr>
+    <td>Age (A)</td>
+    <td>0.1101127</td>
+  </tr>
+  <tr>
+    <td>Serum_Sodium (SS)</td>
+    <td>0.01707994</td>
+  </tr>
+</table>
 
-## pasted below
+### Permutations of the Model
+
+We create multiple permutations of the model, and with each permutation we remove the variable with the lowest Gini Index.  We display the results in the table that follows.
 
 ```{r}
 #  Below we are creating datasets based on Gini Coefficients.  We begin with all variables
@@ -681,7 +731,6 @@ heart_df_noBinary_noTime = select(heart_df, creatinine_phosphokinase, DEATH_EVEN
 
 ```
 
-## Below is Random Forest performance for heart_df_noBinary
 
 ```{r}
 # Below is Random Forest performance for heart_df_noBinary
@@ -709,7 +758,6 @@ cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode =
 cf
 ```
 
-## Below is Random Forest performance for heart_df_noBinary_noSerum_sodium
 
 ```{r}
 # Below is Random Forest performance for heart_df_noSerum_sodium
@@ -737,7 +785,6 @@ cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode =
 cf
 ```
 
-## Below is Random Forest performance for heart_df_noBinary_noAge
 
 ```{r}
 # Below is Random Forest performance for heart_df_noAge
@@ -765,7 +812,6 @@ cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode =
 cf
 ```
 
-## Below is Random Forest performance for heart_df_noBinary_noEjection_fraction
 
 ```{r}
 # Below is Random Forest performance for heart_df_noEjection_fraction
@@ -793,7 +839,6 @@ cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode =
 cf
 ```
 
-## Below is Random Forest performance for heart_df_noBianry_noPlatelets
 
 ```{r}
 # Below is Random Forest performance for heart_df_noPlatelets
@@ -821,7 +866,6 @@ cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode =
 cf
 ```
 
-## Below is Random Forest performance for heart_df_noBinary_noSerum_creatinine
 
 ```{r}
 # Below is Random Forest performance for heart_df_noSerum_creatinine
@@ -849,7 +893,6 @@ cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode =
 cf
 ```
 
-## Below is Random Forest performance for heart_df_noBinary_noTime
 
 ```{r}
 # Below is Random Forest performance for heart_df_noBinary_noTime
@@ -884,51 +927,7 @@ cf
 # "The lower the Gini Index, the better the lower the likelihood of misclassification."
 ```
 
-## RESULTS
-
-<center>Gini Index Table</center>
- <style>
-  table.tb { border-collapse: collapse; width:900px; }
-  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
-  .tb th { background-color: lightblue;}
-</style>
-
-<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
-  <tr>
-    <th>Variable</th>
-    <th>Gini Index</th>
-  </tr>
-  <tr>
-    <td>Creatine_Phosphokinase (CP)</td>
-    <td>0.6082741</td>
-  </tr>
-  <tr>
-    <td>Time (T)</td>
-    <td>0.3416812</td>
-  </tr>
-  <tr>
-    <td>Serum_Creatinine (SC)</td>
-    <td>0.2799149</td>
-  </tr>
-  <tr>
-    <td>Platelets (P)</td>
-    <td>0.1909926</td>
-  </tr>
-  <tr>
-    <td>Ejection_Fraction (EF)</td></td>
-    <td>0.1712855</td>
-  </tr>
-  <tr>
-    <td>Age (A)</td>
-    <td>0.1101127</td>
-  </tr>
-  <tr>
-    <td>Serum_Sodium (SS)</td>
-    <td>0.01707994</td>
-  </tr>
-</table>
-
-<center>Model Accuracy After Fitting</center>
+<center>Model Accuracy After Permutations of Variables</center>
  <style>
   table.tb { border-collapse: collapse; width:900px; }
   .tb th, .tb td { padding: 5px; border: solid 1px #777; }
@@ -972,6 +971,8 @@ cf
 
 
 ## pasted above
+
+### Running the Random Forest Model - Default Settings
 
 The patient health records dataset is split into a training set (80%)
 and a testing set (20%). An id column is created to assist in the split.
