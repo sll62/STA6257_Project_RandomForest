@@ -569,7 +569,7 @@ is robust enough to tolerate this asymmetry.
 
 We fit the dataset by removing all binary variables.  The removed variables include the following;
 
-- anemia
+- anaemia
 - diabetes
 - high blood pressure
 - sex
@@ -581,38 +581,61 @@ We calculate the <em>Gini Index</em> for each of the remaining variables and dis
 # heart_df is the original data frame created with the import of the entire dataset
 head(heart_df)
 
+# Create a heart data vector
+heart_dv = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, anaemia, diabetes, high_blood_pressure, sex, smoking, DEATH_EVENT)
+
 # heart_df_noBinary is the dataset with all binary variables, except DEATH_EVENT, removed
 heart_df_noBinary = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)
 
 head(heart_df_noBinary)
 
-ageVector <- heart_df_noBinary$age
+ageVector <- heart_dv$age
 GiniIndex_AgeVector <- Gini(ageVector, unbiased=FALSE)
 GiniIndex_AgeVector # the output is [1] 0.1101127
 
-cpVector <- heart_df_noBinary$creatinine_phosphokinase
+cpVector <- heart_dv$creatinine_phosphokinase
 GiniIndex_cpVector <- Gini(cpVector, unbiased=FALSE)
 GiniIndex_cpVector # the output is [1] 0.6082741
 
-efVector <- heart_df_noBinary$ejection_fraction
+efVector <- heart_dv$ejection_fraction
 GiniIndex_efVector <- Gini(efVector, unbiased=FALSE)
 GiniIndex_efVector # the output is [1] 0.1712855
 
-plateletsVector <- heart_df_noBinary$platelets
+plateletsVector <- heart_dv$platelets
 GiniIndex_plateletsVector <- Gini(plateletsVector, unbiased=FALSE)
 GiniIndex_plateletsVector # the output is [1] 0.1909926
 
-scVector <- heart_df_noBinary$serum_creatinine
+scVector <- heart_dv$serum_creatinine
 GiniIndex_scVector <- Gini(scVector, unbiased=FALSE)
 GiniIndex_scVector  # the output is [1] 0.2799149
 
-ssVector <- heart_df_noBinary$serum_sodium
+ssVector <- heart_dv$serum_sodium
 GiniIndex_ssVector <- Gini(ssVector, unbiased=FALSE)
 GiniIndex_ssVector  # The output is [1] 0.01707994
 
-timeVector <- heart_df_noBinary$time
+timeVector <- heart_dv$time
 GiniIndex_timeVector <- Gini(timeVector, unbiased=FALSE)
 GiniIndex_timeVector  # The output is [1] 0.3416812
+
+anaemiaVector <- heart_dv$anaemia
+GiniIndex_anaemiaVector <- Gini(anaemiaVector, unbiased=FALSE)
+GiniIndex_anaemiaVector  # The output is
+
+diabetesVector <- heart_dv$diabetes
+GiniIndex_diabetesVector <- Gini(diabetesVector, unbiased=FALSE)
+GiniIndex_diabetesVector  # The output is 
+
+highBloodPressureVector <- heart_dv$high_blood_pressure
+GiniIndex_highBloodPressureVector <- Gini(highBloodPressureVector, unbiased=FALSE)
+GiniIndex_highBloodPressureVector  # The output is 
+
+sexVector <- heart_dv$sex
+GiniIndex_sexVector <- Gini(sexVector, unbiased=FALSE)
+GiniIndex_sexVector  # The output is 
+
+smokingVector <- heart_dv$smoking
+GiniIndex_smokingVector <- Gini(smokingVector, unbiased=FALSE)
+GiniIndex_smokingVector  # The output is 
 
 # BELOW IS A SUMMARY OF THE RESULTS
 # 
@@ -623,7 +646,11 @@ GiniIndex_timeVector  # The output is [1] 0.3416812
 # ejection_fraction	        0.1712855
 # Age	                      0.1101127
 # serum_sodium	            0.01707994
-
+# anaemia                   0.5686
+# diabetes                  0.5819
+# high blood pressure       0.6488
+# sex                       0.3512
+# smoking                   0.6789
 ```
 
 <center>Gini Index Table</center>
@@ -639,8 +666,28 @@ GiniIndex_timeVector  # The output is [1] 0.3416812
     <th>Gini Index</th>
   </tr>
   <tr>
+    <td>Smoking (S)</td>
+    <td>0.6789</td>
+  </tr>  
+  <tr>
+    <td>High Blood Pressure (HBP)</td>
+    <td>0.6488</td>
+  </tr>
+  <tr>
     <td>Creatine_Phosphokinase (CP)</td>
     <td>0.6082741</td>
+  </tr>
+  <tr>
+    <td>Diabetes (D)</td>
+    <td>0.5819</td>
+  </tr>
+  <tr>
+    <td>Anaemia (AN)</td>
+    <td>0.5686</td>
+  </tr>
+  <tr>
+    <td>Sex (S)</td>
+    <td>0.3512</td>
   </tr>
   <tr>
     <td>Time (T)</td>
