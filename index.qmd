@@ -826,8 +826,7 @@ accuracy.
 
 A random search algorithm is used to select an optimum (tuned) mtry
 value. The mtry value is the number of randomly drawn candidate
-variables. We expect "mtry" to be an acronym but we do not find any
-confirmation in the literature.
+variables. The variable "mtry" should be read as "m-try" and it means the "number of variables tried to split a node" [@genuer].
 
 ```{r}
 ncol(heart_train)

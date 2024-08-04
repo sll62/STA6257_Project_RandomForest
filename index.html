@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sierra Landacre, Tim Leschke, Pamela Mishaw, Pallak Singh">
-<meta name="dcterms.date" content="2024-08-02">
+<meta name="dcterms.date" content="2024-08-04">
 
 <title>Random Forest Analysis of Heart Failure Dataset</title>
 <style>
@@ -3152,7 +3152,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 2, 2024</p>
+      <p class="date">August 4, 2024</p>
     </div>
   </div>
   
@@ -3942,7 +3942,7 @@ attr(,&quot;class&quot;)
 </section>
 <section id="tuning-the-random-forest-model" class="level3">
 <h3 class="anchored" data-anchor-id="tuning-the-random-forest-model">Tuning the Random Forest Model</h3>
-<p>A random search algorithm is used to select an optimum (tuned) mtry value. The mtry value is the number of randomly drawn candidate variables. We expect “mtry” to be an acronym but we do not find any confirmation in the literature.</p>
+<p>A random search algorithm is used to select an optimum (tuned) mtry value. The mtry value is the number of randomly drawn candidate variables. The variable “mtry” should be read as “m-try” and it means the “number of variables tried to split a node” <span class="citation" data-cites="genuer">(<a href="#ref-genuer" role="doc-biblioref">Genuer and Poggi 2020</a>)</span>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -5684,6 +5684,9 @@ DataTab. 2024. <span>“<span class="nocase">Cohen’s Kappa</span>.”</span> <
 </div>
 <div id="ref-esmaily2018comparison" class="csl-entry" role="listitem">
 Esmaily, Habibollah, Maryam Tayefi, Hassan Doosti, Majid Ghayour-Mobarhan, Hossein Nezami, and Alireza Amirabadizadeh. 2018. <span>“A Comparison Between Decision Tree and Random Forest in Determining the Risk Factors Associated with Type 2 Diabetes.”</span> <em>Journal of Research in Health Sciences</em> 18 (2): 412.
+</div>
+<div id="ref-genuer" class="csl-entry" role="listitem">
+Genuer, Robin, and Jean-Michael Poggi. 2020. <em>Random Forest with r</em>. Springer.
 </div>
 <div id="ref-hastie" class="csl-entry" role="listitem">
 Hastie, Trevor, Robert Tibshirani, and Jerome Friednman. 2001. <em>Elements of Statistical Learning</em>. Springer of New York.
