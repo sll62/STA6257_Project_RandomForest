@@ -568,6 +568,411 @@ is robust enough to tolerate this asymmetry.
 
 ### Running the Random Forest Model - Default Settings
 
+
+```{r}
+# heart_df is the original data frame created with the import of the entire dataset
+head(heart_df)
+
+# heart_df_noBinary is the dataset with all binary variables, except DEATH_EVENT, removed
+heart_df_noBinary = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)
+
+head(heart_df_noBinary)
+
+ageVector <- heart_df_noBinary$age
+GiniIndex_AgeVector <- Gini(ageVector, unbiased=FALSE)
+GiniIndex_AgeVector # the output is [1] 0.1101127
+
+cpVector <- heart_df_noBinary$creatinine_phosphokinase
+GiniIndex_cpVector <- Gini(cpVector, unbiased=FALSE)
+GiniIndex_cpVector # the output is [1] 0.6082741
+
+efVector <- heart_df_noBinary$ejection_fraction
+GiniIndex_efVector <- Gini(efVector, unbiased=FALSE)
+GiniIndex_efVector # the output is [1] 0.1712855
+
+plateletsVector <- heart_df_noBinary$platelets
+GiniIndex_plateletsVector <- Gini(plateletsVector, unbiased=FALSE)
+GiniIndex_plateletsVector # the output is [1] 0.1909926
+
+scVector <- heart_df_noBinary$serum_creatinine
+GiniIndex_scVector <- Gini(scVector, unbiased=FALSE)
+GiniIndex_scVector  # the output is [1] 0.2799149
+
+ssVector <- heart_df_noBinary$serum_sodium
+GiniIndex_ssVector <- Gini(ssVector, unbiased=FALSE)
+GiniIndex_ssVector  # The output is [1] 0.01707994
+
+timeVector <- heart_df_noBinary$time
+GiniIndex_timeVector <- Gini(timeVector, unbiased=FALSE)
+GiniIndex_timeVector  # The output is [1] 0.3416812
+
+# BELOW IS A SUMMARY OF THE RESULTS
+# 
+# creatinine_phosphokinase	0.6082741
+# time	                    0.3416812
+# serum_creatinine	        0.2799149
+# platelets	                0.1909926
+# ejection_fraction	        0.1712855
+# Age	                      0.1101127
+# serum_sodium	            0.01707994
+
+```
+
+
+
+## pasted below
+
+```{r}
+#  Below we are creating datasets based on Gini Coefficients.  We begin with all variables
+# and then remove the variable with the lowest Gini Coefficient as we create new datasets
+
+# heart_df_noBinary contains all the variables 
+# creatinine_phosphokinase	
+# time	                   
+# serum_creatinine	        
+# platelets	              
+# ejection_fraction	       
+# Age	                  
+# serum_sodium
+# heart_df_noBinary is the dataset with all binary variables, except DEATH_EVENT, removed
+heart_df_noBinary = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)
+
+
+
+# heart_df_noBinary_noSerum_sodium contains the following variables
+# creatinine_phosphokinase	
+# time	                   
+# serum_creatinine	        
+# platelets	              
+# ejection_fraction	       
+# Age	  
+heart_df_noBinary_noSerum_sodium = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, time, DEATH_EVENT)
+
+# heart_df_noBinary_noAge contains the following variables
+# creatinine_phosphokinase	
+# time	                   
+# serum_creatinine	        
+# platelets	              
+# ejection_fraction	       
+heart_df_noBinary_noAge = select(heart_df, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, time, DEATH_EVENT)                 
+
+# heart_df_noBinary_noEjection_fraction contains the following variables
+# creatinine_phosphokinase	
+# time	                   
+# serum_creatinine	        
+# platelets	              
+heart_df_noBinary_noEjection_fraction = select(heart_df, creatinine_phosphokinase, platelets, serum_creatinine, time, DEATH_EVENT)
+
+# heart_df_noBinary_noPlatelets contains the following variables
+# creatinine_phosphokinase	
+# time	                   
+# serum_creatinine	        
+# platelets	              
+heart_df_noBinary_noPlatelets = select(heart_df, creatinine_phosphokinase, serum_creatinine, time, DEATH_EVENT)
+
+# heart_df_noBinary_noSerum_creatinine contains the following variables
+# creatinine_phosphokinase	
+# time	                   
+heart_df_noBinary_noSerum_creatinine = select(heart_df, creatinine_phosphokinase, time, DEATH_EVENT)
+
+# heart_df_noBinary_noTime contains the following variables
+# creatinine_phosphokinase	
+heart_df_noBinary_noTime = select(heart_df, creatinine_phosphokinase, DEATH_EVENT)
+
+```
+
+## Below is Random Forest performance for heart_df_noBinary
+
+```{r}
+# Below is Random Forest performance for heart_df_noBinary
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noBinary), 0.8 * nrow(heart_df_noBinary))
+
+heart_train <- heart_df_noBinary[samp, ]
+heart_test <- heart_df_noBinary[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+## Below is Random Forest performance for heart_df_noBinary_noSerum_sodium
+
+```{r}
+# Below is Random Forest performance for heart_df_noSerum_sodium
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noBinary_noSerum_sodium), 0.8 * nrow(heart_df_noBinary_noSerum_sodium))
+
+heart_train <- heart_df_noBinary_noSerum_sodium[samp, ]
+heart_test <- heart_df_noBinary_noSerum_sodium[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+## Below is Random Forest performance for heart_df_noBinary_noAge
+
+```{r}
+# Below is Random Forest performance for heart_df_noAge
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noBinary_noAge), 0.8 * nrow(heart_df_noBinary_noAge))
+
+heart_train <- heart_df_noBinary_noAge[samp, ]
+heart_test <- heart_df_noBinary_noAge[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+## Below is Random Forest performance for heart_df_noBinary_noEjection_fraction
+
+```{r}
+# Below is Random Forest performance for heart_df_noEjection_fraction
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noBinary_noEjection_fraction), 0.8 * nrow(heart_df_noBinary_noEjection_fraction))
+
+heart_train <- heart_df_noBinary_noEjection_fraction[samp, ]
+heart_test <- heart_df_noBinary_noEjection_fraction[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+## Below is Random Forest performance for heart_df_noBianry_noPlatelets
+
+```{r}
+# Below is Random Forest performance for heart_df_noPlatelets
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noBinary_noPlatelets), 0.8 * nrow(heart_df_noBinary_noPlatelets))
+
+heart_train <- heart_df_noBinary_noPlatelets[samp, ]
+heart_test <- heart_df_noBinary_noPlatelets[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+## Below is Random Forest performance for heart_df_noBinary_noSerum_creatinine
+
+```{r}
+# Below is Random Forest performance for heart_df_noSerum_creatinine
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noBinary_noSerum_creatinine), 0.8 * nrow(heart_df_noBinary_noSerum_creatinine))
+
+heart_train <- heart_df_noBinary_noSerum_creatinine[samp, ]
+heart_test <- heart_df_noBinary_noSerum_creatinine[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+## Below is Random Forest performance for heart_df_noBinary_noTime
+
+```{r}
+# Below is Random Forest performance for heart_df_noBinary_noTime
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_df_noBinary_noTime), 0.8 * nrow(heart_df_noBinary_noTime))
+
+heart_train <- heart_df_noBinary_noTime[samp, ]
+heart_test <- heart_df_noBinary_noTime[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+```{r}
+
+# Note:  https://towardsdatascience.com/decision-trees-explained-entropy-information-gain-gini-index-ccp-pruning-4d78070db36c
+
+# "The lower the Gini Index, the better the lower the likelihood of misclassification."
+```
+
+## RESULTS
+
+<center>Gini Index Table</center>
+ <style>
+  table.tb { border-collapse: collapse; width:900px; }
+  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
+  .tb th { background-color: lightblue;}
+</style>
+
+<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
+  <tr>
+    <th>Variable</th>
+    <th>Gini Index</th>
+  </tr>
+  <tr>
+    <td>Creatine_Phosphokinase (CP)</td>
+    <td>0.6082741</td>
+  </tr>
+  <tr>
+    <td>Time (T)</td>
+    <td>0.3416812</td>
+  </tr>
+  <tr>
+    <td>Serum_Creatinine (SC)</td>
+    <td>0.2799149</td>
+  </tr>
+  <tr>
+    <td>Platelets (P)</td>
+    <td>0.1909926</td>
+  </tr>
+  <tr>
+    <td>Ejection_Fraction (EF)</td></td>
+    <td>0.1712855</td>
+  </tr>
+  <tr>
+    <td>Age (A)</td>
+    <td>0.1101127</td>
+  </tr>
+  <tr>
+    <td>Serum_Sodium (SS)</td>
+    <td>0.01707994</td>
+  </tr>
+</table>
+
+<center>Model Accuracy After Fitting</center>
+ <style>
+  table.tb { border-collapse: collapse; width:900px; }
+  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
+  .tb th { background-color: lightblue;}
+</style>
+
+<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
+  <tr>
+    <th>Models contains</th>
+    <th>Model Accuracy</th>
+  </tr>
+  <tr>
+    <td>SS, A, EF, P, SC, T, and CP</td> 
+    <td>80.00 %</td>
+  </tr>
+  <tr>
+    <td>A, EF, P, SC, T, and CP</td> 
+    <td>76.67 %</td>
+  </tr>
+  <tr>
+    <td>EF, P, SC, T, and CP</td> 
+    <td>75.00 %</td>
+  </tr>
+  <tr>
+    <td>P, SC, T, and CP</td> 
+    <td>78.33 %</td>
+  </tr>
+  <tr>
+    <td>SC, T, and CP</td> 
+    <td>78.33 %</td>
+  </tr>
+  <tr>
+    <td>T and CP</td> 
+    <td>76.67%</td>
+  </tr>
+  <tr>
+    <td>Only CP</td> 
+    <td>66.67 %</td>
+  </tr>
+</table>
+
+
+## pasted above
+
 The patient health records dataset is split into a training set (80%)
 and a testing set (20%). An id column is created to assist in the split.
 
@@ -1154,635 +1559,5 @@ The initial recognition of class imbalance and subsequent hyperparameter tuning 
 Overall, the tuned Random Forest model not only addressed the dataset's inherent challenges but also showcased robustness in handling class imbalance and leveraging multiple features effectively. Its high sensitivity (89.7%) and specificity (80.9%) underscore its reliability in clinical applications, offering potential for early detection and personalized management of heart failure. Moving forward, further validation on larger datasets could solidify its role as a valuable tool in cardiovascular risk assessment and patient care.
 -->
 ```
-
-## Below is new analysis conducted after the in-class presentation
-
-```{r}
-# heart_df is the original data frame created with the import of the entire dataset
-head(heart_df)
-
-# heart_df_noBinary is the dataset with all binary variables, except DEATH_EVENT, removed
-heart_df_noBinary = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)
-
-head(heart_df_noBinary)
-
-ageVector <- heart_df_noBinary$age
-GiniIndex_AgeVector <- Gini(ageVector, unbiased=FALSE)
-GiniIndex_AgeVector # the output is [1] 0.1101127
-
-cpVector <- heart_df_noBinary$creatinine_phosphokinase
-GiniIndex_cpVector <- Gini(cpVector, unbiased=FALSE)
-GiniIndex_cpVector # the output is [1] 0.6082741
-
-efVector <- heart_df_noBinary$ejection_fraction
-GiniIndex_efVector <- Gini(efVector, unbiased=FALSE)
-GiniIndex_efVector # the output is [1] 0.1712855
-
-plateletsVector <- heart_df_noBinary$platelets
-GiniIndex_plateletsVector <- Gini(plateletsVector, unbiased=FALSE)
-GiniIndex_plateletsVector # the output is [1] 0.1909926
-
-scVector <- heart_df_noBinary$serum_creatinine
-GiniIndex_scVector <- Gini(scVector, unbiased=FALSE)
-GiniIndex_scVector  # the output is [1] 0.2799149
-
-ssVector <- heart_df_noBinary$serum_sodium
-GiniIndex_ssVector <- Gini(ssVector, unbiased=FALSE)
-GiniIndex_ssVector  # The output is [1] 0.01707994
-
-timeVector <- heart_df_noBinary$time
-GiniIndex_timeVector <- Gini(timeVector, unbiased=FALSE)
-GiniIndex_timeVector  # The output is [1] 0.3416812
-
-# BELOW IS A SUMMARY OF THE RESULTS
-# 
-# creatinine_phosphokinase	0.6082741
-# time	                    0.3416812
-# serum_creatinine	        0.2799149
-# platelets	                0.1909926
-# ejection_fraction	        0.1712855
-# Age	                      0.1101127
-# serum_sodium	            0.01707994
-
-
-
-
-#  I Think I generated the Gini Coefficient for Age.
-#  Do you think this ic correct?
-#  Is there a better way to do this for all of the variables?
-
-```
-
-```{r}
-#  Below we are creating datasets based on Gini Coefficients.  We begin with all variables
-# and then remove the variable with the lowest Gini Coefficient as we craete new datasets
-
-# heart_df_noBinary contains all the variables 
-# creatinine_phosphokinase	
-# time	                   
-# serum_creatinine	        
-# platelets	              
-# ejection_fraction	       
-# Age	                      
-# serum_sodium
-
-# heart_df_noBinary_noSerum_sodium contains the following variables
-# creatinine_phosphokinase	
-# time	                   
-# serum_creatinine	        
-# platelets	              
-# ejection_fraction	       
-# Age	  
-heart_df_noBinary_noSerum_sodium = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, time, DEATH_EVENT)
-
-# heart_df_noBinary_noAge contains the following variables
-# creatinine_phosphokinase	
-# time	                   
-# serum_creatinine	        
-# platelets	              
-# ejection_fraction	       
-heart_df_noBinary_noAge = select(heart_df, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, time, DEATH_EVENT)                 
-
-# heart_df_noBinary_noEjection_fraction contains the following variables
-# creatinine_phosphokinase	
-# time	                   
-# serum_creatinine	        
-# platelets	              
-heart_df_noBinary_noEjection_fraction = select(heart_df, creatinine_phosphokinase, platelets, serum_creatinine, time, DEATH_EVENT)
-
-# heart_df_noBinary_noPlatelets contains the following variables
-# creatinine_phosphokinase	
-# time	                   
-# serum_creatinine	        
-# platelets	              
-heart_df_noBinary_noPlatelets = select(heart_df, creatinine_phosphokinase, serum_creatinine, time, DEATH_EVENT)
-
-# heart_df_noBinary_noSerum_creatinine contains the following variables
-# creatinine_phosphokinase	
-# time	                   
-heart_df_noBinary_noSerum_creatinine = select(heart_df, creatinine_phosphokinase, time, DEATH_EVENT)
-
-# heart_df_noBinary_noTime contains the following variables
-# creatinine_phosphokinase	
-heart_df_noBinary_noTime = select(heart_df, creatinine_phosphokinase, DEATH_EVENT)
-
-```
-
-## Below is Random Forest performance for heart_df_noBinary
-
-```{r}
-# Below is Random Forest performance for heart_df_noBinary
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noBinary), 0.8 * nrow(heart_df_noBinary))
-
-heart_train <- heart_df_noBinary[samp, ]
-heart_test <- heart_df_noBinary[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noBinary_noSerum_sodium
-
-```{r}
-# Below is Random Forest performance for heart_df_noSerum_sodium
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noSerum_sodium), 0.8 * nrow(heart_df_noBinary_noSerum_sodium))
-
-heart_train <- heart_df_noBinary_noSerum_sodium[samp, ]
-heart_test <- heart_df_noBinary_noSerum_sodium[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noBinary_noAge
-
-```{r}
-# Below is Random Forest performance for heart_df_noAge
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noAge), 0.8 * nrow(heart_df_noBinary_noAge))
-
-heart_train <- heart_df_noBinary_noAge[samp, ]
-heart_test <- heart_df_noBinary_noAge[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noBinary_noEjection_fraction
-
-```{r}
-# Below is Random Forest performance for heart_df_noEjection_fraction
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noEjection_fraction), 0.8 * nrow(heart_df_noBinary_noEjection_fraction))
-
-heart_train <- heart_df_noBinary_noEjection_fraction[samp, ]
-heart_test <- heart_df_noBinary_noEjection_fraction[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noBianry_noPlatelets
-
-```{r}
-# Below is Random Forest performance for heart_df_noPlatelets
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noPlatelets), 0.8 * nrow(heart_df_noBinary_noPlatelets))
-
-heart_train <- heart_df_noBinary_noPlatelets[samp, ]
-heart_test <- heart_df_noBinary_noPlatelets[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noBinary_noSerum_creatinine
-
-```{r}
-# Below is Random Forest performance for heart_df_noSerum_creatinine
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noSerum_creatinine), 0.8 * nrow(heart_df_noBinary_noSerum_creatinine))
-
-heart_train <- heart_df_noBinary_noSerum_creatinine[samp, ]
-heart_test <- heart_df_noBinary_noSerum_creatinine[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noBinary_noTime
-
-```{r}
-# Below is Random Forest performance for heart_df_noBinary_noTime
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noTime), 0.8 * nrow(heart_df_noBinary_noTime))
-
-heart_train <- heart_df_noBinary_noTime[samp, ]
-heart_test <- heart_df_noBinary_noTime[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below I am starting over with the datasets created in the opposite order.
-
-```{r}
-# It seems I did the above backwards.  I should have removed those variables with the largest Gini index.
-# See https://www.cloudzilla.ai/dev-education/hyperparmeter-tuning/
-
-# Below is the dataset with no binary variables and creatinine_phosphokinase removed 
-heart_df_noCreatinine_phosphokinase = select(heart_df, time, serum_creatinine, platelets, ejection_fraction, age, serum_sodium, DEATH_EVENT)
-
-# Below is the dataset with no binary variables and creatinine_phosphokinase removed 
-# time	                   
-# serum_creatinine	        
-# platelets	              
-# ejection_fraction	       
-# Age	                      
-# serum_sodium
-# DEATH_EVENT
-heart_df_noCreatinine_phosphokinase = select(heart_df, age, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)
-
-# Below is the dataset with no binary variables and time removed 
-# serum_creatinine	        
-# platelets	              
-# ejection_fraction	       
-# Age	                      
-# serum_sodium
-# DEATH_EVENT
-heart_df_noTime = select(heart_df, age, ejection_fraction, platelets, serum_creatinine, serum_sodium, DEATH_EVENT)
-
-# Below is the dataset with no binary variables and serum_creatinine removed 
-# platelets	              
-# ejection_fraction	       
-# Age	                      
-# serum_sodium
-# DEATH_EVENT
-heart_df_noSerum_creatinine = select(heart_df, age, ejection_fraction, platelets, serum_sodium, DEATH_EVENT)
-
-# Below is the dataset with no binary variables and platelets removed 
-# ejection_fraction	       
-# Age	                      
-# serum_sodium
-# DEATH_EVENT
-heart_df_noPlatelets = select(heart_df, age, ejection_fraction, serum_sodium, DEATH_EVENT)
-
-# Below is the dataset with no binary variables and ejection_fraction removed 
-# Age	                      
-# serum_sodium
-# DEATH_EVENT
-heart_df_noEjection_fraction = select(heart_df, age, serum_sodium, DEATH_EVENT)
-
-# Below is the dataset with no binary variables and age removed 
-# serum_sodium
-# DEATH_EVENT
-heart_df_noAge = select(heart_df, serum_sodium, DEATH_EVENT)
-```
-
-## Below is Random Forest performance for heart_df_noCreatinine_phosphokinase
-
-```{r}
-# Below is Random Forest performance for heart_df_noBinary_noTime
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noCreatinine_phosphokinase), 0.8 * nrow(heart_df_noCreatinine_phosphokinase))
-
-heart_train <- heart_df_noCreatinine_phosphokinase[samp, ]
-heart_test <- heart_df_noCreatinine_phosphokinase[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noTime
-
-```{r}
-# Below is Random Forest performance for heart_df_noBinary_noTime
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noTime), 0.8 * nrow(heart_df_noTime))
-
-heart_train <- heart_df_noTime[samp, ]
-heart_test <- heart_df_noTime[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noSerum_creatinine
-
-```{r}
-# Below is Random Forest performance for heart_df_noBinary_noTime
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noSerum_creatinine), 0.8 * nrow(heart_df_noSerum_creatinine))
-
-heart_train <- heart_df_noSerum_creatinine[samp, ]
-heart_test <- heart_df_noSerum_creatinine[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noPlatelets
-
-```{r}
-# Below is Random Forest performance for heart_df_noBinary_noTime
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noPlatelets), 0.8 * nrow(heart_df_noPlatelets))
-
-heart_train <- heart_df_noPlatelets[samp, ]
-heart_test <- heart_df_noPlatelets[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noEjection_fraction
-
-```{r}
-# Below is Random Forest performance for heart_df_noBinary_noTime
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noEjection_fraction), 0.8 * nrow(heart_df_noEjection_fraction))
-
-heart_train <- heart_df_noEjection_fraction[samp, ]
-heart_test <- heart_df_noEjection_fraction[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-```
-
-## Below is Random Forest performance for heart_df_noAge
-
-```{r}
-# Below is Random Forest performance for heart_df_noBinary_noTime
-
-# split the data, 80% goes to training and 20% goes to testing
-
-set.seed(123)
-samp <- sample(nrow(heart_df_noAge), 0.8 * nrow(heart_df_noAge))
-
-heart_train <- heart_df_noAge[samp, ]
-heart_test <- heart_df_noAge[-samp, ]
-
-set.seed(123)
-model <- randomForest(
-  formula = DEATH_EVENT~., 
-  data = heart_train,
-  importance = TRUE
-)
-
-model
-
-prediction <- predict(model, newdata = heart_test)
-
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
-cf
-
-# Note:  https://towardsdatascience.com/decision-trees-explained-entropy-information-gain-gini-index-ccp-pruning-4d78070db36c
-
-# "The lower the Gini Index, the better the lower the likelihood of misclassification."
-```
-
-## RESULTS
-
-<center>Gini Index Table</center>
- <style>
-  table.tb { border-collapse: collapse; width:900px; }
-  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
-  .tb th { background-color: lightblue;}
-</style>
-
-<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
-  <tr>
-    <th>Variable</th>
-    <th>Gini Index</th>
-  </tr>
-  <tr>
-    <td>Creatine_Phosphokinase (CP)</td>
-    <td>0.6082741</td>
-  </tr>
-  <tr>
-    <td>Time (T)</td>
-    <td>0.3416812</td>
-  </tr>
-  <tr>
-    <td>Serum_Creatinine (SC)</td>
-    <td>0.2799149</td>
-  </tr>
-  <tr>
-    <td>Platelets (P)</td>
-    <td>0.1909926</td>
-  </tr>
-  <tr>
-    <td>Ejection_Fraction (EF)</td></td>
-    <td>0.1712855</td>
-  </tr>
-  <tr>
-    <td>Age (A)</td>
-    <td>0.1101127</td>
-  </tr>
-  <tr>
-    <td>Serum_Sodium (SS)</td>
-    <td>0.01707994</td>
-  </tr>
-</table>
-
-<center>Model Accuracy After Fitting</center>
- <style>
-  table.tb { border-collapse: collapse; width:900px; }
-  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
-  .tb th { background-color: lightblue;}
-</style>
-
-<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
-  <tr>
-    <th>Models contains</th>
-    <th>Model Accuracy</th>
-  </tr>
-  <tr>
-    <td>SS, A, EF, P, SC, T, and CP</td> 
-    <td>80.00 %</td>
-  </tr>
-  <tr>
-    <td>A, EF, P, SC, T, and CP</td> 
-    <td>76.67 %</td>
-  </tr>
-  <tr>
-    <td>EF, P, SC, T, and CP</td> 
-    <td>75.00 %</td>
-  </tr>
-  <tr>
-    <td>P, SC, T, and CP</td> 
-    <td>78.33 %</td>
-  </tr>
-  <tr>
-    <td>SC, T, and CP</td> 
-    <td>78.33 %</td>
-  </tr>
-  <tr>
-    <td>T and CP</td> 
-    <td>76.67%</td>
-  </tr>
-  <tr>
-    <td>Only CP</td> 
-    <td>66.67 %</td>
-  </tr>
-</table>
-
-
-## Team, above are the results I get, but I do not know if I did the analysis the correct way.
-
-## From my results, it seems the highest accuracy is 80%, and this happens when we use all of the variables in the model, and also when we use all but creatinine_phosphokinase.
-
-
-
 
 ## References
