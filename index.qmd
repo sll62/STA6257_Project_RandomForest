@@ -418,6 +418,7 @@ install.packages("tidyverse", repos="http://cran.us.r-project.org")
 install.packages("dplyr", repos="http://cran.us.r-project.org")
 install.packages("party", repos="http://cran.us.r-project.org")
 install.packages("DescTools", repos="http://cran.us.r-project.org") # for Gini index
+install.packages("ggplot2", repos="http://cran.us.r-project.org")
 
 library(caTools)
 library(randomForest)
@@ -428,6 +429,7 @@ library(party)
 library(caret)
 library(corrplot)
 library(DescTools) # for Gini index
+library(ggplot2)
 ```
 
 The RStudio Server is running on a RHEL9 based virtual machine within a
@@ -798,6 +800,7 @@ heart_dv_noHigh_Blood_Pressure = select(heart_df, smoking, DEATH_EVENT)
 ```
 
 
+## below all
 ```{r}
 # Below is Random Forest performance for heart_dv
 
@@ -806,24 +809,26 @@ heart_dv_noHigh_Blood_Pressure = select(heart_df, smoking, DEATH_EVENT)
 set.seed(123)
 samp <- sample(nrow(heart_dv), 0.8 * nrow(heart_dv))
 
-heart_train <- heart_dv[samp, ]
-heart_test <- heart_dv[-samp, ]
+# heart_train_all is the model with all variables
+heart_train_all <- heart_dv[samp, ]
+heart_test_all <- heart_dv[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_all,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_all)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_all$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
 
+## Below noSerumSodium
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noSerumSodium
@@ -833,24 +838,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noSerumSodium), 0.8 * nrow(heart_dv_noSerumSodium))
 
-heart_train <- heart_dv_noSerumSodium[samp, ]
-heart_test <- heart_dv_noSerumSodium[-samp, ]
+heart_train_noSerumSodium <- heart_dv_noSerumSodium[samp, ]
+heart_test_noSerumSodium <- heart_dv_noSerumSodium[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noSerumSodium,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noSerumSodium)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noSerumSodium$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
 
+## below noAge
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noAge
@@ -860,24 +866,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noAge), 0.8 * nrow(heart_dv_noAge))
 
-heart_train <- heart_dv_noAge[samp, ]
-heart_test <- heart_dv_noAge[-samp, ]
+heart_train_noAge <- heart_dv_noAge[samp, ]
+heart_test_noAge <- heart_dv_noAge[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noAge,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noAge)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noAge$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
 
+## below noEjection_Fraction
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noEjection_Fraction
@@ -887,24 +894,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noEjection_Fraction), 0.8 * nrow(heart_dv_noEjection_Fraction))
 
-heart_train <- heart_dv_noEjection_Fraction[samp, ]
-heart_test <- heart_dv_noEjection_Fraction[-samp, ]
+heart_train_noEjection_Fraction <- heart_dv_noEjection_Fraction[samp, ]
+heart_test_noEjection_Fraction <- heart_dv_noEjection_Fraction[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noEjection_Fraction,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noEjection_Fraction)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noEjection_Fraction$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
 
+# below noPlatelets
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noPlatelets
@@ -914,24 +922,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noPlatelets), 0.8 * nrow(heart_dv_noPlatelets))
 
-heart_train <- heart_dv_noPlatelets[samp, ]
-heart_test <- heart_dv_noPlatelets[-samp, ]
+heart_train_noPlatelets <- heart_dv_noPlatelets[samp, ]
+heart_test_noPlatelets <- heart_dv_noPlatelets[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noPlatelets,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noPlatelets)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noPlatelets$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
 
+## below noSerum_Creatinine
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noSerum_Creatinine
@@ -941,24 +950,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noSerum_Creatinine), 0.8 * nrow(heart_dv_noSerum_Creatinine))
 
-heart_train <- heart_dv_noSerum_Creatinine[samp, ]
-heart_test <- heart_dv_noSerum_Creatinine[-samp, ]
+heart_train_noSerum_Creatinine <- heart_dv_noSerum_Creatinine[samp, ]
+heart_test_noSerum_Creatinine <- heart_dv_noSerum_Creatinine[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noSerum_Creatinine,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noSerum_Creatinine)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noSerum_Creatinine$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
 
+## below noTime
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noTime
@@ -968,23 +978,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noTime), 0.8 * nrow(heart_dv_noTime))
 
-heart_train <- heart_dv_noTime[samp, ]
-heart_test <- heart_dv_noTime[-samp, ]
+heart_train_noTime <- heart_dv_noTime[samp, ]
+heart_test_noTime <- heart_dv_noTime[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noTime,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noTime)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noTime$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
+
+## Below noSex
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noSex
@@ -994,23 +1006,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noSex), 0.8 * nrow(heart_dv_noSex))
 
-heart_train <- heart_dv_noSex[samp, ]
-heart_test <- heart_dv_noSex[-samp, ]
+heart_train_noSex <- heart_dv_noSex[samp, ]
+heart_test_noSex <- heart_dv_noSex[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noSex,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noSex)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noSex$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
+
+## Below noAnaemia
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noAnaemia
@@ -1020,23 +1034,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noAnaemia), 0.8 * nrow(heart_dv_noAnaemia))
 
-heart_train <- heart_dv_noAnaemia[samp, ]
-heart_test <- heart_dv_noAnaemia[-samp, ]
+heart_train_noAnaemia <- heart_dv_noAnaemia[samp, ]
+heart_test_noAnaemia <- heart_dv_noAnaemia[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noAnaemia,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noAnaemia)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noAnaemia$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
+
+## Below noDiabetes
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noDiabetes
@@ -1046,24 +1062,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noDiabetes), 0.8 * nrow(heart_dv_noDiabetes))
 
-heart_train <- heart_dv_noDiabetes[samp, ]
-heart_test <- heart_dv_noDiabetes[-samp, ]
+heart_train_noDiabetes <- heart_dv_noDiabetes[samp, ]
+heart_test_noDiabetes <- heart_dv_noDiabetes[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noDiabetes,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noDiabetes)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noDiabetes$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
 
+## Below noCreatine_Phosphokinase
 ```{r}
 # Below is Random Forest performance for heart_dv_noCreatinine_Phosphokinase
 
@@ -1072,23 +1089,25 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noCreatinine_Phosphokinase), 0.8 * nrow(heart_dv_noCreatinine_Phosphokinase))
 
-heart_train <- heart_dv_noCreatinine_Phosphokinase[samp, ]
-heart_test <- heart_dv_noCreatinine_Phosphokinase[-samp, ]
+heart_train_noCreatine_Phosphokinase <- heart_dv_noCreatinine_Phosphokinase[samp, ]
+heart_test_noCreatine_Phosphokinase <- heart_dv_noCreatinine_Phosphokinase[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noCreatine_Phosphokinase,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noCreatine_Phosphokinase)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noCreatine_Phosphokinase$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
+
+## Below noHigh_Blood_Pressure
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noHigh_Blood_Pressure
@@ -1098,21 +1117,21 @@ cf
 set.seed(123)
 samp <- sample(nrow(heart_dv_noHigh_Blood_Pressure), 0.8 * nrow(heart_dv_noHigh_Blood_Pressure))
 
-heart_train <- heart_dv_noHigh_Blood_Pressure[samp, ]
-heart_test <- heart_dv_noHigh_Blood_Pressure[-samp, ]
+heart_train_noHigh_Blood_Pressure <- heart_dv_noHigh_Blood_Pressure[samp, ]
+heart_test_noHigh_Blood_Pressure <- heart_dv_noHigh_Blood_Pressure[-samp, ]
 
 set.seed(123)
 model <- randomForest(
   formula = DEATH_EVENT~., 
-  data = heart_train,
+  data = heart_train_noHigh_Blood_Pressure,
   importance = TRUE
 )
 
 model
 
-prediction <- predict(model, newdata = heart_test)
+prediction <- predict(model, newdata = heart_test_noHigh_Blood_Pressure)
 
-cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf <- confusionMatrix(prediction, heart_test_noHigh_Blood_Pressure$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
 
@@ -1134,58 +1153,336 @@ cf
 
 <table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
   <tr>
-    <th>Models contains</th>
+    <th>Models Contains</th>
     <th>Model Accuracy</th>
+    <th>1 - OOB Estimate of Error Rate</th>
   </tr>
   <tr>
     <td>S, HBP, CP, D, AN, S, T, SC, P, EF, A, and SS</td>
     <td>80.00 %</td>
+    <td>86.19 %</td>
   </tr>
   <tr>
     <td>S, HBP, CP, D, AN, S, T, SC, P, EF, and A</td>
     <td>80.00 %</td>
+    <td>87.03 %</td>
   </tr>
   <tr>
      <td>S, HBP, CP, D, AN, S, T, SC, P, and EF</td>
     <td>80.00 %</td>
+    <td>86.61 %</td>
   </tr>
   <tr>
     <td>S, HBP, CP, D, AN, S, T, SC, and P</td>
     <td>80.00 %</td>
+    <td>84.10 %</td>
   </tr>
   <tr>
     <td>S, HBP, CP, D, AN, S, T, and SC</td>
     <td>80.00 %</td>
+    <td>85.36 %</td>
   </tr>
   <tr>
     <td>S, HBP, CP, D, AN, S, and T</td>
     <td>80.00 %</td>
+    <td>83.68 %</td>
   </tr>
   <tr>
     <td>S, HBP, CP, D, AN, and S</td>
     <td>71.67 %</td>
+    <td>64.85 %</td>
   </tr>
   <tr>
     <td>S, HBP, CP, D, and AN</td>
     <td>70.00 %</td>
+    <td>64.85 %</td>
   </tr>
   <tr>
     <td>S, HBP, CP, and D</td>
     <td>66.67 %</td>
+    <td>66.11 %</td>
   </tr>
   <tr>
     <td>S, HBP, and CP</td>
     <td>70.00 %</td>
+    <td>67.36 %</td>
   </tr>
   <tr>
     <td>S, and HBP</td>
     <td>70.00 %</td>
+    <td>67.36 %</td>
   </tr>
   <tr>
     <td>S</td>
     <td>70.00 %</td>
+    <td>67.36 %</td>
   </tr>
 </table>
+
+## Below is the OOB error rate of heart_train_all
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_all,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is OOB error rate of heart_train_noSerumSodium
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noSerumSodium,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noAge
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noAge,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noEjection_Fraction
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noEjection_Fraction,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noPlatelets
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noPlatelets,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noSerum_Creatinine
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noSerum_Creatinine,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noTime
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noTime,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noSex
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noSex,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noAnaemia
+
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noAnaemia,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noDiabetes
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noDiabetes,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noCreatine_Phosphokinase
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noCreatine_Phosphokinase,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
+
+## Below is the OOB error rate of heart_train_noHigh_Blood_Pressure
+```{r}
+
+### Cross validation
+
+# https://rpubs.com/jvaldeleon/forest_repeat_cv
+
+set.seed(123)
+
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+forest <- train(
+          DEATH_EVENT ~.,
+          data=heart_train_noHigh_Blood_Pressure,
+          method='rf',
+          trControl=repeat_cv,
+          metric='Accuracy')
+
+forest$finalModel
+
+```
 
 
 ### Running the Random Forest Model - Default Settings
@@ -1195,6 +1492,8 @@ and a testing set (20%). An id column is created to assist in the split.
 
 ```{r}
 # Split the data, 80% goes to training and 20% to testing
+
+
 
 set.seed(123)
 
