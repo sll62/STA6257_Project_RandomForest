@@ -582,7 +582,9 @@ We calculate the <em>Gini Index</em> for each of the remaining variables and dis
 head(heart_df)
 
 # Create a heart data vector
-heart_dv = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, anaemia, diabetes, high_blood_pressure, sex, smoking, DEATH_EVENT)
+heart_dv = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, diabetes, anaemia, sex, time, serum_creatinine, platelets, ejection_fraction, age, serum_sodium, DEATH_EVENT)
+
+#heart_dv = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, anaemia, diabetes, high_blood_pressure, sex, smoking, DEATH_EVENT)
 
 # heart_df_noBinary is the dataset with all binary variables, except DEATH_EVENT, removed
 heart_df_noBinary = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)
@@ -639,18 +641,18 @@ GiniIndex_smokingVector  # The output is
 
 # BELOW IS A SUMMARY OF THE RESULTS
 # 
+# smoking                   0.6789
+# high blood pressure       0.6488
 # creatinine_phosphokinase	0.6082741
+# diabetes                  0.5819
+# anaemia                   0.5686
+# sex                       0.3512
 # time	                    0.3416812
 # serum_creatinine	        0.2799149
 # platelets	                0.1909926
 # ejection_fraction	        0.1712855
 # Age	                      0.1101127
 # serum_sodium	            0.01707994
-# anaemia                   0.5686
-# diabetes                  0.5819
-# high blood pressure       0.6488
-# sex                       0.3512
-# smoking                   0.6789
 ```
 
 <center>Gini Index Table</center>
@@ -674,7 +676,7 @@ GiniIndex_smokingVector  # The output is
     <td>0.6488</td>
   </tr>
   <tr>
-    <td>Creatine_Phosphokinase (CP)</td>
+    <td>Creatinine_Phosphokinase (CP)</td>
     <td>0.6082741</td>
   </tr>
   <tr>
@@ -723,27 +725,44 @@ We create multiple permutations of the model, and with each permutation we remov
 #  Below we are creating datasets based on Gini Coefficients.  We begin with all variables
 # and then remove the variable with the lowest Gini Coefficient as we create new datasets
 
-# heart_df_noBinary contains all the variables 
-# creatinine_phosphokinase	
-# time	                   
-# serum_creatinine	        
-# platelets	              
-# ejection_fraction	       
-# Age	                  
-# serum_sodium
-# heart_df_noBinary is the dataset with all binary variables, except DEATH_EVENT, removed
-heart_df_noBinary = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time, DEATH_EVENT)
+# BELOW IS A SUMMARY OF THE RESULTS
+# 
+# smoking                   0.6789
+# high blood pressure       0.6488
+# creatinine_phosphokinase	0.6082741
+# diabetes                  0.5819
+# anaemia                   0.5686
+# sex                       0.3512
+# time	                    0.3416812
+# serum_creatinine	        0.2799149
+# platelets	                0.1909926
+# ejection_fraction	        0.1712855
+# Age	                      0.1101127
+# serum_sodium	            0.01707994
 
+heart_dv_noSerumSodium = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, diabetes, anaemia, sex, time, serum_creatinine, platelets, ejection_fraction, age, DEATH_EVENT)
 
+heart_dv_noAge = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, diabetes, anaemia, sex, time, serum_creatinine, platelets, ejection_fraction, DEATH_EVENT)
 
-# heart_df_noBinary_noSerum_sodium contains the following variables
-# creatinine_phosphokinase	
-# time	                   
-# serum_creatinine	        
-# platelets	              
-# ejection_fraction	       
-# Age	  
-heart_df_noBinary_noSerum_sodium = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, time, DEATH_EVENT)
+heart_dv_noEjection_Fraction = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, diabetes, anaemia, sex, time, serum_creatinine, platelets, DEATH_EVENT)
+
+heart_dv_noPlatelets = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, diabetes, anaemia, sex, time, serum_creatinine, DEATH_EVENT)
+
+heart_dv_noSerum_Creatinine = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, diabetes, anaemia, sex, time, DEATH_EVENT)
+
+heart_dv_noTime = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, diabetes, anaemia, sex, DEATH_EVENT)
+
+heart_dv_noSex = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, diabetes, anaemia, DEATH_EVENT)
+
+heart_dv_noAnaemia = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, diabetes, DEATH_EVENT)
+
+heart_dv_noDiabetes = select(heart_df, smoking, high_blood_pressure, creatinine_phosphokinase, DEATH_EVENT)
+
+heart_dv_noCreatinine_Phosphokinase = select(heart_df, smoking, high_blood_pressure, DEATH_EVENT)
+
+heart_dv_noHigh_Blood_Pressure = select(heart_df, smoking, DEATH_EVENT)
+
+#heart_df_noBinary_noSerum_sodium = select(heart_df, age, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, time, DEATH_EVENT)
 
 # heart_df_noBinary_noAge contains the following variables
 # creatinine_phosphokinase	
@@ -751,44 +770,44 @@ heart_df_noBinary_noSerum_sodium = select(heart_df, age, creatinine_phosphokinas
 # serum_creatinine	        
 # platelets	              
 # ejection_fraction	       
-heart_df_noBinary_noAge = select(heart_df, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, time, DEATH_EVENT)                 
+#heart_df_noBinary_noAge = select(heart_df, creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, time, DEATH_EVENT)                 
 
 # heart_df_noBinary_noEjection_fraction contains the following variables
 # creatinine_phosphokinase	
 # time	                   
 # serum_creatinine	        
 # platelets	              
-heart_df_noBinary_noEjection_fraction = select(heart_df, creatinine_phosphokinase, platelets, serum_creatinine, time, DEATH_EVENT)
+#heart_df_noBinary_noEjection_fraction = select(heart_df, creatinine_phosphokinase, platelets, serum_creatinine, time, DEATH_EVENT)
 
 # heart_df_noBinary_noPlatelets contains the following variables
 # creatinine_phosphokinase	
 # time	                   
 # serum_creatinine	        
 # platelets	              
-heart_df_noBinary_noPlatelets = select(heart_df, creatinine_phosphokinase, serum_creatinine, time, DEATH_EVENT)
+#heart_df_noBinary_noPlatelets = select(heart_df, creatinine_phosphokinase, serum_creatinine, time, DEATH_EVENT)
 
 # heart_df_noBinary_noSerum_creatinine contains the following variables
 # creatinine_phosphokinase	
 # time	                   
-heart_df_noBinary_noSerum_creatinine = select(heart_df, creatinine_phosphokinase, time, DEATH_EVENT)
+#heart_df_noBinary_noSerum_creatinine = select(heart_df, creatinine_phosphokinase, time, DEATH_EVENT)
 
 # heart_df_noBinary_noTime contains the following variables
 # creatinine_phosphokinase	
-heart_df_noBinary_noTime = select(heart_df, creatinine_phosphokinase, DEATH_EVENT)
+#heart_df_noBinary_noTime = select(heart_df, creatinine_phosphokinase, DEATH_EVENT)
 
 ```
 
 
 ```{r}
-# Below is Random Forest performance for heart_df_noBinary
+# Below is Random Forest performance for heart_dv
 
 # split the data, 80% goes to training and 20% goes to testing
 
 set.seed(123)
-samp <- sample(nrow(heart_df_noBinary), 0.8 * nrow(heart_df_noBinary))
+samp <- sample(nrow(heart_dv), 0.8 * nrow(heart_dv))
 
-heart_train <- heart_df_noBinary[samp, ]
-heart_test <- heart_df_noBinary[-samp, ]
+heart_train <- heart_dv[samp, ]
+heart_test <- heart_dv[-samp, ]
 
 set.seed(123)
 model <- randomForest(
@@ -807,15 +826,15 @@ cf
 
 
 ```{r}
-# Below is Random Forest performance for heart_df_noSerum_sodium
+# Below is Random Forest performance for heart_dv_noSerumSodium
 
 # split the data, 80% goes to training and 20% goes to testing
 
 set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noSerum_sodium), 0.8 * nrow(heart_df_noBinary_noSerum_sodium))
+samp <- sample(nrow(heart_dv_noSerumSodium), 0.8 * nrow(heart_dv_noSerumSodium))
 
-heart_train <- heart_df_noBinary_noSerum_sodium[samp, ]
-heart_test <- heart_df_noBinary_noSerum_sodium[-samp, ]
+heart_train <- heart_dv_noSerumSodium[samp, ]
+heart_test <- heart_dv_noSerumSodium[-samp, ]
 
 set.seed(123)
 model <- randomForest(
@@ -834,15 +853,15 @@ cf
 
 
 ```{r}
-# Below is Random Forest performance for heart_df_noAge
+# Below is Random Forest performance for heart_dv_noAge
 
 # split the data, 80% goes to training and 20% goes to testing
 
 set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noAge), 0.8 * nrow(heart_df_noBinary_noAge))
+samp <- sample(nrow(heart_dv_noAge), 0.8 * nrow(heart_dv_noAge))
 
-heart_train <- heart_df_noBinary_noAge[samp, ]
-heart_test <- heart_df_noBinary_noAge[-samp, ]
+heart_train <- heart_dv_noAge[samp, ]
+heart_test <- heart_dv_noAge[-samp, ]
 
 set.seed(123)
 model <- randomForest(
@@ -861,15 +880,15 @@ cf
 
 
 ```{r}
-# Below is Random Forest performance for heart_df_noEjection_fraction
+# Below is Random Forest performance for heart_dv_noEjection_Fraction
 
 # split the data, 80% goes to training and 20% goes to testing
 
 set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noEjection_fraction), 0.8 * nrow(heart_df_noBinary_noEjection_fraction))
+samp <- sample(nrow(heart_dv_noEjection_Fraction), 0.8 * nrow(heart_dv_noEjection_Fraction))
 
-heart_train <- heart_df_noBinary_noEjection_fraction[samp, ]
-heart_test <- heart_df_noBinary_noEjection_fraction[-samp, ]
+heart_train <- heart_dv_noEjection_Fraction[samp, ]
+heart_test <- heart_dv_noEjection_Fraction[-samp, ]
 
 set.seed(123)
 model <- randomForest(
@@ -888,15 +907,15 @@ cf
 
 
 ```{r}
-# Below is Random Forest performance for heart_df_noPlatelets
+# Below is Random Forest performance for heart_dv_noPlatelets
 
 # split the data, 80% goes to training and 20% goes to testing
 
 set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noPlatelets), 0.8 * nrow(heart_df_noBinary_noPlatelets))
+samp <- sample(nrow(heart_dv_noPlatelets), 0.8 * nrow(heart_dv_noPlatelets))
 
-heart_train <- heart_df_noBinary_noPlatelets[samp, ]
-heart_test <- heart_df_noBinary_noPlatelets[-samp, ]
+heart_train <- heart_dv_noPlatelets[samp, ]
+heart_test <- heart_dv_noPlatelets[-samp, ]
 
 set.seed(123)
 model <- randomForest(
@@ -915,15 +934,15 @@ cf
 
 
 ```{r}
-# Below is Random Forest performance for heart_df_noSerum_creatinine
+# Below is Random Forest performance for heart_dv_noSerum_Creatinine
 
 # split the data, 80% goes to training and 20% goes to testing
 
 set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noSerum_creatinine), 0.8 * nrow(heart_df_noBinary_noSerum_creatinine))
+samp <- sample(nrow(heart_dv_noSerum_Creatinine), 0.8 * nrow(heart_dv_noSerum_Creatinine))
 
-heart_train <- heart_df_noBinary_noSerum_creatinine[samp, ]
-heart_test <- heart_df_noBinary_noSerum_creatinine[-samp, ]
+heart_train <- heart_dv_noSerum_Creatinine[samp, ]
+heart_test <- heart_dv_noSerum_Creatinine[-samp, ]
 
 set.seed(123)
 model <- randomForest(
@@ -942,15 +961,15 @@ cf
 
 
 ```{r}
-# Below is Random Forest performance for heart_df_noBinary_noTime
+# Below is Random Forest performance for heart_dv_noTime
 
 # split the data, 80% goes to training and 20% goes to testing
 
 set.seed(123)
-samp <- sample(nrow(heart_df_noBinary_noTime), 0.8 * nrow(heart_df_noBinary_noTime))
+samp <- sample(nrow(heart_dv_noTime), 0.8 * nrow(heart_dv_noTime))
 
-heart_train <- heart_df_noBinary_noTime[samp, ]
-heart_test <- heart_df_noBinary_noTime[-samp, ]
+heart_train <- heart_dv_noTime[samp, ]
+heart_test <- heart_dv_noTime[-samp, ]
 
 set.seed(123)
 model <- randomForest(
@@ -966,6 +985,138 @@ prediction <- predict(model, newdata = heart_test)
 cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
 cf
 ```
+
+```{r}
+# Below is Random Forest performance for heart_dv_noSex
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_dv_noSex), 0.8 * nrow(heart_dv_noSex))
+
+heart_train <- heart_dv_noSex[samp, ]
+heart_test <- heart_dv_noSex[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+```{r}
+# Below is Random Forest performance for heart_dv_noAnaemia
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_dv_noAnaemia), 0.8 * nrow(heart_dv_noAnaemia))
+
+heart_train <- heart_dv_noAnaemia[samp, ]
+heart_test <- heart_dv_noAnaemia[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+```{r}
+# Below is Random Forest performance for heart_dv_noDiabetes
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_dv_noDiabetes), 0.8 * nrow(heart_dv_noDiabetes))
+
+heart_train <- heart_dv_noDiabetes[samp, ]
+heart_test <- heart_dv_noDiabetes[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+```{r}
+# Below is Random Forest performance for heart_dv_noCreatinine_Phosphokinase
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_dv_noCreatinine_Phosphokinase), 0.8 * nrow(heart_dv_noCreatinine_Phosphokinase))
+
+heart_train <- heart_dv_noCreatinine_Phosphokinase[samp, ]
+heart_test <- heart_dv_noCreatinine_Phosphokinase[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+```{r}
+# Below is Random Forest performance for heart_dv_noHigh_Blood_Pressure
+
+# split the data, 80% goes to training and 20% goes to testing
+
+set.seed(123)
+samp <- sample(nrow(heart_dv_noHigh_Blood_Pressure), 0.8 * nrow(heart_dv_noHigh_Blood_Pressure))
+
+heart_train <- heart_dv_noHigh_Blood_Pressure[samp, ]
+heart_test <- heart_dv_noHigh_Blood_Pressure[-samp, ]
+
+set.seed(123)
+model <- randomForest(
+  formula = DEATH_EVENT~., 
+  data = heart_train,
+  importance = TRUE
+)
+
+model
+
+prediction <- predict(model, newdata = heart_test)
+
+cf <- confusionMatrix(prediction, heart_test$DEATH_EVENT, positive = "1", mode = "everything")
+cf
+```
+
+
 
 ```{r}
 
@@ -987,37 +1138,55 @@ cf
     <th>Model Accuracy</th>
   </tr>
   <tr>
-    <td>SS, A, EF, P, SC, T, and CP</td> 
+    <td>S, HBP, CP, D, AN, S, T, SC, P, EF, A, and SS</td>
     <td>80.00 %</td>
   </tr>
   <tr>
-    <td>A, EF, P, SC, T, and CP</td> 
-    <td>76.67 %</td>
+    <td>S, HBP, CP, D, AN, S, T, SC, P, EF, and A</td>
+    <td>80.00 %</td>
   </tr>
   <tr>
-    <td>EF, P, SC, T, and CP</td> 
-    <td>75.00 %</td>
+     <td>S, HBP, CP, D, AN, S, T, SC, P, and EF</td>
+    <td>80.00 %</td>
   </tr>
   <tr>
-    <td>P, SC, T, and CP</td> 
-    <td>78.33 %</td>
+    <td>S, HBP, CP, D, AN, S, T, SC, and P</td>
+    <td>80.00 %</td>
   </tr>
   <tr>
-    <td>SC, T, and CP</td> 
-    <td>78.33 %</td>
+    <td>S, HBP, CP, D, AN, S, T, and SC</td>
+    <td>80.00 %</td>
   </tr>
   <tr>
-    <td>T and CP</td> 
-    <td>76.67%</td>
+    <td>S, HBP, CP, D, AN, S, and T</td>
+    <td>80.00 %</td>
   </tr>
   <tr>
-    <td>Only CP</td> 
+    <td>S, HBP, CP, D, AN, and S</td>
+    <td>71.67 %</td>
+  </tr>
+  <tr>
+    <td>S, HBP, CP, D, and AN</td>
+    <td>70.00 %</td>
+  </tr>
+  <tr>
+    <td>S, HBP, CP, and D</td>
     <td>66.67 %</td>
+  </tr>
+  <tr>
+    <td>S, HBP, and CP</td>
+    <td>70.00 %</td>
+  </tr>
+  <tr>
+    <td>S, and HBP</td>
+    <td>70.00 %</td>
+  </tr>
+  <tr>
+    <td>S</td>
+    <td>70.00 %</td>
   </tr>
 </table>
 
-
-## pasted above
 
 ### Running the Random Forest Model - Default Settings
 
