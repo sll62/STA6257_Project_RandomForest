@@ -1680,11 +1680,8 @@ have been classified as FALSE. The darker color gradient helps one
 perceive the relative amount recorded in each of the four areas.
 
 ```{r}
-
-#cor_matrix_noBinary <- cor(heart_df_noBinary)  # needed for new version of correlation heatmap
 # Draws the corelation heatmap
 corrplot(cor_matrix, method = "color")
-#corrplot(cor_matrix_noBinary, method = "color")
 ```
 
 The Variable Correlation Heatmap above shows the correlation between
