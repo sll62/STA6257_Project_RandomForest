@@ -507,6 +507,8 @@ heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
 ```{r}
 #{r, echo=FALSE}
 cor_matrix <- cor(heart_df)
+
+
 #corrplot(cor_matrix, method = "color")
 # The drawing of the correlation heatmap was moved to way below.  However, some of this
 # code is needed earlier, so it was not moved.
@@ -515,7 +517,7 @@ cor_matrix <- cor(heart_df)
 The dataset was checked for any null values, and none were found. Null
 values can cause errors in calculations and need to be addressed, often
 by removing them or providing a value for them (a median value, a random
-value, or somethong else).
+value, or something else).
 
 ```{r}
 #{r, echo=FALSE}
@@ -569,15 +571,7 @@ is robust enough to tolerate this asymmetry.
 
 ### Fitting the Dataset
 
-We fit the dataset by removing all binary variables.  The removed variables include the following;
-
-- anaemia
-- diabetes
-- high blood pressure
-- sex
-- smoking
-
-We calculate the <em>Gini Index</em> for each of the remaining variables and display them in the table that follows.
+We fit the dataset by calculating the <em>Gini Index</em> for each of the remaining variables and display them in the table that follows.
 
 ```{r}
 # heart_df is the original data frame created with the import of the entire dataset
@@ -721,7 +715,7 @@ GiniIndex_smokingVector  # The output is
 
 ### Permutations of the Model
 
-We create multiple permutations of the model, and with each permutation we remove the variable with the lowest Gini Index.  We display the results in the table that follows.
+We create multiple permutations of the model, and with each permutation we remove the variable with the lowest Gini Index.  We also calculate the Out of Bag (OOB) estimate of error and display this as '1 - OOB.'  We display the results in the table that follows.
 
 ```{r}
 #  Below we are creating datasets based on Gini Coefficients.  We begin with all variables
@@ -1144,80 +1138,6 @@ cf
 # "The lower the Gini Index, the better the lower the likelihood of misclassification."
 ```
 
-<center>Model Accuracy After Permutations of Variables</center>
- <style>
-  table.tb { border-collapse: collapse; width:900px; }
-  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
-  .tb th { background-color: lightblue;}
-</style>
-
-<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
-  <tr>
-    <th>Models Contains</th>
-    <th>Model Accuracy</th>
-    <th>1 - OOB Estimate of Error Rate</th>
-  </tr>
-  <tr>
-    <td>S, HBP, CP, D, AN, S, T, SC, P, EF, A, and SS</td>
-    <td>80.00 %</td>
-    <td>86.19 %</td>
-  </tr>
-  <tr>
-    <td>S, HBP, CP, D, AN, S, T, SC, P, EF, and A</td>
-    <td>80.00 %</td>
-    <td>87.03 %</td>
-  </tr>
-  <tr>
-     <td>S, HBP, CP, D, AN, S, T, SC, P, and EF</td>
-    <td>80.00 %</td>
-    <td>86.61 %</td>
-  </tr>
-  <tr>
-    <td>S, HBP, CP, D, AN, S, T, SC, and P</td>
-    <td>80.00 %</td>
-    <td>84.10 %</td>
-  </tr>
-  <tr>
-    <td>S, HBP, CP, D, AN, S, T, and SC</td>
-    <td>80.00 %</td>
-    <td>85.36 %</td>
-  </tr>
-  <tr>
-    <td>S, HBP, CP, D, AN, S, and T</td>
-    <td>80.00 %</td>
-    <td>83.68 %</td>
-  </tr>
-  <tr>
-    <td>S, HBP, CP, D, AN, and S</td>
-    <td>71.67 %</td>
-    <td>64.85 %</td>
-  </tr>
-  <tr>
-    <td>S, HBP, CP, D, and AN</td>
-    <td>70.00 %</td>
-    <td>64.85 %</td>
-  </tr>
-  <tr>
-    <td>S, HBP, CP, and D</td>
-    <td>66.67 %</td>
-    <td>66.11 %</td>
-  </tr>
-  <tr>
-    <td>S, HBP, and CP</td>
-    <td>70.00 %</td>
-    <td>67.36 %</td>
-  </tr>
-  <tr>
-    <td>S, and HBP</td>
-    <td>70.00 %</td>
-    <td>67.36 %</td>
-  </tr>
-  <tr>
-    <td>S</td>
-    <td>70.00 %</td>
-    <td>67.36 %</td>
-  </tr>
-</table>
 
 ## Below is the OOB error rate of heart_train_all
 ```{r}
@@ -1484,6 +1404,102 @@ forest$finalModel
 
 ```
 
+<center>Model Accuracy After Permutations of Variables</center>
+ <style>
+  table.tb { border-collapse: collapse; width:900px; }
+  .tb th, .tb td { padding: 5px; border: solid 1px #777; }
+  .tb th { background-color: lightblue;}
+</style>
+
+<table class="tb" title="Datasets Removal of Variables with Largest Gini Index">
+  <tr>
+    <th>Models Contains</th>
+    <th>Model Accuracy</th>
+    <th>1 - OOB Estimate of Error Rate</th>
+  </tr>
+  <tr>
+    <td>SM, HBP, CP, D, AN, S, T, SC, P, EF, A, and SS</td>
+    <td>80.00 %</td>
+    <td>86.19 %</td>
+  </tr>
+  <tr>
+    <td>SM, HBP, CP, D, AN, S, T, SC, P, EF, and A</td>
+    <td>80.00 %</td>
+    <td>87.03 %</td>
+  </tr>
+  <tr>
+     <td>SM, HBP, CP, D, AN, S, T, SC, P, and EF</td>
+    <td>80.00 %</td>
+    <td>86.61 %</td>
+  </tr>
+  <tr>
+    <td>SM, HBP, CP, D, AN, S, T, SC, and P</td>
+    <td>80.00 %</td>
+    <td>84.10 %</td>
+  </tr>
+  <tr>
+    <td>SM, HBP, CP, D, AN, S, T, and SC</td>
+    <td>80.00 %</td>
+    <td>85.36 %</td>
+  </tr>
+  <tr>
+    <td>SM, HBP, CP, D, AN, S, and T</td>
+    <td>80.00 %</td>
+    <td>83.68 %</td>
+  </tr>
+  <tr>
+    <td>SM, HBP, CP, D, AN, and S</td>
+    <td>71.67 %</td>
+    <td>64.85 %</td>
+  </tr>
+  <tr>
+    <td>SM, HBP, CP, D, and AN</td>
+    <td>70.00 %</td>
+    <td>64.85 %</td>
+  </tr>
+  <tr>
+    <td>SM, HBP, CP, and D</td>
+    <td>66.67 %</td>
+    <td>66.11 %</td>
+  </tr>
+  <tr>
+    <td>SM, HBP, and CP</td>
+    <td>70.00 %</td>
+    <td>67.36 %</td>
+  </tr>
+  <tr>
+    <td>SM, and HBP</td>
+    <td>70.00 %</td>
+    <td>67.36 %</td>
+  </tr>
+  <tr>
+    <td>SM</td>
+    <td>70.00 %</td>
+    <td>67.36 %</td>
+  </tr>
+</table>
+
+The Table above shows the model accuracy peaks at 80%.  There are six models that achieve this accuracy.  This occurs when the models contain at least the following variables;
+
+- Smoking (SM)
+- High Blood Pressure (HBP)
+- Creatine Phosphokinase (CP)
+- Daibetes (D)
+- Anaemia (AN)
+- Sex (S)
+- Time (T)
+
+... and a subset of the following variables;
+
+- Serum Creatinine (SC)
+- Platelets (P)
+- Ejection Fraction (EF)
+- Age (A)
+- Serum Sodium (SS)
+
+To fit the data to our model, we want the highest accuracy.  For the six models that achieve this accuracy, we see the highest '1 - OOB Estimate of Error Rate' is 87.03%, and this occurs when <em>serum sodium</em> is not in the model.  These results suggests we can get the same classification accuracy if we remove serum sodium from the model. 
+
+To sidestep significant modifications to calculations conducted previously for our report, we proceed with <em>serum sodium</em> included in our model.
 
 ### Running the Random Forest Model - Default Settings
 
@@ -1492,7 +1508,6 @@ and a testing set (20%). An id column is created to assist in the split.
 
 ```{r}
 # Split the data, 80% goes to training and 20% to testing
-
 
 
 set.seed(123)
@@ -1536,7 +1551,7 @@ The default random forest model produced an Out-of-the-Bag (OOB)
 estimate of error rate of 13.39%. There is a higher class error rate in
 the "positive" (death event occurrence) class than the "negative" (no
 death occurrence) class, with 25.6% versus 7.45% rate, respectively.
-```{r}
+```{r, eval=FALSE}
 # Load the reprtree package from github
 options(repos='http://cran.rstudio.org')
 have.packages <- installed.packages()
@@ -1665,8 +1680,11 @@ have been classified as FALSE. The darker color gradient helps one
 perceive the relative amount recorded in each of the four areas.
 
 ```{r}
+
+#cor_matrix_noBinary <- cor(heart_df_noBinary)  # needed for new version of correlation heatmap
 # Draws the corelation heatmap
 corrplot(cor_matrix, method = "color")
+#corrplot(cor_matrix_noBinary, method = "color")
 ```
 
 The Variable Correlation Heatmap above shows the correlation between
