@@ -1797,16 +1797,15 @@ randomForest::varImpPlot(model,
 
 The Variable Importance Plot above is a visual representation of the
 importance of each variable in our model. Circles are plotted on a scale
-at a location that is influenced by their accuracy and Gini Coefficient.
+at a location that is influenced by their accuracy (left plot) and Gini Coefficient (right plot).
 The resulting value provides an indication of how useful a variable is
 for predicting an outcome. The higher the value, the greater the
-influence.
+influence.  Notice that there is not always a correlation between influence on accuracy and Gini Index.  For example, <em>platelets</em> have a somewhat high Gini Index of about 10-12, but have a small impact on accuracy.
 
 In the Mean Decrease Accuracy plot, <en>time</em> has the highest value
 of approximately 40. Because time is the number of days between patient
 visits to their health care provider, it seems the longer a patient
-waits for a follow-up visit, the more at risk they are for heart
-failure.
+waits for a follow-up visit, the more inaccurate the classification becomes.
 
 <em>Serum_creatinine</em> and <em>ejection_fraction</em> are tied for
 second at about 15 within the Mean Decrease Accuracy plot. Serum
@@ -1823,7 +1822,7 @@ is an indicator of heart failure and/or heart disease.
 Although the numbers are slightly lower, <em>time</em>,
 <em>serum_creatinine</em>, and <em>ejection_fraction</em> are also the
 top three variables for predicting heart failure according to the Mean
-Decrease Gini Index plot.
+Decrease Gini Index plot.  We note that the information provided by these plots is slightly different than the results provided by the Gini Index table seen previously.  The Gini Index table suggests smoking, high blood pressure, and creatine phosphokinase are the top three variables for classification of heart failure.  We recognize that all sources of analysis must be double-checked and weighed before achieving a final conclusion.
 
 ```{r}
 prediction <- predict(model, newdata = heart_test)
@@ -2284,11 +2283,11 @@ AUC-ROC score of .8439. We consider these results to be strong for
 automated analysis.
 
 Random Forest makes its decisions in a <em>black box</em>, which means
-we do not fully understand how is classifies data or which variables are
+we do not fully understand how it classifies data or which variables are
 used. We do know from a review of the variable importance plot that
 <em>time before follow-up visit</em>, <em>serum creatinine levels</em>,
 and <em>ejection fraction amount</em> are all likely influential in the
-classification process.
+classification process.  A review of the Gini Index table suggests <em>smoking</em>, <em>high blood pressure</em>, and <em>creatine phosphokinase</em> are also strong contributors.
 
 ```{=html}
 <!--  Below is the original conclusion.
