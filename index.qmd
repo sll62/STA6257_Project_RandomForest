@@ -1501,6 +1501,216 @@ To fit the data to our model, we want the highest accuracy.  For the six models 
 
 To sidestep significant modifications to calculations conducted previously for our report, we proceed with <em>serum sodium</em> included in our model.
 
+## Below is Pam's code
+
+Cross validation for model without sodium: 
+```{r}
+# No Sodium model cross validation
+
+heart_dv_noSerumSodium <- select(heart_df, -c(serum_sodium))
+
+# Set seed for reproducibility
+set.seed(123)
+ 
+# Define repeated cross validation with 5 folds and three repeats
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+# Split into training and testing 
+set.seed(123)
+samp <- sample(nrow(heart_dv_noSerumSodium), 0.8 * nrow(heart_dv_noSerumSodium))
+
+heart_train_noSodium <- heart_dv_noSerumSodium[samp, ]
+heart_test_noSodium <- heart_dv_noSerumSodium[-samp, ]
+# Set seed for reproducibility
+set.seed(123)
+# Train a random forest model
+noSodium_forest <- train(
+
+        # Formula. We are using all variables to predict Species
+        DEATH_EVENT~.,
+
+        # Source of data; remove the Species variable
+        data=heart_train_noSodium,
+
+        # `rf` method for random forest
+        method='rf',
+
+        # Add repeated cross validation as trControl
+        trControl=repeat_cv,
+
+        # Accuracy to measure the performance of the model
+        metric='Accuracy')
+# 
+# ## Print out the details about the model
+noSodium_forest$finalModel
+```
+Cross validation for model without sodium or age:
+```{r}
+# No Sodium or Age model cross validation
+
+heart_dv_noSodiumAge <- select(heart_df, -c(serum_sodium, age))
+
+# Set seed for reproducibility
+set.seed(123)
+ 
+# Define repeated cross validation with 5 folds and three repeats
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+# Split into training and testing 
+set.seed(123)
+samp <- sample(nrow(heart_dv_noSodiumAge), 0.8 * nrow(heart_dv_noSodiumAge))
+
+heart_train_noSodiumAge <- heart_dv_noSodiumAge[samp, ]
+heart_test_noSodiumAge <- heart_dv_noSodiumAge[-samp, ]
+# Set seed for reproducibility
+set.seed(123)
+# Train a random forest model
+noSodiumAge_forest <- train(
+
+        # Formula. We are using all variables to predict Species
+        DEATH_EVENT~.,
+
+        # Source of data
+        data=heart_train_noSodiumAge,
+
+        # `rf` method for random forest
+        method='rf',
+
+        # Add repeated cross validation as trControl
+        trControl=repeat_cv,
+
+        # Accuracy to measure the performance of the model
+        metric='Accuracy')
+# 
+# ## Print out the details about the model
+noSodiumAge_forest$finalModel
+```
+Cross validation for model without sodium, age, or ejection fraction:
+```{r}
+# No Sodium, Age, or Ejection Fraction model cross validation
+
+heart_dv_noSodiumAgeEj <- select(heart_df, -c(serum_sodium, age, ejection_fraction))
+
+# Set seed for reproducibility
+set.seed(123)
+ 
+# Define repeated cross validation with 5 folds and three repeats
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+# Split into training and testing 
+set.seed(123)
+samp <- sample(nrow(heart_dv_noSodiumAgeEj), 0.8 * nrow(heart_dv_noSodiumAgeEj))
+
+heart_train_noSodiumAgeEj <- heart_dv_noSodiumAgeEj[samp, ]
+heart_test_noSodiumAgeEj <- heart_dv_noSodiumAgeEj[-samp, ]
+# Set seed for reproducibility
+set.seed(123)
+# Train a random forest model
+noSodiumAgeEj_forest <- train(
+
+        # Formula. We are using all variables to predict Species
+        DEATH_EVENT~.,
+
+        # Source of data
+        data=heart_train_noSodiumAgeEj,
+
+        # `rf` method for random forest
+        method='rf',
+
+        # Add repeated cross validation as trControl
+        trControl=repeat_cv,
+
+        # Accuracy to measure the performance of the model
+        metric='Accuracy')
+# 
+# ## Print out the details about the model
+noSodiumAgeEj_forest$finalModel
+```
+Cross validation for model without sodium, age, ejection fraction, or platelets:
+```{r}
+# No Sodium, Age, Ejection Fraction, or Platelets model cross validation
+
+heart_dv_noSodiumAgeEjPlt <- select(heart_df, -c(serum_sodium, age, ejection_fraction, platelets))
+
+# Set seed for reproducibility
+set.seed(123)
+ 
+# Define repeated cross validation with 5 folds and three repeats
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+# Split into training and testing 
+set.seed(123)
+samp <- sample(nrow(heart_dv_noSodiumAgeEjPlt), 0.8 * nrow(heart_dv_noSodiumAgeEjPlt))
+
+heart_train_noSodiumAgeEjPlt <- heart_dv_noSodiumAgeEjPlt[samp, ]
+heart_test_noSodiumAgeEjPlt <- heart_dv_noSodiumAgeEjPlt[-samp, ]
+# Set seed for reproducibility
+set.seed(123)
+# Train a random forest model
+noSodiumAgeEjPlt_forest <- train(
+
+        # Formula. We are using all variables to predict Species
+        DEATH_EVENT~.,
+
+        # Source of data
+        data=heart_train_noSodiumAgeEjPlt,
+
+        # `rf` method for random forest
+        method='rf',
+
+        # Add repeated cross validation as trControl
+        trControl=repeat_cv,
+
+        # Accuracy to measure the performance of the model
+        metric='Accuracy')
+# 
+# ## Print out the details about the model
+noSodiumAgeEjPlt_forest$finalModel
+```
+Cross validation for model without sodium, age, ejection fraction, platelets, or serum creatinine:
+```{r}
+# No Sodium, Age, Ejection Fraction, Platelets, or Serum Creatinine model cross validation
+
+heart_dv_noSodiumAgeEjPltSC <- select(heart_df, -c(serum_sodium, age, ejection_fraction, platelets, serum_creatinine))
+
+# Set seed for reproducibility
+set.seed(123)
+ 
+# Define repeated cross validation with 5 folds and three repeats
+repeat_cv <- trainControl(method='repeatedcv', number=5, repeats=3)
+
+# Split into training and testing 
+set.seed(123)
+samp <- sample(nrow(heart_dv_noSodiumAgeEjPltSC), 0.8 * nrow(heart_dv_noSodiumAgeEjPltSC))
+
+heart_train_noSodiumAgeEjPltSC <- heart_dv_noSodiumAgeEjPltSC[samp, ]
+heart_test_noSodiumAgeEjPltSC <- heart_dv_noSodiumAgeEjPltSC[-samp, ]
+# Set seed for reproducibility
+set.seed(123)
+# Train a random forest model
+noSodiumAgeEjPltSC_forest <- train(
+
+        # Formula. We are using all variables to predict Species
+        DEATH_EVENT~.,
+
+        # Source of data
+        data=heart_train_noSodiumAgeEjPltSC,
+
+        # `rf` method for random forest
+        method='rf',
+
+        # Add repeated cross validation as trControl
+        trControl=repeat_cv,
+
+        # Accuracy to measure the performance of the model
+        metric='Accuracy')
+# 
+# ## Print out the details about the model
+noSodiumAgeEjPltSC_forest$finalModel
+```
+
+
+
 ### Running the Random Forest Model - Default Settings
 
 The patient health records dataset is split into a training set (80%)
