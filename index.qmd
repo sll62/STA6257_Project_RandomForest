@@ -504,15 +504,6 @@ heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
 #head(heart_df, 5)
 ```
 
-```{r}
-#{r, echo=FALSE}
-cor_matrix <- cor(heart_df_noBinary)
-
-
-#corrplot(cor_matrix, method = "color")
-# The drawing of the correlation heatmap was moved to way below.  However, some of this
-# code is needed earlier, so it was not moved.
-```
 
 The dataset was checked for any null values, and none were found. Null
 values can cause errors in calculations and need to be addressed, often
@@ -712,6 +703,15 @@ GiniIndex_smokingVector  # The output is
     <td>0.01707994</td>
   </tr>
 </table>
+
+```{r}
+#{r, echo=FALSE}
+cor_matrix <- cor(heart_df_noBinary)
+
+#corrplot(cor_matrix, method = "color")
+# The drawing of the correlation heatmap was moved to way below.  However, some of this
+# code is needed earlier, so it was not moved.
+```
 
 ### Permutations of the Model
 
