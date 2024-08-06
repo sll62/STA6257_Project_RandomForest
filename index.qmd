@@ -506,7 +506,7 @@ heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
 
 ```{r}
 #{r, echo=FALSE}
-cor_matrix <- cor(heart_df_noBinary)
+cor_matrix <- cor(heart_df)
 
 
 #corrplot(cor_matrix, method = "color")
