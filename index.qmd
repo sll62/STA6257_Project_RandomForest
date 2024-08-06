@@ -146,7 +146,7 @@ Random Forest method so optimal classification results are achieved.
 ### Related Work
 
 There are many examples of how Random Forest is used as a successful and
-scaleable classifier. In one study, researchers created a Random Forest
+scaleable classifier. In one study, researchers create a Random Forest
 model to predict in-hospital mortality for acute kidney injury patients
 in the intensive care unit [@lin2019predicting]. The Random Forest model
 displays the lowest Brier score (associated with accuracy) and the
@@ -154,7 +154,7 @@ largest AUROC (associated with discrimination), meaning Random Forest
 produces the best values for these assessments of the compaired models,
 with the second best F1 score and accuracy.
 
-In another experiment, researchers developed a random forest regression
+In another experiment, researchers develope a random forest regression
 model capable of accurately predicting future estimated glomerular
 filtration rates using electronic medical record data
 [@zhao2019predicting]. This tool allows identification of chronic kidney
@@ -317,7 +317,7 @@ Failure Clinical Records dataset provided by the University of
 California Irvine Machine Learning Repository
 [@misc_heart_failure_clinical_records_519]. The dataset comes from the
 Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad
-Pakistan and consists of the medical records of 299 patients who
+Pakistan and consists of the medical records of 299 patients; some who
 experienced heart failure [@chicco2020machine]. There are 299 patient
 records with 13 features per record. We use this dataset to create and
 evaluate a Random Forest model used for predicting heart failure events
@@ -505,7 +505,7 @@ heart_df <- read_csv("heart_failure_clinical_records_dataset.csv")
 ```
 
 
-The dataset was checked for any null values, and none were found. Null
+The dataset is checked for any null values, and none are found. Null
 values can cause errors in calculations and need to be addressed, often
 by removing them or providing a value for them (a median value, a random
 value, or something else).
@@ -516,7 +516,7 @@ value, or something else).
 heart_df %>% summarise(across(everything(), ~ sum(is.na(.))))
 ```
 
-The target variable (DEATH_EVENT) was then examined for the balance
+The target variable (DEATH_EVENT) is examined for the balance
 between the negative and positive classes.
 
 ```{r}
@@ -797,7 +797,7 @@ heart_dv_noHigh_Blood_Pressure = select(heart_df, smoking, DEATH_EVENT)
 ```
 
 
-## below all
+## Below all
 ```{r}
 # Below is Random Forest performance for heart_dv
 
@@ -853,7 +853,7 @@ cf <- confusionMatrix(prediction, heart_test_noSerumSodium$DEATH_EVENT, positive
 cf
 ```
 
-## below noAge
+## Below noAge
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noAge
@@ -881,7 +881,7 @@ cf <- confusionMatrix(prediction, heart_test_noAge$DEATH_EVENT, positive = "1", 
 cf
 ```
 
-## below noEjection_Fraction
+## Below noEjection_Fraction
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noEjection_Fraction
@@ -909,7 +909,7 @@ cf <- confusionMatrix(prediction, heart_test_noEjection_Fraction$DEATH_EVENT, po
 cf
 ```
 
-# below noPlatelets
+# Below noPlatelets
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noPlatelets
@@ -937,7 +937,7 @@ cf <- confusionMatrix(prediction, heart_test_noPlatelets$DEATH_EVENT, positive =
 cf
 ```
 
-## below noSerum_Creatinine
+## Below noSerum_Creatinine
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noSerum_Creatinine
@@ -965,7 +965,7 @@ cf <- confusionMatrix(prediction, heart_test_noSerum_Creatinine$DEATH_EVENT, pos
 cf
 ```
 
-## below noTime
+## Below noTime
 
 ```{r}
 # Below is Random Forest performance for heart_dv_noTime
@@ -1504,6 +1504,8 @@ To fit the data to our model, we want the highest accuracy.  For the six models 
 
 To sidestep significant modifications to calculations conducted previously for our report, we proceed with <em>serum sodium</em> included in our model.
 
+
+<!--
 ## Below is Pam's code
 
 Cross validation for model without sodium: 
@@ -1711,7 +1713,7 @@ noSodiumAgeEjPltSC_forest <- train(
 # ## Print out the details about the model
 noSodiumAgeEjPltSC_forest$finalModel
 ```
-
+-->
 
 
 ### Running the Random Forest Model - Default Settings
@@ -1909,19 +1911,14 @@ correlation between these two model variables. On the other hand,
 serum_creatinine along the left side intersects with serum_sodium along
 the top resulting in a slightly red square representing a slightly
 negative correlation between these two model variables. Other model
-variables like diabetes and creatinine_phosphokinase intersect with no
+variables like serum_creatinine and creatinine_phosphokinase intersect with no
 color, which means there is no positive or negative correlation between
 these two model variables.
 
 Variable correlation is used to explore the data to understand
 relationships that might otherwise go unnoticed. In some cases,
 understanding correlation can lead to the discovery of one variable
-causing another variable. A review of the heatmap suggests
-serum_creatinine might be a cause of a death_event, whereas
-ejection_fraction shows a negative causal relationship. We are making
-neither claim in our analysis and only offer these as examples for one
-way to interpret the results of a correlation heatmap. Furthermore, we
-also recognize that correlation does not mean causation, so we are
+causing another variable.  Furthermore, we also recognize that correlation does not always mean causation, so we are
 careful to make such a claim. We recognize that further analysis and
 subject matter expertise is required to arrive at such a conclusion.
 
@@ -2207,9 +2204,9 @@ training dataset. We suspect this is caused by the training dataset
 being too small, or too noisy. This is a small concern and its
 resolution is out of scope for this report.
 
-When looking at the default model (Model 1) we got an OOB error rate of
+When looking at the default model (Model 1) we received an OOB error rate of
 13.39%, which translates to a training accuracy of 86.61%. The testing
-accuracy was 0.8167 (81.67%). The precision value is 70.59% which means
+accuracy is 0.8167 (81.67%). The precision value is 70.59% which means
 that about 71% of the observations predicted as positive are truly
 positive. The recall is 66.67% which suggests that this model detects
 positive cases from the samples of true positives in the data about 67%
@@ -2221,7 +2218,7 @@ minority and majority classes are equally important in the evaluation.
 
 The second model (Model 2) the OOB error is 12.97% which translates to a
 training accuracy of 87.03%. The testing accuracy is 0.8333 (83.33%).
-The precision value came to 0.7500 which indicates that the observations
+The precision value comes to 0.7500 which indicates that the observations
 predicted as positive are truly positive 75% of the time. The recall is
 66.67% which suggests that this model detects positive cases from the
 samples of true positives in the data about 67% of the time. The F1
